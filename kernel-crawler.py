@@ -48,8 +48,8 @@ except ImportError:
 from lxml import html
 
 #
-# This is the main configuration tree for easily analyze Linux repositories
-# hunting packages. When adding repos or so be sure to respect the same data
+# This is the main configuration tree to easily analyze Linux repositories for
+# hunting packages. When adding repos or distros be sure to respect the same data
 # structure
 #
 repos = {
@@ -72,7 +72,7 @@ repos = {
             ],
 
             # Finally, we need to inspect every page for packages we need.
-            # Again, this is a XPath + Regex query so use the regex if you want
+            # Again, this is an XPath + Regex query so use the regex if you want
             # to limit the number of packages reported.
             "page_pattern" : "/html/body//a[regex:test(@href, '^kernel-(devel-)?[0-9].*\.rpm$')]/@href"
         },
@@ -347,7 +347,7 @@ def process_al_distro(al_distro_name, current_repo):
         return False
 
 #
-# Fedora Atomic needs 2 levels of discovery(for version, and build id, respectively)
+# Fedora Atomic needs 2 levels of discovery (for version, and build id, respectively)
 #
 def process_atomic_distro(current_repos):
     for repo in current_repos["Fedora-Atomic"]:
@@ -400,8 +400,6 @@ distro = sys.argv[1]
 # Navigate the `repos` tree and look for packages we need that match the
 # patterns given. Save the result in `packages`.
 #
-
-al2_repo_count = 0
 
 for repo in repos[distro]:
     if distro == 'AmazonLinux':
