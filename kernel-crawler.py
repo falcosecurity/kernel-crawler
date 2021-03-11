@@ -90,9 +90,9 @@ repos = {
 
     "Ubuntu" : [
         {
-            # Had to split the URL because, unlikely other repos for which the
+            # Had to split the URL because, unlike other repos for which the
             # script was first created, Ubuntu puts everything into a single
-            # folder. The real URL is be:
+            # folder. The real URL we are forming is:
             # http://mirrors.us.kernel.org/ubuntu/pool/main/l/linux/
             "root" : "https://mirrors.edge.kernel.org/ubuntu/pool/main/l/",
             "discovery_pattern" : "/html/body//a[@href = 'linux/']/@href",
@@ -286,11 +286,11 @@ for repo_release, release_type in amazon_linux_builder:
     })
 repos['AmazonLinux'] = amazon_repos
 
-amazon_linux_2 = ['2.0', 'latest']
+amazon_linux_2 = ['core/2.0', 'core/latest', 'extras/kernel-5.4/latest']
 amazon_linux2 = []
 for amzn_repos in amazon_linux_2:
     amazon_linux2.append({
-        "root": "http://amazonlinux.us-east-1.amazonaws.com/2/core/" + amzn_repos + "/x86_64/mirror.list",
+        "root": "http://amazonlinux.us-east-1.amazonaws.com/2/" + amzn_repos + "/x86_64/mirror.list",
         "discovery_pattern": "SELECT * FROM packages WHERE name LIKE 'kernel%' AND name NOT LIKE 'kernel-livepatch%'",
         "subdirs": [""],
         "page_pattern": "",
@@ -300,7 +300,7 @@ for amzn_repos in amazon_linux_2:
 repos['AmazonLinux2'] = amazon_linux2
 
 def progress(distro, current, total, package):
-    sys.stderr.write('\r{} {}/{} {}               '.format(distro, current, total, package))
+    sys.stderr.write('\r\x1b[2K{} {}/{} {}'.format(distro, current, total, package))
 
 def exclude_patterns(repo, packages, base_url, urls):
     for rpm in packages:
@@ -411,10 +411,8 @@ for repo in repos[distro]:
             continue
     elif distro == 'AmazonLinux2':
         try:
-            # Brute force finding the repositories and only grab the most recent two, then skip the rest.
-            if al2_repo_count < 2:
-                if process_al_distro(distro, repo):
-                    al2_repo_count += 1
+            # Brute force finding the repositories.
+            process_al_distro(distro, repo)
         except:
             continue
     elif distro == "Fedora-Atomic":
