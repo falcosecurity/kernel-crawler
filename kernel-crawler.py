@@ -48,8 +48,8 @@ except ImportError:
 from lxml import html
 
 #
-# This is the main configuration tree for easily analyze Linux repositories
-# hunting packages. When adding repos or so be sure to respect the same data
+# This is the main configuration tree to easily analyze Linux repositories for
+# hunting packages. When adding repos or distros be sure to respect the same data
 # structure
 #
 repos = {
@@ -72,7 +72,7 @@ repos = {
             ],
 
             # Finally, we need to inspect every page for packages we need.
-            # Again, this is a XPath + Regex query so use the regex if you want
+            # Again, this is an XPath + Regex query so use the regex if you want
             # to limit the number of packages reported.
             "page_pattern" : "/html/body//a[regex:test(@href, '^kernel-(devel-)?[0-9].*\.rpm$')]/@href"
         },
@@ -90,9 +90,9 @@ repos = {
 
     "Ubuntu" : [
         {
-            # Had to split the URL because, unlikely other repos for which the
+            # Had to split the URL because, unlike other repos for which the
             # script was first created, Ubuntu puts everything into a single
-            # folder. The real URL is be:
+            # folder. The real URL we are forming is:
             # http://mirrors.us.kernel.org/ubuntu/pool/main/l/linux/
             "root" : "https://mirrors.edge.kernel.org/ubuntu/pool/main/l/",
             "discovery_pattern" : "/html/body//a[@href = 'linux/']/@href",
@@ -286,11 +286,11 @@ for repo_release, release_type in amazon_linux_builder:
     })
 repos['AmazonLinux'] = amazon_repos
 
-amazon_linux_2 = ['2.0', 'latest']
+amazon_linux_2 = ['core/2.0', 'core/latest', 'extras/kernel-5.4/latest']
 amazon_linux2 = []
 for amzn_repos in amazon_linux_2:
     amazon_linux2.append({
-        "root": "http://amazonlinux.us-east-1.amazonaws.com/2/core/" + amzn_repos + "/x86_64/mirror.list",
+        "root": "http://amazonlinux.us-east-1.amazonaws.com/2/" + amzn_repos + "/x86_64/mirror.list",
         "discovery_pattern": "SELECT * FROM packages WHERE name LIKE 'kernel%' AND name NOT LIKE 'kernel-livepatch%'",
         "subdirs": [""],
         "page_pattern": "",
@@ -300,7 +300,7 @@ for amzn_repos in amazon_linux_2:
 repos['AmazonLinux2'] = amazon_linux2
 
 def progress(distro, current, total, package):
-    sys.stderr.write('\r{} {}/{} {}               '.format(distro, current, total, package))
+    sys.stderr.write('\r\x1b[2K{} {}/{} {}'.format(distro, current, total, package))
 
 def exclude_patterns(repo, packages, base_url, urls):
     for rpm in packages:
@@ -347,7 +347,7 @@ def process_al_distro(al_distro_name, current_repo):
         return False
 
 #
-# Fedora Atomic needs 2 levels of discovery(for version, and build id, respectively)
+# Fedora Atomic needs 2 levels of discovery (for version, and build id, respectively)
 #
 def process_atomic_distro(current_repos):
     for repo in current_repos["Fedora-Atomic"]:
@@ -401,8 +401,6 @@ distro = sys.argv[1]
 # patterns given. Save the result in `packages`.
 #
 
-al2_repo_count = 0
-
 for repo in repos[distro]:
     if distro == 'AmazonLinux':
         try:
@@ -411,10 +409,8 @@ for repo in repos[distro]:
             continue
     elif distro == 'AmazonLinux2':
         try:
-            # Brute force finding the repositories and only grab the most recent two, then skip the rest.
-            if al2_repo_count < 2:
-                if process_al_distro(distro, repo):
-                    al2_repo_count += 1
+            # Brute force finding the repositories.
+            process_al_distro(distro, repo)
         except:
             continue
     elif distro == "Fedora-Atomic":
