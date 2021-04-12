@@ -1,4 +1,4 @@
-FROM ubuntu:21.04
+FROM ubuntu:hirsute-20210119
 
 RUN echo 'deb http://archive.ubuntu.com/ubuntu/ hirsute-proposed restricted main multiverse universe' > /etc/apt/sources.list.d/ubuntu-proposed.list && \
 	apt-get update && \
