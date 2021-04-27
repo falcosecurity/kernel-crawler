@@ -286,7 +286,7 @@ for repo_release, release_type in amazon_linux_builder:
     })
 repos['AmazonLinux'] = amazon_repos
 
-amazon_linux_2 = ['core/2.0', 'core/latest', 'extras/kernel-5.4/latest']
+amazon_linux_2 = ['core/2.0', 'core/latest', 'extras/kernel-5.4/latest', 'extras/kernel-5.10/latest']
 amazon_linux2 = []
 for amzn_repos in amazon_linux_2:
     amazon_linux2.append({
