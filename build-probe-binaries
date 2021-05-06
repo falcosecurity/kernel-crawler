@@ -225,7 +225,7 @@ function checkout_sysdig {
 	then
 		rm -rf $SYSDIG_DIR
 		mkdir -p $SYSDIG_DIR
-		git clone git@github.com:draios/sysdig.git $SYSDIG_DIR
+		git clone git@github.com:draios/agent-libs.git $SYSDIG_DIR
 		(cd $SYSDIG_DIR && git checkout $SYSDIG_TAG)
 	fi
 	HAVE_SYSDIG_CHECKOUT=1
