@@ -1,0 +1,53 @@
+#!/usr/bin/awk -f
+
+# usage: aws s3 ls s3://download.draios.com/stable/sysdig-probe-binaries/ | $0 > index.html
+
+BEGIN {
+	print "<!DOCTYPE html>";
+	print "<html>";
+	print " <head>";
+	print "  <meta charset=\"utf-8\">";
+	print "  <title>Directory index</title>";
+	print "  <style type=\"text/css\">";
+	print "body { font-family: monospace; line-height: 1.5 }";
+	print "h3 { display: inline; }";
+	print "ul { display: none; }";
+	print "input { visibility: hidden; }";
+	print "input:not(:checked):after { visibility: visible; content: \"▼\" }";
+	print "input:checked + ul { display: block; }";
+	print "  </style>";
+	print " </head>";
+	print " <body>";
+}
+
+$4 ~ /\.ko$/ {
+	PROBE = $4
+	PROBE_GROUP = PROBE
+	PROBE_GROUP = gensub(/(.*-probe(-bpf)?-[^-]+).*/, "\\1", 1, PROBE);
+
+	if(PROBE_GROUPS[PROBE_GROUP])
+	{
+		PROBE_GROUPS[PROBE_GROUP] = PROBE_GROUPS[PROBE_GROUP] "," PROBE;
+	}
+	else
+	{
+		PROBE_GROUPS[PROBE_GROUP] = PROBE;
+	}
+}
+
+END {
+	n = asorti(PROBE_GROUPS, PG_INDEXES)
+	for(pgi = 1; pgi <= n; ++pgi)
+	{
+		PG = PG_INDEXES[pgi]
+
+		print "<div><h3><label for=\"" PG "\">" PG "</label></h3><input id=\"" PG "\" type=\"checkbox\"><ul>"
+		split(PROBE_GROUPS[PG], PROBES, ",");
+		for(i = 1; i <= length(PROBES); ++i)
+		{
+			print "<li><a href=\"" PROBES[i] "\">" PROBES[i] "</a></li>";
+		}
+		print "</ul></div>"
+	}
+	print " </body>\n</html>"
+}

@@ -1,0 +1,25 @@
+FROM fedora:32
+
+RUN yum -y install \
+	wget \
+	git \
+	gcc \
+	gcc-c++ \
+	autoconf \
+	bison \
+	flex \
+	make \
+	cmake \
+	elfutils-devel \
+	findutils \
+	kmod \
+	python-lxml && yum clean all
+
+# amazonlinux2 uses a wacky version of gcc which puts wrappers on stuff (probably from
+# a "future" repo or something), so we just link it to the actual stuff instead
+ADD link-aws-gcc.sh /
+RUN /link-aws-gcc.sh
+
+ADD builder-entrypoint.sh /
+WORKDIR /build/probe
+ENTRYPOINT [ "/builder-entrypoint.sh" ]

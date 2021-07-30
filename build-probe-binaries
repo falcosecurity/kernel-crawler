@@ -22,7 +22,7 @@
 # The precompiled binary is then obtained at runtime by sysdig-probe-loader
 # Ideally, the community should expand this stuff with better support
 #
-set -euo pipefail
+set -xeuo pipefail
 
 ARTIFACTORY_SERVER=
 ARTIFACTORY_KEY=
@@ -213,7 +213,7 @@ function checkout_sysdig {
 	then
 		rm -rf $SYSDIG_DIR
 		mkdir -p $SYSDIG_DIR
-		git clone git@github.com:draios/agent-libs.git $SYSDIG_DIR
+		git clone git@github.com:draios/sysdig.git $SYSDIG_DIR
 		(cd $SYSDIG_DIR && git checkout $SYSDIG_TAG)
 	fi
 	HAVE_SYSDIG_CHECKOUT=1
@@ -293,7 +293,7 @@ function build_probe_impl {
 				# RHEL6
 				BUILDER_GCC_VERSION=$(grep -Po '(?<=^#define LINUX_COMPILER "gcc version )[0-9.]+' $KERNELDIR/include/linux/compile.h || true)
 			else
-				# ancient Ubuntu gets and ancient compiler
+				# ancient Ubuntu gets an ancient compiler
 				BUILDER_GCC_VERSION=4.8.0
 			fi
 		fi
@@ -501,7 +501,7 @@ function ubuntu_build {
 		else
 			echo "Unpacking $DEB to $TARGET"
 			mkdir -p $TARGET
-			dpkg -x $DEB $TARGET
+			docker run -v $(pwd)/$DEB:/$DEB:ro -v $(pwd)/$TARGET:/output:rw ubuntu:latest dpkg -x /$DEB /output
 			touch $MARKER
 		fi
 	done
