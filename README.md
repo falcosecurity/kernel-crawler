@@ -39,6 +39,14 @@ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock airgap/sysdig-probe
 docker save airgap/sysdig-probe-builder | gzip > builders.tar.gz
 ```
 
+If you are going to build probes for Ubuntu kernels, you will also need an `ubuntu:latest`
+image on your airgapped host. You can ship it using a very similar approach:
+
+```
+docker pull ubuntu
+docker save ubuntu | gzip > ubuntu.tar.gz
+```
+
 ### **(internet access required)** Download the kernel packages
 
 This is left as an exercise for the reader. Note that the packages should not be unpacked or installed.
