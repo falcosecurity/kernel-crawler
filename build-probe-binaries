@@ -102,6 +102,10 @@ Options:
 		coreos_developer_container.VERSION.bin.bz2, where VERSION is
 		the CoreOS release (e.g. 2345.0.0).
 
+	-K KERNEL_BASEDIR
+		Pass KERNEL_BASEDIR as the directory containing the kernels to the builder
+		containers. This is probably only useful when running this script in a container
+
 	-p PROBE_NAME
 		The resulting module name (e.g. sysdig-probe for OSS sysdig).
 
@@ -144,7 +148,8 @@ EOF
 
 BASEDIR=$(pwd)
 DOCKER_BASEDIR=$BASEDIR
-while getopts ":a:A:b:B:d:k:p:r:s:t:v:" opt
+KERNEL_BASEDIR=$BASEDIR
+while getopts ":a:A:b:B:d:k:K:p:r:s:t:v:" opt
 do
 	case "$opt" in
 		a) ARTIFACTORY_SERVER=$OPTARG;;
@@ -154,6 +159,8 @@ do
 		   RUNNING_IN_DOCKER=1;;
 		d) DOWNLOAD_CONCURRENCY=$OPTARG;;
 		k) KERNEL_TYPE=$OPTARG;;
+		K) KERNEL_BASEDIR=$OPTARG
+		   RUNNING_IN_DOCKER=1;;
 		p) PROBE_NAME=$OPTARG;;
 		r) RETRIES=$OPTARG;;
 		s) SYSDIG_DIR=$OPTARG;;
@@ -501,7 +508,13 @@ function ubuntu_build {
 		else
 			echo "Unpacking $DEB to $TARGET"
 			mkdir -p $TARGET
-			docker run --rm -v $(pwd)/$DEB:/$DEB:ro -v $(pwd)/$TARGET:/output:rw ubuntu:latest dpkg -x /$DEB /output
+			if [ -n "$RUNNING_IN_DOCKER" ]
+			then
+				UBUNTU_KERNEL_DEB=$KERNEL_BASEDIR/${DEB#/*/}
+			else
+				UBUNTU_KERNEL_DEB=$(pwd)/$DEB
+			fi
+			docker run --rm -v $UBUNTU_KERNEL_DEB:/$DEB:ro -v $DOCKER_BASEDIR/$TARGET:/output:rw ubuntu:latest dpkg -x /$DEB /output
 			touch $MARKER
 		fi
 	done
