@@ -21,7 +21,7 @@ docker run --rm \
   -v /a-directory-with-some-free-space/:/workspace \
   -v $(pwd)/agent-libs:/sysdig \
   -v /directory-containing-kernel-packages/:/kernels \
-  sysdig-probe-builder:latest -- \
+  sysdig-probe-builder:latest -B -- \
   -p sysdigcloud-probe -v 12.0.0 -k CustomCentOS
 ```
 
