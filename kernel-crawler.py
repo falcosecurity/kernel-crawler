@@ -390,13 +390,18 @@ urls = set()
 URL_TIMEOUT=30
 
 if len(sys.argv) < 2 or not sys.argv[1] in repos:
-    sys.stderr.write("Usage: " + sys.argv[0] + " <distro>\n")
+    sys.stderr.write("Usage: " + sys.argv[0] + " <distro> [version]\n")
     sys.stderr.write("Available distros:\n")
     for d in sorted(repos):
         sys.stderr.write(" - {}\n".format(d))
     sys.exit(1)
 
 distro = sys.argv[1]
+try:
+    version_filter = sys.argv[2]
+    sys.stderr.write('Looking for packages matching "{}"\n'.format(version_filter))
+except IndexError:
+    version_filter = ''
 
 #
 # Navigate the `repos` tree and look for packages we need that match the
@@ -450,4 +455,5 @@ for repo in repos[distro]:
 # Print URLs to stdout
 #
 for url in urls:
-    print(url)
+    if version_filter in url:
+        print(url)
