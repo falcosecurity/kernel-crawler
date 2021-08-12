@@ -74,7 +74,7 @@ repos = {
             # Finally, we need to inspect every page for packages we need.
             # Again, this is an XPath + Regex query so use the regex if you want
             # to limit the number of packages reported.
-            "page_pattern" : "/html/body//a[regex:test(@href, '^kernel-(devel-)?[0-9].*\.rpm$')]/@href"
+            "page_pattern" : "/html/body//a[regex:test(@href, '^kernel-(devel-|core-)?[0-9].*\.rpm$')]/@href"
         },
 
         {
@@ -84,7 +84,7 @@ repos = {
                 "os/x86_64/Packages/",
                 "updates/x86_64/Packages/"
             ],
-            "page_pattern" : "//body//table/tr/td/a[regex:test(@href, '^kernel-(devel-)?[0-9].*\.rpm$')]/@href"
+            "page_pattern" : "//body//table/tr/td/a[regex:test(@href, '^kernel-(devel-|core-)?[0-9].*\.rpm$')]/@href"
         }
     ],
 
