@@ -399,6 +399,8 @@ if len(sys.argv) < 2 or not sys.argv[1] in repos:
 distro = sys.argv[1]
 try:
     version_filter = sys.argv[2]
+    if distro == 'Ubuntu' and version_filter.endswith('-generic'):
+        version_filter = version_filter[:-len('-generic')]
     sys.stderr.write('Looking for packages matching "{}"\n'.format(version_filter))
 except IndexError:
     version_filter = ''
