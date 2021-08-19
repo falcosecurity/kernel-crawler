@@ -1,6 +1,6 @@
 # Running an on-prem probe builder
 
-The probe builder can be used to automatically build kernel modules for [OSS Sysdig](https://github.com/draios/sysdig) as well as the [commercial Sysdig agent](https://sysdig.com/). It can run on any host with Docker installed, including (with some preparation) air-gapped hosts.
+The probe builder can be used to automatically build kernel modules for the [commercial Sysdig agent](https://sysdig.com/). It can run on any host with Docker installed, including (with some preparation) air-gapped hosts.
 
 The description below assumes that we need to build probes for:
 * agent 12.0.0 (substitute the version as required)
