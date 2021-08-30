@@ -501,7 +501,7 @@ function ubuntu_build {
 		else
 			echo "Unpacking $DEB to $TARGET"
 			mkdir -p $TARGET
-			docker run -v $(pwd)/$DEB:/$DEB:ro -v $(pwd)/$TARGET:/output:rw ubuntu:latest dpkg -x /$DEB /output
+			docker run --rm -v $(pwd)/$DEB:/$DEB:ro -v $(pwd)/$TARGET:/output:rw ubuntu:latest dpkg -x /$DEB /output
 			touch $MARKER
 		fi
 	done
