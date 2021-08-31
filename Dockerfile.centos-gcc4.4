@@ -1,5 +1,7 @@
 FROM centos:6
 
+ADD *.repo /etc/yum.repos.d/
+
 RUN yum -y install \
 	wget \
 	git \
