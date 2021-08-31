@@ -223,7 +223,7 @@ function build_toolkit {
 	if [ -z "${HAVE_BUILDER_TOOLKIT:-}" ]
 	then
 		IMAGE_NAME="${BUILDER_IMAGE_PREFIX:-}sysdig-probe-builder:toolkit"
-		docker build -t "$IMAGE_NAME" -f $BUILDER_SOURCE/Dockerfile.toolkit --pull $BUILDER_SOURCE
+		docker build -t "$IMAGE_NAME" -f $BUILDER_SOURCE/Dockerfile.toolkit $BUILDER_SOURCE
 		HAVE_BUILDER_TOOLKIT=1
 	fi
 }
@@ -371,7 +371,7 @@ function build_probe_impl {
 	else
 		if [ -z "${builders[$IMAGE_NAME]:-}" ]
 		then
-			docker build -t "$IMAGE_NAME" -f $DOCKERFILE --pull $BUILDER_SOURCE || return 1
+			docker build -t "$IMAGE_NAME" -f $DOCKERFILE $BUILDER_SOURCE || return 1
 			docker images -q -f 'dangling=true' | xargs --no-run-if-empty docker rmi || true
 			builders[$IMAGE_NAME]=1
 		fi
