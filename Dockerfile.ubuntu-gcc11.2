@@ -1,6 +1,6 @@
 FROM ubuntu:impish
 
-RUN echo 'deb http://archive.ubuntu.com/ubuntu/ hirsute-proposed restricted main multiverse universe' > /etc/apt/sources.list.d/ubuntu-proposed.list && \
+RUN echo 'deb http://archive.ubuntu.com/ubuntu/ impish-proposed restricted main multiverse universe' > /etc/apt/sources.list.d/ubuntu-proposed.list && \
 	apt-get update && \
 	apt-get -y --no-install-recommends install \
 		cmake \
