@@ -1,0 +1,19 @@
+FROM ubuntu:impish
+
+RUN echo 'deb http://archive.ubuntu.com/ubuntu/ impish-proposed restricted main multiverse universe' > /etc/apt/sources.list.d/ubuntu-proposed.list && \
+	apt-get update && \
+	apt-get -y --no-install-recommends install \
+		cmake \
+		g++ \
+		git \
+		kmod \
+		libc6-dev \
+		libelf-dev \
+		make \
+		pkg-config \
+		&& apt-get clean
+
+ADD builder-entrypoint.sh /
+WORKDIR /build/probe
+ENTRYPOINT [ "/builder-entrypoint.sh" ]
+
