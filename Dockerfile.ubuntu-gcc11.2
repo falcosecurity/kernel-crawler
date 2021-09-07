@@ -15,5 +15,5 @@ RUN echo 'deb http://archive.ubuntu.com/ubuntu/ impish-proposed restricted main 
 
 ADD builder-entrypoint.sh /
 WORKDIR /build/probe
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT [ "/builder-entrypoint.sh" ]
 
