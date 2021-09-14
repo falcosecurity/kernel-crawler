@@ -413,16 +413,16 @@ function build_probe {
 		return
 	fi
 
-    LOG=$(mktemp /tmp/log.XXXXXX)
-    if ! build_probe_impl &> $LOG
-    then
-        (echo "Build for $PROBE_ID failed"; cat $LOG) | tee -a $FAIL_LOG
-        FAILED=1
-    else
+	LOG=$(mktemp /tmp/log.XXXXXX)
+	if ! build_probe_impl &> $LOG
+	then
+		(echo "Build for $PROBE_ID failed"; cat $LOG) | tee -a $FAIL_LOG
+		FAILED=1
+	else
 		echo "Build for $PROBE_ID successful"
 		cat $LOG
-    fi
-    rm -f $LOG
+	fi
+	rm -f $LOG
 }
 
 function coreos_build {
