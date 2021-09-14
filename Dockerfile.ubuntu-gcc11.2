@@ -11,6 +11,8 @@ RUN echo 'deb http://archive.ubuntu.com/ubuntu/ impish-proposed restricted main 
 		libelf-dev \
 		make \
 		pkg-config \
+		clang \
+		llvm \
 		&& apt-get clean
 
 ADD builder-entrypoint.sh /

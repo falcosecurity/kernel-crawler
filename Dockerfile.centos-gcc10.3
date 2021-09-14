@@ -13,6 +13,8 @@ RUN yum -y install \
 	elfutils-devel \
 	findutils \
 	kmod \
+	clang \
+	llvm \
 	python-lxml && yum clean all
 
 # amazonlinux2 uses a wacky version of gcc which puts wrappers on stuff (probably from

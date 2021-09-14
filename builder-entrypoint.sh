@@ -36,3 +36,9 @@ fi
 
 cp driver/$PROBE_NAME.ko $OUTPUT/$PROBE_NAME-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.ko
 cp driver/$PROBE_NAME.ko $OUTPUT/$PROBE_NAME-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH_ORIG.ko
+
+if type -p clang > /dev/null
+then
+	make -C /build/probe/sysdig/driver/bpf
+	cp /build/probe/sysdig/driver/bpf/probe.o $OUTPUT/$PROBE_NAME-bpf-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.ko
+fi
