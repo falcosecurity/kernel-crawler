@@ -9,6 +9,8 @@ RUN apt-get update && apt-get -y --no-install-recommends install \
 	libelf-dev \
 	make \
 	pkg-config \
+	clang \
+	llvm \
 	&& apt-get clean
 
 ADD builder-entrypoint.sh /
