@@ -394,7 +394,35 @@ function build_probe_impl {
 		-e HASH=$HASH \
 		-e HASH_ORIG=$HASH_ORIG \
 		--name $CONTAINER_NAME \
-		$IMAGE_NAME || return 1
+		$IMAGE_NAME "$@" || return 1
+}
+
+function build_probe_bpf {
+	PROBE_ID=$PROBE_NAME-bpf-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.o
+
+	# Skip Kernel 4.15.0-29 because probe does not build against it
+	if [ $KERNEL_RELEASE-$HASH = "4.15.0-29-generic-ea0aa038a6b9bdc4bb42152682bba6ce" -o \
+		$KERNEL_RELEASE-$HASH = "5.8.0-1023-aws-3f7746be1bef4c3f68f5465d8453fa4d" ]; then
+		echo "Temporarily skipping BPF $PROBE_ID"
+		return
+	fi
+
+	if [ -f $BASEDIR/output/$PROBE_NAME-bpf-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.o ] &&
+	   [ -f $BASEDIR/output/$PROBE_NAME-bpf-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH_ORIG.o ]; then
+		echo "Skipping BPF $PROBE_ID (already built)"
+		return
+	fi
+
+	LOG=$(mktemp /tmp/log.XXXXXX)
+	if ! build_probe_impl bpf &> $LOG
+	then
+		(echo "BPF Build for $PROBE_ID failed"; cat $LOG) | tee -a $FAIL_LOG
+		FAILED=1
+	else
+		echo "BPF Build for $PROBE_ID successful"
+		cat $LOG
+	fi
+	rm -f $LOG
 }
 
 function build_probe {
@@ -541,6 +569,7 @@ function ubuntu_build {
 		KERNEL_RELEASE=$KERNEL_VERSION
 		echo "Building probe for Ubuntu kernel $KERNEL_VERSION ($KERNEL_RELEASE_FULL)"
 		build_probe
+		build_probe_bpf
 	done
 }
 
@@ -581,6 +610,7 @@ function rhel_build {
 		export KERNELDIR=$BASEDIR/$TARGET/usr/src/kernels/$KERNEL_RELEASE
 		echo "Building probe for CentOS kernel $KERNEL_RELEASE"
 		build_probe
+		build_probe_bpf
 	done
 }
 
@@ -682,6 +712,7 @@ function debian_build {
 		KERNEL_RELEASE=$KERNEL_ARCH_RELEASE
 		echo "Building probe for Debian kernel $KERNEL_ARCH_RELEASE"
 		build_probe
+		build_probe_bpf
 	done
 }
 
