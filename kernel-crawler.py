@@ -346,12 +346,13 @@ class DebRepository(Repository):
             if not p.startswith('linux-headers-'):
                 continue
             release = p.replace('linux-headers-', '')
-            if 'linux-modules-{}'.format(release) in deps:
-                kernel_packages.append(p)
-                kernel_packages.append('linux-modules-{}'.format(release))
-            elif 'linux-image-{}'.format(release) in deps:
-                kernel_packages.append(p)
-                kernel_packages.append('linux-image-{}'.format(release))
+            candidates = ['linux-modules-{}', 'linux-image-{}', 'linux-image-{}-unsigned']
+            for c in candidates:
+                candidate = c.format(release)
+                if candidate in deps:
+                    kernel_packages.append(p)
+                    kernel_packages.append(candidate)
+                    break
 
         if not package_filter:
             return kernel_packages
