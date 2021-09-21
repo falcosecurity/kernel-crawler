@@ -63,6 +63,20 @@ import bz2
 import sys
 import sqlite3
 
+# --- disable ipv6 ---
+import socket
+
+origGetAddrInfo = socket.getaddrinfo
+
+
+def getaddrinfo_ipv4only(host, port, family=0, socktype=0, proto=0, flags=0):
+    return origGetAddrInfo(host, port, socket.AF_INET, socktype, proto, flags)
+
+
+# replace the original socket.getaddrinfo by our version
+socket.getaddrinfo = getaddrinfo_ipv4only
+# ---
+
 # --- http helpers ---
 
 try:
