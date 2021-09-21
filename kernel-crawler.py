@@ -772,6 +772,15 @@ class Oracle8Mirror(OracleMirror):
     ]
 
 
+# --- Dummy empty repos, for compatibility ---
+
+
+class EmptyMirror(object):
+    @staticmethod
+    def get_package_urls():
+        return []
+
+
 DISTROS = {
     'Debian': DebianMirror,
     'Ubuntu': UbuntuMirror,
@@ -787,6 +796,9 @@ DISTROS = {
     'OracleLinux6': Oracle6Mirror,
     'OracleLinux7': Oracle7Mirror,
     'OracleLinux8': Oracle8Mirror,
+
+    'CoreOS': EmptyMirror,
+    'Fedora-Atomic': EmptyMirror,
 }
 
 
