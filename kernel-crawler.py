@@ -205,6 +205,11 @@ class DebRepository(Repository):
         self.repo_base = repo_base
         self.repo_name = repo_name
 
+        # guess the distro name (like `xenial` or `bookworm`)
+        # used to group packages by distro instead of by repo
+        dist = repo_name.replace('dists/', '').split('/')[0].split('-')[0]
+        self.dist = dist
+
     def __str__(self):
         return self.repo_base + self.repo_name
 
@@ -411,7 +416,7 @@ class DebRepository(Repository):
         packages = self.scan_packages(repo_packages)
         for name, details in packages.items():
             details['URL'] = self.repo_base + details['Filename']
-        return packages
+        return {self.dist: packages}
 
     @classmethod
     def build_package_tree(cls, packages, package_list):
@@ -437,8 +442,12 @@ class DebRepository(Repository):
 
     def get_package_tree(self, version=''):
         packages = self.get_raw_package_db()
-        package_list = self.get_package_list(packages, version)
-        return self.build_package_tree(packages, package_list)
+        package_tree = {}
+        for dist, dist_packages in packages.items():
+            package_list = self.get_package_list(dist_packages, version)
+            for pkg, deps in self.build_package_tree(dist_packages, package_list):
+                package_tree[dist + ':' + pkg] = deps
+        return package_tree
 
 
 class DebMirror(Mirror):
@@ -517,17 +526,22 @@ class DebianLikeMirror(MultiMirror):
     # sort it out
     def get_package_tree(self, version=''):
         all_packages = {}
-        all_kernel_packages = []
+        all_kernel_packages = {}
         packages = {}
         repos = self.list_repos()
         for repository in repos:
             repo_packages = repository.get_raw_package_db()
-            all_packages.update(repo_packages)
-            kernel_packages = repository.get_package_list(repo_packages, version)
-            all_kernel_packages.extend(kernel_packages)
+            for dist, dist_packages in repo_packages.items():
+                all_packages.setdefault(dist, {}).update(dist_packages)
+                kernel_packages = repository.get_package_list(dist_packages, version)
+                all_kernel_packages.setdefault(dist, []).extend(kernel_packages)
 
-        for release, dependencies in DebRepository.build_package_tree(all_packages, all_kernel_packages).items():
-            packages.setdefault(release, set()).update(dependencies)
+        for dist, dist_packages in all_packages.items():
+            dist_kernel_packages = all_kernel_packages.get(dist, [])
+
+            for release, dependencies in DebRepository.build_package_tree(dist_packages, dist_kernel_packages).items():
+                if release not in packages:
+                    packages[dist + '::' + release] = set(dependencies)
         return packages
 
 
