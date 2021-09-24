@@ -345,6 +345,33 @@ class DebRepository(Repository):
         for p in deps.keys():
             if not p.startswith('linux-headers-'):
                 continue
+            # historically, we haven't built these variants
+            # and there's a ton of them. Leave them disabled,
+            # we can enable them when we need to
+            if '-cloud' in p:
+                continue
+            if '-rt' in p:
+                continue
+            if '-lowlatency' in p:
+                continue
+            if '-azure' in p:
+                continue
+            if '-oem' in p:
+                continue
+            if '-gcp' in p:
+                continue
+            if '-gke' in p:
+                continue
+            if '-oracle' in p:
+                continue
+            if '-kvm' in p:
+                continue
+            # skip backported kernels (again, to match historic behavior
+            # and to avoid an explosion in the number of built probes)
+            if '-lts-' in deps[p]['URL']:
+                continue
+            if '-hwe' in deps[p]['URL']:
+                continue
             release = p.replace('linux-headers-', '')
             candidates = ['linux-modules-{}', 'linux-image-{}', 'linux-image-{}-unsigned']
             for c in candidates:
