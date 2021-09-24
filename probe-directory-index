@@ -20,7 +20,7 @@ BEGIN {
 	print " <body>";
 }
 
-$4 ~ /\.ko$/ {
+$4 ~ /\.k?o$/ {
 	PROBE = $4
 	PROBE_GROUP = PROBE
 	PROBE_GROUP = gensub(/(.*-probe(-bpf)?-[^-]+).*/, "\\1", 1, PROBE);
