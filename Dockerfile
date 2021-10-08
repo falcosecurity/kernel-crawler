@@ -10,9 +10,12 @@ RUN apk add \
 	git \
 	jq \
 	multipath-tools \
+	python3 \
 	py3-lxml \
 	wget \
     docker
+
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 ADD . /builder
 WORKDIR /builder
