@@ -46,7 +46,7 @@ build_bpf() {
 		echo "clang not available, not building eBPF probe $PROBE_NAME-bpf-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.o"
 	else
 		echo "Building eBPF probe $PROBE_NAME-bpf-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.o"
-		make -C /build/probe/sysdig/driver/bpf
+		make -C /build/probe/sysdig/driver/bpf clean all
 		cp /build/probe/sysdig/driver/bpf/probe.o $OUTPUT/$PROBE_NAME-bpf-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.o
 	fi
 }
