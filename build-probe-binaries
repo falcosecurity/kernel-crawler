@@ -563,7 +563,7 @@ function ubuntu_build {
 
 	for DEB in "$@"
 	do
-		if [[ $(basename $DEB) != "linux-image-"*".deb" ]]
+		if [[ $(basename $DEB) != "linux-image-"*".deb" && $(basename $DEB) != "linux-modules-"*".deb" ]]
 		then
 			continue
 		fi
