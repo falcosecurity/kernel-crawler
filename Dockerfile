@@ -11,6 +11,7 @@ RUN apk add \
 	jq \
 	multipath-tools \
 	python3 \
+	py3-pip \
 	py3-lxml \
 	sed \
 	wget \
@@ -20,4 +21,5 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 
 ADD . /builder
 WORKDIR /builder
+RUN /usr/bin/pip install -e .
 ENTRYPOINT [ "/builder/main-builder-entrypoint.sh" ]

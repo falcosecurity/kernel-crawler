@@ -27,14 +27,14 @@ For Debian-like OSes (Debian, Ubuntu, etc.), the required packages are usually:
 But please note that the set of required packages varies across distributions and versions, so providing
 an exhaustive list is not possible here.
 
-You can use the `kernel-crawler.py` script to determine the set of packages for a particular kernel.
+You can use the crawler functionality to determine the set of packages for a particular kernel.
 To use it, pass a distribution name (one of the following) and, optionally, the specific kernel version
 or its subset.
 
 The output is a list of URLs directly to the kernel packages. For example, to download all the packages
 needed to build the CentOS 4.18.0-305.10.2.el8\_4 kernel, you can run:
 
-    # .../path/to/kernel-crawler.py CentOS 4.18.0-305.10.2.el8_4 | xargs wget -c
+    # docker run (...) -C CentOS 4.18.0-305.10.2.el8_4 | grep '^ ' | xargs wget -c
     (...)
     # ls -la
     total 61556
@@ -53,6 +53,7 @@ Distributions supported by the kernel crawler:
  - CentOS
  - Debian
  - Fedora
+ - PhotonOS
  - Ubuntu
 
 Please note that you do *not* need to extract or install the kernel packages on the build host.

@@ -17,6 +17,12 @@ Usage:
 		-v KERNELS:/kernels \\
 		IMAGE -B [-b BUILDER_IMAGE_PREFIX/] [-- BUILDER_OPTIONS...]
 
+	docker run --rm IMAGE -C -- DISTRIBUTION
+
+	docker run --rm \\
+		-v KERNELS:/kernels \\
+		IMAGE -A [-- ARTIFACTORY_DOWNLOADER_OPTIONS...]
+
 Required volumes:
 	- /var/run/docker.sock for spawning build containers
 	- WORKSPACE
@@ -40,53 +46,66 @@ Options:
 		It should match the prefix used with the -P option below
 		(in an earlier invocation)
 
+	-A
+		Download kernel packages from an Artifactory instance
+
+	-C
+		Run the kernel crawler to list available kernel packages
+		for a particular distribution. Run without extra parameters
+		to see the supported distributions.
 EOF
 	exit 1
 }
 
-get_host_mount()
+check_docker_socket()
 {
-	SOURCE=$(docker inspect $(hostname) | jq -r ".[0].Mounts[]|select(.Destination == \"$1\")|.Source")
-	if [ -z "$SOURCE" ]
+	if ! docker info &>/dev/null
 	then
-		echo "Cannot find original location of $1" >&2
+		echo "Docker socket not available" >&2
 		echo >&2
 		usage
 	fi
-	echo "$SOURCE"
 }
 
 build_probes()
 {
-	WORKSPACE_SRC=$(get_host_mount /workspace)  
-	SYSDIG_SRC=$(get_host_mount /sysdig)  
-	KERNELS_SRC=$(get_host_mount /kernels)  
-
+	check_docker_socket
 	cd /workspace
-	/builder/build-probe-binaries -B $WORKSPACE_SRC -K $KERNELS_SRC -s $SYSDIG_SRC -b "$BUILDER_IMAGE_PREFIX" "$@" /kernels/*
+	probe_builder build -s /sysdig -b "$BUILDER_IMAGE_PREFIX" "$@" /kernels/*
 }
 
 prepare_builders()
 {
+	check_docker_socket
 	for i in Dockerfile.* ; do docker build -t ${BUILDER_IMAGE_PREFIX}sysdig-probe-builder:${i#Dockerfile.} -f $i . ; done
 }
 
-if ! docker info &>/dev/null
-then
-	echo "Docker socket not available" >&2
-	echo >&2
-	usage
-fi
+download_from_artifactory()
+{
+	cd /kernels
+	artifactory_download "$@"
+}
+
+crawl()
+{
+	probe_builder crawl "$@"
+}
 
 BUILDER_IMAGE_PREFIX=
-while getopts ":b:BP" opt
+while getopts ":Ab:BCP" opt
 do
 	case "$opt" in
+		A)
+			OP=download_from_artifactory
+			;;
 		b)
 			BUILDER_IMAGE_PREFIX=$OPTARG
 			;;
 		B)
 			OP=build
+			;;
+		C)
+			OP=crawl
 			;;
 		P)
 			OP=prepare
@@ -108,8 +127,14 @@ done
 shift $((OPTIND - 1))
 
 case "${OP:-}" in
+	download_from_artifactory)
+		download_from_artifactory "$@"
+		;;
 	build)
 		build_probes "$@"
+		;;
+	crawl)
+		crawl "$@"
 		;;
 	prepare)
 		prepare_builders
