@@ -66,15 +66,11 @@ Options:
 		The number of parallel kernel package downloads. Set to 0 to disable
 		downloads completely. Defaults to the number of CPU cores.
 
-		Note: CoreOS images are downloaded serially, regardless of the value
-		of this setting (0 is still honored).
-
 	-k KERNEL_TYPE
 		Build only for specified kernel types. The supported types are:
 			AmazonLinux
 			AmazonLinux2
 			CentOS
-			CoreOS
 			Debian
 			Fedora
 			OracleOL6
@@ -90,16 +86,11 @@ Options:
 		and provide your own DEBs/RPMs for the Custom* kernel types:
 
 		$0 (...) -k CustomCentOS path/*.rpm
-		$0 (...) -k CustomCoreOS path/*.bin.bz2
 		$0 (...) -k CustomDebian path/*.deb
 		$0 (...) -k CustomUbuntu path/*.deb
 
 		The CustomCentOS type should also work for other RPM-based distributions,
 		like Fedora, RHEL or AmazonLinux
-
-		For CoreOS, the downloaded images must be named
-		coreos_developer_container.VERSION.bin.bz2, where VERSION is
-		the CoreOS release (e.g. 2345.0.0).
 
 	-K KERNEL_BASEDIR
 		Pass KERNEL_BASEDIR as the directory containing the kernels to the builder
@@ -137,10 +128,6 @@ Examples:
 
 	- build the probe for a custom set of Ubuntu kernels
 	$0 -v 0.26.5 -k CustomUbuntu pool/l/linux-{image,modules,headers}*.deb
-
-	- build the probe for a specific CoreOS release
-	wget http://alpha.release.core-os.net/amd64-usr/2345.0.0/coreos_developer_container.bin.bz2 -O coreos_developer_container.2345.0.0.bin.bz2
-	$0 -v 0.26.5 -k CustomCoreOS coreos_developer_container.2345.0.0.bin.bz2
 EOF
 	exit 1
 }
@@ -487,73 +474,6 @@ function build_probe {
 	rm -f $LOG
 }
 
-function coreos_build {
-	BUILDER_DISTRO=${BUILDER_DISTRO:-centos}
-	for IMG in "$@"
-	do
-		VERSION=${IMG##*/coreos_developer_container.}
-		VERSION=${VERSION%.bin.bz2}
-		VERSION_DIR=build/$DISTRO/$VERSION
-		if [ ! -e $VERSION_DIR/config_orig ]
-		then
-			mkdir -p $VERSION_DIR
-			echo "Unpacking $(basename $IMG)"
-			FULL_IMG=$(readlink -f "$IMG")
-			FULL_VERSION_DIR=$(readlink -f "$VERSION_DIR")
-			run_toolkit -v "$FULL_IMG:$FULL_IMG:ro" -v "$FULL_VERSION_DIR:$FULL_VERSION_DIR" -- coreos "$FULL_IMG" "$FULL_VERSION_DIR"
-
-			KERNEL_RELEASE=$(cd $VERSION_DIR && ls config-* | sed s/config-//)
-			export COREOS_BUILD=${VERSION%%.*}
-			if [ $COREOS_BUILD -gt 890 ]
-			then
-				# https://groups.google.com/forum/#!topic/coreos-dev/Z8Q7sIy6YwE
-				sed -i 's/CONFIG_INITRAMFS_SOURCE=""/CONFIG_INITRAMFS_SOURCE="bootengine.cpio"\nCONFIG_INITRAMFS_ROOT_UID=0\nCONFIG_INITRAMFS_ROOT_GID=0/' $VERSION_DIR/config-*
-				sed -i 'N;s/\(CONFIG_RD_LZ4=.\)\n\(CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=\)/\1\nCONFIG_INITRAMFS_COMPRESSION=".gz"\n\2/' $VERSION_DIR/config-*
-			else
-				mkdir -p build/$DISTRO/vanilla
-				VANILLA=$(echo $KERNEL_RELEASE | sed s/[-+].*// | sed s/\.0$//)
-				MAJOR=$(echo $KERNEL_RELEASE | head -c1)
-				EXTRAVERSION=$(echo $KERNEL_RELEASE | sed s/[^-+]*//)
-				TGZ_NAME=linux-${VANILLA}.tar.xz
-				DIR_NAME=linux-${VANILLA}
-				KERNEL_URL=https://www.kernel.org/pub/linux/kernel/v${MAJOR}.x/$TGZ_NAME
-				wget -c -nv --timeout=${DOWNLOAD_TIMEOUT} --tries=${RETRIES} $KERNEL_URL -O build/$DISTRO/vanilla/$TGZ_NAME
-				if [ ! -e build/$DISTRO/vanilla/$DIR_NAME ]
-				then
-					(cd build/$DISTRO/vanilla && tar xf $TGZ_NAME)
-				fi
-			fi
-		fi
-
-		KERNEL_RELEASE=$(cd $VERSION_DIR && ls config-* | sed s/config-//)
-		COREOS_BUILD=${VERSION%%.*}
-		HASH_ORIG=$(md5sum $VERSION_DIR/config_orig | cut -d' ' -f1)
-		HASH=$(md5sum $VERSION_DIR/config-* | cut -d' ' -f1)
-		echo "Building probe for CoreOS kernel $KERNEL_RELEASE (CoreOS build $COREOS_BUILD)"
-		if [ -f $BASEDIR/output/$PROBE_NAME-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.ko ] &&
-		   [ -f $BASEDIR/output/$PROBE_NAME-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH_ORIG.ko ]; then
-			echo "Skipping $PROBE_NAME-$PROBE_VERSION-$ARCH-$KERNEL_RELEASE-$HASH.ko (already built)"
-			continue
-		fi
-
-		if [ $COREOS_BUILD -gt 890 ]
-		then
-			unset DOCKER_BUILDER
-			export KERNELDIR=$BASEDIR/$VERSION_DIR/modules/$KERNEL_RELEASE/build
-		else
-			VANILLA=$(echo $KERNEL_RELEASE | sed s/[-+].*// | sed s/\.0$//)
-			EXTRAVERSION=$(echo $KERNEL_RELEASE | sed s/[^-+]*//)
-			export KERNELDIR=$BASEDIR/build/$DISTRO/vanilla/linux-$VANILLA
-			make distclean -C $KERNELDIR
-			sed -i "s/^EXTRAVERSION.*/EXTRAVERSION = $EXTRAVERSION/" $KERNELDIR/Makefile
-			cp $VERSION_DIR/config_orig $KERNELDIR/.config
-			DOCKER_BUILDER=coreos-old
-		fi
-		build_probe
-
-	done
-}
-
 function ubuntu_build {
 	BUILDER_DISTRO=${BUILDER_DISTRO:-ubuntu}
 	for DEB in "$@"
@@ -807,30 +727,6 @@ function build_group_fedora {
 	rhel_build $DISTRO/*.rpm
 }
 
-function build_group_coreos {
-	#
-	# CoreOS build
-	#
-
-	DISTRO=coreos
-	BUILDER_DISTRO=centos
-
-	if [ "$DOWNLOAD_CONCURRENCY" != "0" ]
-	then
-		echo Downloading CoreOS kernels
-		DIR=$(dirname $(readlink -f $0))
-		mkdir -p $DISTRO
-		$DIR/kernel-crawler.py CoreOS | while read URL
-		do
-			COREOS_VERSION=$(curl -fsSL ${URL}version.txt | grep -Po '(?<=^COREOS_VERSION=).*')
-			wget -O $DISTRO/coreos_developer_container.$COREOS_VERSION.bin.bz2 -c -nv --timeout=${DOWNLOAD_TIMEOUT} --tries=${RETRIES} ${URL}coreos_developer_container.bin.bz2
-		done
-	fi
-
-	echo Building CoreOS
-	coreos_build $DISTRO/*.bin.bz2
-}
-
 function build_group_debian {
 	#
 	# Debian build
@@ -972,7 +868,6 @@ function build_everything {
 	build_group_ubuntu
 	build_group_centos
 	build_group_fedora
-	build_group_coreos
 	build_group_debian
 	build_group_oracle_rhck
 	build_group_oracle_ol6_uek
@@ -997,10 +892,6 @@ case "$KERNEL_TYPE" in
 	Fedora)
 		checkout_sysdig
 		build_group_fedora
-		;;
-	CoreOS)
-		checkout_sysdig
-		build_group_coreos
 		;;
 	Debian)
 		checkout_sysdig
@@ -1034,11 +925,6 @@ case "$KERNEL_TYPE" in
 		checkout_sysdig
 		DISTRO=custom-centos
 		rhel_build "$@"
-		;;
-	CustomCoreOS)
-		checkout_sysdig
-		DISTRO=custom-coreos
-		coreos_build "$@"
 		;;
 	CustomDebian)
 		checkout_sysdig
