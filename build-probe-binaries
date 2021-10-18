@@ -77,7 +77,6 @@ Options:
 			CoreOS
 			Debian
 			Fedora
-			Fedora-Atomic
 			OracleOL6
 			OracleOL7
 			OracleRHCK
@@ -808,25 +807,6 @@ function build_group_fedora {
 	rhel_build $DISTRO/*.rpm
 }
 
-function build_group_fedora_atomic {
-	#
-	# Fedora Atomic build
-	#
-
-	DISTRO=fedora-atomic
-	BUILDER_DISTRO=centos
-	if [ "$DOWNLOAD_CONCURRENCY" != "0" ]
-	then
-		echo Downloading Fedora Atomic kernels
-		DIR=$(dirname $(readlink -f $0))
-		mkdir -p $DISTRO
-		$DIR/kernel-crawler.py Fedora-Atomic | xargs -n 1 -P $DOWNLOAD_CONCURRENCY wget -c -nv --timeout=${DOWNLOAD_TIMEOUT} --tries=${RETRIES} -P $DISTRO
-	fi
-
-	echo Building Fedora Atomic
-	rhel_build $DISTRO/*.rpm
-}
-
 function build_group_coreos {
 	#
 	# CoreOS build
@@ -992,7 +972,6 @@ function build_everything {
 	build_group_ubuntu
 	build_group_centos
 	build_group_fedora
-	build_group_fedora_atomic
 	build_group_coreos
 	build_group_debian
 	build_group_oracle_rhck
@@ -1018,10 +997,6 @@ case "$KERNEL_TYPE" in
 	Fedora)
 		checkout_sysdig
 		build_group_fedora
-		;;
-	Fedora-Atomic)
-		checkout_sysdig
-		build_group_fedora_atomic
 		;;
 	CoreOS)
 		checkout_sysdig

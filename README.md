@@ -54,7 +54,6 @@ Distributions supported by the kernel crawler:
  - CoreOS
  - Debian
  - Fedora
- - Fedora-Atomic
  - Ubuntu
 
 Please note that you do *not* need to extract or install the kernel packages on the build host.
