@@ -719,7 +719,8 @@ function debian_build {
 			cat $MAKEFILE.sysdig-orig | \
 			sed '0,/MAKEARGS.*$/s||MAKEARGS := -C '"${CONTAINER_KERNELDIR_COMMON}"' O='"${CONTAINER_KERNELDIR}"'|' | \
 			sed 's/@://' | \
-			sed 's|$(cmd) %.*$|$(cmd) : all|' > $MAKEFILE
+			sed 's|$(cmd) %.*$|$(cmd) : all|' |
+			sed 's|^include .*$|include '"${CONTAINER_KERNELDIR_COMMON}"'/Makefile|' > $MAKEFILE
 		fi
 
 		# impedance mismatch
