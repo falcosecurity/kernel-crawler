@@ -653,7 +653,7 @@ function debian_build {
 			touch $MARKER
 		fi
 		set +e
-		KBUILD_PACKAGE=$(ls $DISTRO/linux-kbuild-${KERNEL_MAJOR}_*.deb 2>/dev/null | tail -1)
+		KBUILD_PACKAGE=$(ls $@ 2>/dev/null | grep "linux-kbuild-${KERNEL_MAJOR}_.*.deb" | tail -1)
 		set -e
 		if [ -n "$KBUILD_PACKAGE" ]
 		then
