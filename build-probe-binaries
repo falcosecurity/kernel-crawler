@@ -653,7 +653,7 @@ function debian_build {
 			touch $MARKER
 		fi
 		set +e
-		KBUILD_PACKAGE=$(ls $DISTRO/linux-kbuild-${KERNEL_MAJOR}_*.deb 2>/dev/null | tail -1)
+		KBUILD_PACKAGE=$(ls $@ 2>/dev/null | grep "linux-kbuild-${KERNEL_MAJOR}_.*.deb" | tail -1)
 		set -e
 		if [ -n "$KBUILD_PACKAGE" ]
 		then
@@ -719,7 +719,8 @@ function debian_build {
 			cat $MAKEFILE.sysdig-orig | \
 			sed '0,/MAKEARGS.*$/s||MAKEARGS := -C '"${CONTAINER_KERNELDIR_COMMON}"' O='"${CONTAINER_KERNELDIR}"'|' | \
 			sed 's/@://' | \
-			sed 's|$(cmd) %.*$|$(cmd) : all|' > $MAKEFILE
+			sed 's|$(cmd) %.*$|$(cmd) : all|' |
+			sed 's|^include .*$|include '"${CONTAINER_KERNELDIR_COMMON}"'/Makefile|' > $MAKEFILE
 		fi
 
 		# impedance mismatch
