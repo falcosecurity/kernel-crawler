@@ -4,7 +4,9 @@ The probe builder can be used to automatically build kernel modules for the [com
 
 The description below assumes that we need to build probes for:
 * agent 12.0.0 (substitute the version as required)
-* for RedHat/CentOS kernels (for Ubuntu/Debian kernels use -k CustomUbuntu option instead of -k CustomCentOS).
+* for RedHat/CentOS kernels
+  * for Ubuntu kernels use -k CustomUbuntu option instead of -k CustomCentOS
+  * for Debian kernels use -k CustomDebian option instead of -k CustomCentOS
 
 ## Prerequisites
 
