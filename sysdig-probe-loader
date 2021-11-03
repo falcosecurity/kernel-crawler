@@ -21,6 +21,59 @@
 # for it in a bunch of ways. Convenient when running sysdig inside
 # a container or in other weird environments.
 #
+# By default, the script uses the following approaches to build or fetch
+# or find the sysdig-probe, in the following order:
+# 1) In the kernel module case, use modprobe, which looks for the kernel
+#    module already installed in /lib/modules
+# 2) Look for the appropriate sysdig-probe (kernel module or eBPF) for the
+#    currently running kernel, in the .sysdig directory
+# 3) Fetch the appropriate sysdig-probe (kernel module or eBPF) for the
+#    currently running kernel, from download.sysdig.com
+#
+#
+# By default, the following naming conventions are used.
+# A) Probe filename
+# kernel module: sysdigcloud-probe-<SYSDIG_VERSION>-<ARCH>-<KERNEL_RELEASE>-<KERNEL_CONFIG_HASH>.ko
+# eBPF probe: sysdigcloud-probe-bpf-<SYSDIG_VERSION>-<ARCH>-<KERNEL_RELEASE>-<KERNEL_CONFIG_HASH>.o
+# Where:
+#   <SYSDIG_VERSION> = sysdig release version (e.g. 12.0.3)
+#   <ARCH> = CPU architecture (e.g. x86_64)
+#   <KERNEL_RELEASE> = uname -r output (e.g. 4.18.0-147.56.1.el8_1.x86_64)
+#   <KERNEL_CONFIG_HASH> = result of hash, calculated over kernel config file, 32 hex digits
+# So, an example kernel module filename would be
+#   sysdigcloud-probe-12.0.3-x86_64-4.18.0-147.56.1.el8_1.x86_64-2f4c51e1d6af404393d778653f50135.ko
+#
+# B) Download URL
+# <DOWNLOAD_URL_HOST>/<DOWNLOAD_REPOSITORY>/sysdig-probe-binaries/<PROBE_FILENAME>
+# Where:
+#   DOWNLOAD_URL_HOST = "download.sysdig.com" by default
+#   DOWNLOAD_REPOSITORY = "stable" by defualt
+#   
+#
+# The following environment variables may be used to override defaults for different
+# aspects of the object names:
+#
+# 1) SYSDIG_PROBE_OVERRIDE_FULL_URL
+# - Overrides everything -- URL AND Probe filename
+# - This is particularly useful when the user needs to download a probe built onsite,
+#   from a locally-hosted location, and doesn't want to worry about mimicing any
+#   naming conventions
+# - Also particularly useful when the host doesn't have sufficient files (kernel headers,
+#   kernel config file) available, because it avoids the necessity of finding and
+#   calculating the checksum of the kernel config file on the local system.
+#   
+# 2) SYSDIG_PROBE_URL
+# - Finer-grain override
+# - Allows the user to override only the DOWNLOAD_URL_HOST value from item B above,
+#   to specify a different host + optional port number (e.g. "probe-host.mydomain.com:80"
+#   vs. the default "download.sysdig.com"),
+# - While retaining/mimicing the standard Sysdig directory structure and filename format 
+# 
+# 3) SYSDIG_REPOSITORY
+# - Finer-grain override
+# - Allows the user (or build script) to override only the DOWNLOAD_REPOSITORY value
+#   from item B above, to specify a top-level directory (e.g. "dev" instead of "stable")
+# - While retaining/mimicing the standard Sysdig directory structure and filename format 
 
 #
 # Returns 1 if $cos_ver > $base_ver, 0 otherwise
@@ -69,7 +122,7 @@ cos_version_greater()
 }
 
 
-get_kernel_config() {
+get_kernel_config_hash() {
 	if [ -f /proc/config.gz ]; then
 		echo "Found kernel config at /proc/config.gz"
 		KERNEL_CONFIG_PATH=/proc/config.gz
@@ -178,18 +231,23 @@ load_kernel_probe() {
 
 	echo "* Trying to find precompiled ${PROBE_NAME} for ${KERNEL_RELEASE}"
 
-	get_kernel_config
+	local SYSDIG_PROBE_FILENAME
+	local URL
 
-	local SYSDIG_PROBE_FILENAME="${PROBE_NAME}-${SYSDIG_VERSION}-${ARCH}-${KERNEL_RELEASE}-${HASH}.ko"
+	if [ ! -z ${SYSDIG_PROBE_OVERRIDE_FULL_URL} ]; then
+		SYSDIG_PROBE_FILENAME=$(basename "${SYSDIG_PROBE_OVERRIDE_FULL_URL}")
+		URL=$(echo "${SYSDIG_PROBE_OVERRIDE_FULL_URL}" | sed s/+/%2B/g)
+	else
+		get_kernel_config_hash
+		SYSDIG_PROBE_FILENAME="${PROBE_NAME}-${SYSDIG_VERSION}-${ARCH}-${KERNEL_RELEASE}-${HASH}.ko"
+		URL=$(echo "${SYSDIG_PROBE_URL}/${SYSDIG_REPOSITORY}/sysdig-probe-binaries/${SYSDIG_PROBE_FILENAME}" | sed s/+/%2B/g)
+	fi
 
 	if [ -f "${HOME}/.sysdig/${SYSDIG_PROBE_FILENAME}" ]; then
 		echo "Found precompiled module at ~/.sysdig/${SYSDIG_PROBE_FILENAME}, loading module"
 		insmod "${HOME}/.sysdig/${SYSDIG_PROBE_FILENAME}"
 		exit $?
 	fi
-
-	local URL
-	URL=$(echo "${SYSDIG_PROBE_URL}/${SYSDIG_REPOSITORY}/sysdig-probe-binaries/${SYSDIG_PROBE_FILENAME}" | sed s/+/%2B/g)
 
 	echo "* Trying to download precompiled module from ${URL}"
 
@@ -221,8 +279,6 @@ load_bpf_probe() {
 		mount -t debugfs nodev /sys/kernel/debug
 	fi
 
-	get_kernel_config
-
 	if [ ! -z "${SYSDIG_HOST_ROOT}" ] && [ -f "${SYSDIG_HOST_ROOT}/etc/os-release" ]; then
 		. "${SYSDIG_HOST_ROOT}/etc/os-release"
 
@@ -236,7 +292,17 @@ load_bpf_probe() {
 		MINIKUBE_VERSION="$(cat ${SYSDIG_HOST_ROOT}/etc/VERSION)"
 	fi
 
-	local BPF_PROBE_FILENAME="${BPF_PROBE_NAME}-${SYSDIG_VERSION}-${ARCH}-${KERNEL_RELEASE}-${HASH}.o"
+	local BPF_PROBE_FILENAME
+	local URL
+
+	if [ ! -z ${SYSDIG_PROBE_OVERRIDE_FULL_URL} ]; then
+		BPF_PROBE_FILENAME=$(basename "${SYSDIG_PROBE_OVERRIDE_FULL_URL}")
+		URL=$(echo "${SYSDIG_PROBE_OVERRIDE_FULL_URL}" | sed s/+/%2B/g)
+	else
+		get_kernel_config_hash
+		BPF_PROBE_FILENAME="${BPF_PROBE_NAME}-${SYSDIG_VERSION}-${ARCH}-${KERNEL_RELEASE}-${HASH}.o"
+		URL=$(echo "${SYSDIG_PROBE_URL}/${SYSDIG_REPOSITORY}/sysdig-probe-binaries/${BPF_PROBE_FILENAME}" | sed s/+/%2B/g)
+	fi
 
 	if [ ! -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
 
@@ -346,9 +412,6 @@ load_bpf_probe() {
 	fi
 
 	if [ ! -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
-		local URL
-		URL=$(echo "${SYSDIG_PROBE_URL}/${SYSDIG_REPOSITORY}/sysdig-probe-binaries/${BPF_PROBE_FILENAME}" | sed s/+/%2B/g)
-
 		echo "* Trying to download precompiled BPF probe from ${URL}"
 
 		curl --create-dirs "${SYSDIG_PROBE_CURL_OPTIONS}" -o "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" "${URL}"
