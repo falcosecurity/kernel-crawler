@@ -278,7 +278,28 @@ function build_probe_impl {
 		DOCKERFILE_TAG=$DOCKER_BUILDER
 
 		echo "Forced use of builder $DOCKERFILE_TAG"
-	elif [ -n "${BUILDER_DISTRO:-}" ]
+	elif [ -e $KERNELDIR/include/generated/autoconf.h ]
+	then
+		# Try to find a distro-specific builder based on the version
+		# embedded in the header of autoconf.h
+		# /*
+		#  *
+		#  * Automatically generated file; DO NOT EDIT.
+		#  * Linux/x86_64 5.15.5-100.fc34.x86_64 Kernel Configuration
+		#  *
+		#  */
+		DISTRO_RELEASE=$(grep -Po '(?<=\.)fc[0-9]+(?=\..*Kernel Configuration$)' $KERNELDIR/include/generated/autoconf.h)
+		DOCKERFILE=$BUILDER_SOURCE/Dockerfile.$DISTRO_RELEASE
+		DOCKERFILE_TAG=${DOCKERFILE#$BUILDER_SOURCE/Dockerfile.}
+
+		if [ ! -e "$DOCKERFILE" ]
+		then
+			echo "Could not find distro-specific builder for $DISTRO_RELEASE, falling back to gcc version selection"
+			DOCKERFILE=
+		fi
+	fi
+
+	if [ -n "${BUILDER_DISTRO:-}" ] && [ -z "${DOCKERFILE:-}" ]
 	then
 		# Try to find the gcc version used to build this particular kernel
 		# Check CONFIG_GCC_VERSION=90201 in the kernel config first
