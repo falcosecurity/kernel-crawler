@@ -53,6 +53,7 @@ Distributions supported by the kernel crawler:
  - CentOS
  - Debian
  - Fedora
+ - Flatcar
  - PhotonOS
  - Ubuntu
 

@@ -8,7 +8,7 @@ class Context(object):
 
 class Workspace(
     namedtuple(
-        'Workspace', 'mount_mapping workspace builder_source image_prefix')):
+        'Workspace', 'is_privileged mount_mapping workspace builder_source image_prefix')):
 
     def host_dir(self, container_dir):
         if self.mount_mapping is None:

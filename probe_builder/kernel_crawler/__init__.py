@@ -7,6 +7,8 @@ from .photon_os import PhotonOsMirror
 from .debian import DebianMirror
 from .ubuntu import UbuntuMirror
 
+from .flatcar import FlatcarMirror
+
 DISTROS = {
     'AmazonLinux': AmazonLinux1Mirror,
     'AmazonLinux2': AmazonLinux2Mirror,
@@ -19,6 +21,8 @@ DISTROS = {
 
     'Debian': DebianMirror,
     'Ubuntu': UbuntuMirror,
+
+    'Flatcar': FlatcarMirror,
 }
 
 

@@ -20,18 +20,18 @@ unpack_coreos_kernel()
 	# mount developer container is a very stateful part of this script
 	# the section between mount/unmounting should be kept very small
 	# otherwise if something fails there are many inconsistencies that can happen
-	LOOPDEV=$(kpartx -asv /tmp/container.img | cut -d\  -f 3)
-	mount /dev/mapper/$LOOPDEV /mnt
+	OFFSET=$(sfdisk -J /tmp/container.img | jq '.partitiontable.sectorsize * .partitiontable.partitions[0].start')
+	mount -o ro,loop,offset="$OFFSET" /tmp/container.img /mnt
+
 	# Copy kernel headers
 	cp -r /mnt/lib/modules "$OUTPUT_DIR"
 
 	# Copy kernel config
-	rm -f $OUTPUT_DIR/config-*
-	cp /mnt/usr/boot/config-* $OUTPUT_DIR/
-	cp $OUTPUT_DIR/config-* $OUTPUT_DIR/config_orig
-	# umount and remove the developer container
+	rm -f $OUTPUT_DIR/config*
+	cp /mnt/usr/boot/config* $OUTPUT_DIR/
+
+	# umount the developer container
 	umount /mnt
-	kpartx -dv /tmp/container.img
 }
 
 unpack_rpm()

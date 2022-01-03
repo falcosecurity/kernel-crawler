@@ -79,6 +79,17 @@ def get_mount_mapping():
     return mounts
 
 
+def is_privileged():
+    inspect = inspect_self()
+    if inspect is None:
+        return True
+    try:
+        if inspect[0]['HostConfig']['Privileged'] == 'true':
+            return True
+    except:
+        return False
+
+
 def remove_dangling_images():
     images = pipe(['docker', 'images', '-q', '-f', 'dangling=true'])
     if images:
