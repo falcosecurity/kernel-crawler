@@ -14,6 +14,7 @@ RUN apk add \
 	py3-pip \
 	py3-lxml \
 	sed \
+	sfdisk \
 	wget \
     docker
 

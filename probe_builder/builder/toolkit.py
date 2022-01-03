@@ -24,6 +24,38 @@ def build_toolkit(workspace):
     HAVE_TOOLKIT = True
 
 
+def unpack_coreos(workspace, coreos_file, target_dir, marker):
+    if marker is not None and os.path.exists(marker):
+        logger.info('{} already exists, not unpacking {}'.format(marker, coreos_file))
+        return
+
+    coreos_file = os.path.abspath(coreos_file)
+    target_dir = os.path.abspath(target_dir)
+
+    if not workspace.in_docker() or not workspace.is_privileged:
+        build_toolkit(workspace)
+        coreos_file = workspace.host_dir(coreos_file)
+        target_dir = workspace.host_dir(target_dir)
+
+        volumes = [
+            docker.DockerVolume(coreos_file, coreos_file, True),
+            docker.DockerVolume(target_dir, target_dir, False),
+        ]
+        docker.run(
+            toolkit_image(workspace.image_prefix), volumes, ['coreos', coreos_file, target_dir], [], privileged=True)
+    else:
+        try:
+            os.makedirs(target_dir, 0o755)
+        except OSError as exc:
+            if exc.errno != errno.EEXIST:
+                raise
+        spawn.pipe(["/builder/toolkit-entrypoint.sh", "coreos", coreos_file, target_dir])
+
+    if marker is not None:
+        with open(marker, 'w') as marker_fp:
+            marker_fp.write('\n')
+
+
 def unpack_rpm(workspace, rpm_file, target_dir, marker):
     if marker is not None and os.path.exists(marker):
         logger.info('{} already exists, not unpacking {}'.format(marker, rpm_file))
@@ -34,6 +66,9 @@ def unpack_rpm(workspace, rpm_file, target_dir, marker):
 
     if not workspace.in_docker():
         build_toolkit(workspace)
+        rpm_file = workspace.host_dir(rpm_file)
+        target_dir = workspace.host_dir(target_dir)
+
         volumes = [
             docker.DockerVolume(rpm_file, rpm_file, True),
             docker.DockerVolume(target_dir, target_dir, False),

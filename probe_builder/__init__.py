@@ -78,6 +78,7 @@ CLI_DISTROS = {
     'CentOS': CrawlDistro('centos', 'centos', 'CentOS'),
     'Debian': CrawlDistro('debian', 'debian', 'Debian'),
     'Fedora': CrawlDistro('fedora', 'centos', 'Fedora'),
+    'Flatcar': CrawlDistro('flatcar', 'flatcar', 'Flatcar'),
     'OracleOL6': None,
     'OracleOL7': None,
     'OracleRHCK': None,
@@ -85,6 +86,7 @@ CLI_DISTROS = {
     'CustomCentOS': LocalDistro('custom-centos', 'centos'),
     'CustomDebian': LocalDistro('custom-debian', 'debian'),
     'CustomUbuntu': LocalDistro('custom-ubuntu', 'ubuntu'),
+    'CustomFlatcar': LocalDistro('custom-flatcar', 'flatcar'),
 }
 
 
@@ -110,7 +112,7 @@ def build(builder_image_prefix,
     workspace_dir = os.getcwd()
     builder_source = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    workspace = Workspace(docker.get_mount_mapping(), workspace_dir, builder_source, builder_image_prefix)
+    workspace = Workspace(docker.is_privileged(), docker.get_mount_mapping(), workspace_dir, builder_source, builder_image_prefix)
     probe = get_probe(workspace, source_dir, probe_name, probe_version)
     distro_obj = CLI_DISTROS[kernel_type]
 

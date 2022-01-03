@@ -4,6 +4,7 @@ import requests
 import shutil
 from threading import Thread
 import os
+import logging
 
 from probe_builder.context import DownloadConfig
 
@@ -18,11 +19,15 @@ except ImportError:
     from Queue import Queue
 
 
+logger = logging.getLogger(__name__)
+
+
 def download_file(url, output_file, download_config=None):
     if download_config is None:
         download_config = DownloadConfig.default()
     resp = None
     for i in range(download_config.retries):
+        logger.debug('Downloading {} to {}, attempt {} of {}'.format(url, output_file, i+1, download_config.retries))
         with open(output_file, 'ab') as fp:
             size = fp.tell()
             if size > 0:

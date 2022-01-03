@@ -39,8 +39,8 @@ class DistroBuilder(object):
     def get_kernel_dir(self, workspace, release, target):
         raise NotImplementedError
 
-    @staticmethod
-    def build_kernel_impl(config_hash, container_name, image_name, kernel_dir, probe, release, workspace, bpf,
+    @classmethod
+    def build_kernel_impl(cls, config_hash, container_name, image_name, kernel_dir, probe, release, workspace, bpf,
                           skip_reason):
         if bpf:
             label = 'eBPF'
