@@ -1,0 +1,19 @@
+FROM oraclelinux:8
+
+RUN yum -y install \
+	wget \
+	git \
+	gcc \
+	gcc-c++ \
+	autoconf \
+	make \
+	cmake \
+	elfutils-libelf-devel \
+	file \
+	clang \
+	llvm \
+	kmod && yum clean all
+
+ADD builder-entrypoint.sh /
+WORKDIR /build/probe
+ENTRYPOINT [ "/builder-entrypoint.sh" ]

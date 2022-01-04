@@ -54,6 +54,9 @@ Distributions supported by the kernel crawler:
  - Debian
  - Fedora
  - Flatcar
+ - Oracle6
+ - Oracle7
+ - Oracle8
  - PhotonOS
  - Ubuntu
 
