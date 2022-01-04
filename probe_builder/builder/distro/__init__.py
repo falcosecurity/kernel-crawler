@@ -18,4 +18,5 @@ DISTRO_BUILDERS = {
     'debian': DebianBuilder,
     'flatcar': FlatcarBuilder,
     'ubuntu': UbuntuBuilder,
+    'oracle': CentosBuilder,
 }
