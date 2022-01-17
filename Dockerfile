@@ -12,6 +12,7 @@ RUN apk add \
 	multipath-tools \
 	python3 \
 	py3-lxml \
+	sed \
 	wget \
     docker
 
