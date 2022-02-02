@@ -33,6 +33,11 @@
 # 3) Fetch the appropriate sysdig-probe (kernel module or eBPF) for the
 #    currently running kernel, from download.sysdig.com
 #
+# Workflow variations:
+# A) If the environment variable SYSDIG_FORCE_DOWNLOAD_PROBE is defined,
+#    as the first and ONLY step, the script tries to download the appropriate sysdig-probe (kernel module or eBPF).
+#    The script won't try to build the probe.
+#
 #
 # --- ENVIRONMENT VARIABLES ---
 #
@@ -348,31 +353,36 @@ load_kernel_probe() {
 		return 1
 	fi
 
-	# Builds the probe via dkms; skips UEK hosts, the build will always fail
-	if [[ $(uname -r) == *uek* ]]; then
-		echo "* Skipping dkms install for UEK host"
+	# Forces probe download, skips build
+	if [ -v SYSDIG_FORCE_DOWNLOAD_PROBE ]; then
+		echo "* Skipping build, enforce downloading of kernel probe"
 	else
-		build_kernel_probe
-		if [ $? -eq 0 ]; then
+		# Builds the probe via dkms; skips UEK hosts, the build will always fail
+		if [[ $(uname -r) == *uek* ]]; then
+			echo "* Skipping dkms install for UEK host"
+		else
+			build_kernel_probe
+			if [ $? -eq 0 ]; then
+				return 0
+			fi
+		fi
+
+		echo "* Trying to load a system ${PROBE_NAME}, if present"
+
+		if modprobe "${PROBE_NAME}" > /dev/null 2>&1; then
+			echo "${PROBE_NAME} found and loaded with modprobe"
 			return 0
 		fi
-	fi
 
-	echo "* Trying to load a system ${PROBE_NAME}, if present"
+		echo "* Trying to find precompiled ${PROBE_NAME} for ${KERNEL_RELEASE}"
 
-	if modprobe "${PROBE_NAME}" > /dev/null 2>&1; then
-		echo "${PROBE_NAME} found and loaded with modprobe"
-		return 0
-	fi
-
-	echo "* Trying to find precompiled ${PROBE_NAME} for ${KERNEL_RELEASE}"
-
-	# Looks for a precompiled kernel probe locally
-	echo "* Trying to find precompiled ${PROBE_NAME} for ${KERNEL_RELEASE}"
-	if [ -f "${HOME}/.sysdig/${SYSDIG_PROBE_FILENAME}" ]; then
-		echo "  Found precompiled module at ~/.sysdig/${SYSDIG_PROBE_FILENAME}"
-		load_precompiled_kernel_probe
-		return $?
+		# Looks for a precompiled kernel probe locally
+		echo "* Trying to find precompiled ${PROBE_NAME} for ${KERNEL_RELEASE}"
+		if [ -f "${HOME}/.sysdig/${SYSDIG_PROBE_FILENAME}" ]; then
+			echo "  Found precompiled module at ~/.sysdig/${SYSDIG_PROBE_FILENAME}"
+			load_precompiled_kernel_probe
+			return $?
+		fi
 	fi
 
 	# Tries to download a precompiled kernel probe
@@ -609,12 +619,17 @@ load_bpf_probe() {
 		return 1
 	fi
 
-	# Builds the bpf probe
-	echo "* Building BPF probe"
-	if [ ! -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
-		build_bpf_probe
+	# Forces probe download, skips build
+	if [ -v SYSDIG_FORCE_DOWNLOAD_PROBE ]; then
+		echo "* Skipping build, enforce downloading of BPF probe"
 	else
-		echo "  Will not build, the BPF probe ${BPF_PROBE_FILENAME} already exists at ${HOME}/.sysdig/"
+		# Builds the bpf probe
+		echo "* Building BPF probe"
+		if [ ! -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
+			build_bpf_probe
+		else
+			echo "  Will not build, the BPF probe ${BPF_PROBE_FILENAME} already exists at ${HOME}/.sysdig/"
+		fi
 	fi
 
 	# Downloads the bpf probe
