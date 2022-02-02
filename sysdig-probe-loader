@@ -35,9 +35,15 @@
 #
 # Workflow variations:
 # A) If the environment variable SYSDIG_FORCE_DOWNLOAD_PROBE is defined,
-#    as the first and ONLY step, the script tries to download the appropriate sysdig-probe (kernel module or eBPF).
+#    the script ONLY tries to download the appropriate sysdig-probe (kernel module or eBPF).
 #    The script won't try to build the probe.
+# B) If the environment variable SYSDIG_FORCE_BUILD_PROBE is defined,
+#    the script ONLY tries to build the appropriate sysdig-probe (kernel module or eBPF).
+#    The script won't try to download the probe.
 #
+# Note:
+# SYSDIG_FORCE_DOWNLOAD_PROBE and SYSDIG_FORCE_BUILD_PROBE cannot be simultaneously defined. If so, the
+# probe loader raises an error.
 #
 # --- ENVIRONMENT VARIABLES ---
 #
@@ -355,7 +361,7 @@ load_kernel_probe() {
 
 	# Forces probe download, skips build
 	if [ -v SYSDIG_FORCE_DOWNLOAD_PROBE ]; then
-		echo "* Skipping build, enforce downloading of kernel probe"
+		echo "* Skipping build, FORCE_DOWNLOAD_PROBE is enabled"
 	else
 		# Builds the probe via dkms; skips UEK hosts, the build will always fail
 		if [[ $(uname -r) == *uek* ]]; then
@@ -385,7 +391,12 @@ load_kernel_probe() {
 		fi
 	fi
 
-	# Tries to download a precompiled kernel probe
+	# Skip download, the probe build has failed
+	if [ -v SYSDIG_FORCE_BUILD_PROBE ]; then
+		echo "* Skipping download, FORCE_BUILD_PROBE is enabled"
+		return 1;
+	fi;
+
 	download_kernel_probe
 	if [ $? -eq 1 ]; then
 		return 1
@@ -621,7 +632,7 @@ load_bpf_probe() {
 
 	# Forces probe download, skips build
 	if [ -v SYSDIG_FORCE_DOWNLOAD_PROBE ]; then
-		echo "* Skipping build, enforce downloading of BPF probe"
+		echo "* Skipping build, FORCE_DOWNLOAD_PROBE is enabled"
 	else
 		# Builds the bpf probe
 		echo "* Building BPF probe"
@@ -631,6 +642,13 @@ load_bpf_probe() {
 			echo "  Will not build, the BPF probe ${BPF_PROBE_FILENAME} already exists at ${HOME}/.sysdig/"
 		fi
 	fi
+
+	# Skip download
+	if [ -v SYSDIG_FORCE_BUILD_PROBE ]; then
+		echo "* Skipping download, FORCE_BUILD_PROBE is enabled"
+		make_symlink_bpf_probe
+		return $?;
+	fi;
 
 	# Downloads the bpf probe
 	if [ ! -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
@@ -709,6 +727,12 @@ if ! hash curl > /dev/null 2>&1; then
 	exit 1
 fi
 
+if [ -v SYSDIG_FORCE_BUILD_PROBE ] && [ -v SYSDIG_FORCE_DOWNLOAD_PROBE ] ; then
+	echo "Cannot define SYSDIG_FORCE_BUILD_PROBE and SYSDIG_FORCE_DOWNLOAD_PROBE simultaneously."
+	echo "Cannot load the probe"
+	exit 1
+fi
+
 # Loads the probe
 if [ -v SYSDIG_BPF_PROBE ] || [ "${1}" = "bpf" ]; then
 	load_bpf_probe
@@ -718,7 +742,7 @@ fi
 
 # Echoes the result
 if [ $? -eq 1 ]; then
-	echo "Cannot load probe"
+	echo "Cannot load the probe"
 	exit 1
 fi
 echo "Probe loaded"
