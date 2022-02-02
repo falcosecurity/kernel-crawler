@@ -344,7 +344,7 @@ load_kernel_probe() {
 		return 1
 	fi
 
-	# Removes kernel probe, if cannot uses the loaded one
+	# Removes leftover kernel probe
 	remove_kernel_probe
 	if [ $? -eq 1 ]; then
 		return 0
@@ -649,6 +649,16 @@ load_bpf_probe() {
 		make_symlink_bpf_probe
 		return $?;
 	fi;
+
+	# Prevents installing a leftover probe
+	if [ -v SYSDIG_FORCE_DOWNLOAD_PROBE ] && [ -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
+		rm ${HOME}/.sysdig/${BPF_PROBE_FILENAME}
+		if [ ! -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
+			echo "* Removed existing bpf probe ${HOME}/.sysdig/${BPF_PROBE_FILENAME}"
+		else
+			echo "* Cannot remove existing bpf probe ${HOME}/.sysdig/${BPF_PROBE_FILENAME}"
+		fi
+	fi
 
 	# Downloads the bpf probe
 	if [ ! -f "${HOME}/.sysdig/${BPF_PROBE_FILENAME}" ]; then
