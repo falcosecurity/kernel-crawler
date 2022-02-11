@@ -6,12 +6,13 @@ import click
 from . import repo
 from . import rpm
 from probe_builder.kernel_crawler.download import get_url
+from probe_builder.py23 import make_string
 
 
 def get_al_repo(repo_root, repo_release):
     repo_pointer = repo_root + repo_release + "/mirror.list"
     resp = get_url(repo_pointer)
-    return resp.splitlines()[0].replace('$basearch', 'x86_64') + '/'
+    return make_string(resp.splitlines()[0]).replace('$basearch', 'x86_64') + '/'
 
 
 class AmazonLinux1Mirror(repo.Distro):
