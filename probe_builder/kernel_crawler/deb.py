@@ -11,6 +11,7 @@ from lxml import html
 
 from . import repo
 from probe_builder.kernel_crawler.download import get_first_of, get_url
+from probe_builder.py23 import make_bytes, make_string
 
 
 class IncompletePackageListException(Exception):
@@ -34,6 +35,7 @@ class DebRepository(repo.Repository):
         current_package = {}
         packages = {}
         for line in stream:
+            line = make_string(line)
             line = line.rstrip()
             if line == '':
                 name = current_package['Package']
@@ -177,7 +179,7 @@ class DebRepository(repo.Repository):
                     deps.setdefault(pv, set()).update(cls.get_package_deps(packages, pkg))
                 except IncompletePackageListException:
                     pass
-        for pkg, dep_list in deps.items():
+        for pkg, dep_list in list(deps.items()):
             have_headers = False
             for dep in dep_list:
                 if 'linux-headers' in dep:
@@ -208,8 +210,9 @@ class DebMirror(repo.Mirror):
         all_comps = set()
         release = get_url(self.base_url + dist + 'Release')
         for line in release.splitlines(False):
-            if line.startswith('Components: '):
+            if line.startswith(make_bytes('Components: ')):
                 for comp in line.split(None)[1:]:
+                    comp = make_string(comp)
                     if comp in ('main', 'updates', 'updates/main'):
                         if dist.endswith('updates/') and comp.startswith('updates/'):
                             comp = comp.replace('updates/', '')
@@ -247,4 +250,4 @@ class DebMirror(repo.Mirror):
                 except requests.HTTPError:
                     pass
 
-        return sorted(repos.values())
+        return sorted(repos.values(), key=str)
