@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
+import traceback
 
 import requests
 from lxml import etree, html
@@ -74,7 +75,8 @@ class RpmRepository(repo.Repository):
         try:
             repodb_url = self.get_repodb_url()
             repodb = get_url(repodb_url)
-        except requests.HTTPError:
+        except requests.exceptions.RequestException:
+            traceback.print_exc()
             return {}
         with tempfile.NamedTemporaryFile() as tf:
             tf.write(repodb)
