@@ -1,6 +1,7 @@
 import bz2
 import zlib
 import requests
+import traceback
 import shutil
 from threading import Thread
 import os
@@ -61,7 +62,10 @@ def download_batch(urls, output_dir, download_config=None):
         while True:
             url = q.get()
             output_file = os.path.join(output_dir, os.path.basename(url))
-            download_file(url, output_file, download_config)
+            try:
+                download_file(url, output_file, download_config)
+            except requests.exceptions.RequestException:
+                traceback.print_exc()
             q.task_done()
 
     for i in range(download_config.concurrency):
@@ -73,6 +77,9 @@ def download_batch(urls, output_dir, download_config=None):
         q.put(batch_url)
 
     q.join()
+    # TODO shouldn't we also wait for all threads to terminate,
+    # like it's done on the examples of python 3.7 (but NOT on 2.7/3.8/3.9)?
+    # see https://docs.python.org/3.7/library/queue.html
 
 
 def get_url(url):
