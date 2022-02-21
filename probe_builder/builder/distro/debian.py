@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import traceback
 
 import click
 
@@ -32,10 +33,14 @@ class DebianBuilder(DistroBuilder):
             target = workspace.subdir('build', distro, version)
             kernel_dirs[release] = target
 
-            for deb in debs:
-                deb_basename = os.path.basename(deb)
-                marker = os.path.join(target, '.' + deb_basename)
-                toolkit.unpack_deb(workspace, deb, target, marker)
+            try:
+                for deb in debs:
+                    deb_basename = os.path.basename(deb)
+                    marker = os.path.join(target, '.' + deb_basename)
+                    toolkit.unpack_deb(workspace, deb, target, marker)
+            except:
+                traceback.print_exc()
+                del kernel_dirs[release]
 
         for release, target in kernel_dirs.items():
             kerneldir = self.get_kernel_dir(workspace, release, target)
