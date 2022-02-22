@@ -99,16 +99,28 @@ class RpmMirror(repo.Mirror):
     def __str__(self):
         return self.base_url
 
+    def dist_url(self, dist):
+        return '{}{}{}'.format(self.base_url, dist, self.variant)
+
+    def dist_exists(self, dist):
+        try:
+            r = requests.get(self.dist_url(dist))
+            r.raise_for_status()
+        except requests.exceptions.RequestException:
+            return False
+        return True
+
     def list_repos(self):
         dists = requests.get(self.base_url)
         dists.raise_for_status()
         dists = dists.content
         doc = html.fromstring(dists, self.base_url)
         dists = doc.xpath('/html/body//a[not(@href="../")]/@href')
-        return [RpmRepository('{}{}{}'.format(self.base_url, dist, self.variant)) for dist in dists
+        return [RpmRepository(self.dist_url(dist)) for dist in dists
                 if dist.endswith('/')
                 and not dist.startswith('/')
                 and not dist.startswith('?')
                 and not dist.startswith('http')
                 and self.repo_filter(dist)
+                and self.dist_exists(dist)
                 ]
