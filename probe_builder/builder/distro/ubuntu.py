@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class UbuntuBuilder(DistroBuilder):
     KERNEL_VERSION_RE = re.compile(r'(?P<version>[0-9]\.[0-9]+\.[0-9]+-[0-9]+)\.(?P<update>[0-9][^_]*)')
-    KERNEL_RELEASE_RE = re.compile(r'(?P<release>[0-9]\.[0-9]+\.[0-9]+-[0-9]+-[a-z]+)')
+    KERNEL_RELEASE_RE = re.compile(r'(?P<release>[0-9]\.[0-9]+\.[0-9]+-[0-9]+-[a-z0-9-]+)')
 
     def unpack_kernels(self, workspace, distro, kernels):
         kernel_dirs = dict()
@@ -77,6 +77,7 @@ class UbuntuBuilder(DistroBuilder):
         for deb in kernel_files:
             deb_basename = os.path.basename(deb)
 
+            # linux-headers-5.4.0-1063-azure-cvm_|5.4.0-1063.66+cvm3|_amd64.deb
             m = self.KERNEL_VERSION_RE.search(deb_basename)
             if not m:
                 click.echo("Filename {} doesn't look like a kernel package (no version)".format(deb), err=True)
@@ -85,6 +86,8 @@ class UbuntuBuilder(DistroBuilder):
             update = m.group('update')
             version = '{}/{}'.format(version, update)
 
+
+            # linux-headers-|5.4.0-1063-azure-cvm|_5.4.0-1063.66+cvm3_amd64.deb
             m = self.KERNEL_RELEASE_RE.search(deb_basename)
             if m:
                 release = m.group('release')
