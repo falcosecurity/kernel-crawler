@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import traceback
 
 import click
 
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 class DebianBuilder(DistroBuilder):
-    KERNEL_VERSION_RE = re.compile(r'(?P<version>[0-9]\.[0-9]+\.[0-9]+(-[^-]+)?)-(?P<arch>[a-z0-9]+)')
+    KERNEL_VERSION_RE = re.compile(r'-(?P<version>[0-9]\.[0-9]+\.[0-9]+(-[^-]+)?)-(?P<vararch>[a-z0-9-]+)_')
     KBUILD_PACKAGE_RE = re.compile(r'linux-kbuild-(?P<major>[0-9]\.[0-9]+)_')
 
     @staticmethod
@@ -27,15 +28,23 @@ class DebianBuilder(DistroBuilder):
         kernel_dirs = dict()
 
         for release, debs in kernels.items():
-            version, arch = release.rsplit('-', 1)
+            # we can no longer use '-' as the separator, since now also have variant
+            # (e.g. cloud-amd64)
+            version, vararch = release.rsplit(':', 1)
+            # restore the original composite e.g. 5.16.0-1-cloud-amd64
+            release = release.replace(':', '-')
 
             target = workspace.subdir('build', distro, version)
             kernel_dirs[release] = target
 
-            for deb in debs:
-                deb_basename = os.path.basename(deb)
-                marker = os.path.join(target, '.' + deb_basename)
-                toolkit.unpack_deb(workspace, deb, target, marker)
+            try:
+                for deb in debs:
+                    deb_basename = os.path.basename(deb)
+                    marker = os.path.join(target, '.' + deb_basename)
+                    toolkit.unpack_deb(workspace, deb, target, marker)
+            except:
+                traceback.print_exc()
+                del kernel_dirs[release]
 
         for release, target in kernel_dirs.items():
             kerneldir = self.get_kernel_dir(workspace, release, target)
@@ -95,21 +104,31 @@ class DebianBuilder(DistroBuilder):
                 click.echo("Filename {} doesn't look like a kernel package (no version)".format(deb), err=True)
                 continue
             version = m.group('version')
-            arch = m.group('arch')
+            vararch = m.group('vararch')
 
-            if arch == 'common':
+            if 'common' in vararch:
+                #
+                # linux-headers-5.16.0-1-|common|_5.16.7-2_all.deb
+                # linux-headers-5.16.0-1-|common-rt|_5.16.7-2_all.deb
+                #
                 common_packages.setdefault(version, []).append(deb)
             else:
-                arch_packages.setdefault(version, {}).setdefault(arch, []).append(deb)
+                #
+                # linux-headers-5.16.0-1-|rt-amd64|_5.16.7-2_amd64.deb
+                # linux-image-5.16.0-1-|amd64|_5.16.7-2_amd64.deb
+                # linux-image-5.16.0-1-|cloud-amd64|_5.16.7-2_amd64.deb
+                # linux-image-5.16.0-1-|rt-amd64|_5.16.7-2_amd64.deb
+                #
+                arch_packages.setdefault(version, {}).setdefault(vararch, []).append(deb)
 
-        for version, per_arch in arch_packages.items():
-            for arch, packages in per_arch.items():
+        for version, per_vararch in arch_packages.items():
+            for vararch, packages in per_vararch.items():
                 packages.extend(common_packages.get(version, []))
                 major, minor, _ = version.split('.', 2)
                 major_version = '{}.{}'.format(major, minor)
                 kbuild_pkg = kbuild_packages.get(major_version)
                 if kbuild_pkg:
                     packages.append(kbuild_pkg)
-                kernels['{}-{}'.format(version, arch)] = packages
+                kernels['{}:{}'.format(version, vararch)] = packages
 
         return kernels

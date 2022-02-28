@@ -13,6 +13,7 @@ class FedoraMirror(repo.Distro):
     def __init__(self):
         mirrors = [
             rpm.RpmMirror('https://mirrors.kernel.org/fedora/releases/', 'Everything/x86_64/os/', repo_filter),
+            rpm.RpmMirror('https://mirrors.kernel.org/fedora/updates/', 'Everything/x86_64/', repo_filter),
         ]
         super(FedoraMirror, self).__init__(mirrors)
 
