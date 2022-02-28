@@ -61,7 +61,7 @@ class CrawlDistro(object):
     def get_kernels(self, workspace, _packages, download_config):
         # crawler will return a dictionary of {"release": ["http://url/for/package1.rpm", "http://url/for/package1.rpm"]}
         crawled_dict = self.distro_builder.crawl(workspace, self.distro_obj, self.crawler_distro, download_config)
-        # we flatten that dictionary into a single list, retaining ONLY package urls and discaring the release altogether
+        # we flatten that dictionary into a single list, retaining ONLY package urls and discarding the release altogether
         flattened_packages = [pkg for pkgs in crawled_dict.values() for pkg in pkgs]
         # then we batch that list as if it were a local distro
         batched_packages = self.distro_builder.batch_packages(flattened_packages)
