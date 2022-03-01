@@ -227,11 +227,12 @@ class DebRepository(repo.Repository):
 
 class DebMirror(repo.Mirror):
 
-    def __init__(self, base_url, repo_filter=None):
+    def __init__(self, base_url, arch, repo_filter=None):
         self.base_url = base_url
         if repo_filter is None:
             repo_filter = lambda _: True
         self.repo_filter = repo_filter
+        super().__init__(arch)
 
     def __str__(self):
         return self.base_url
@@ -250,7 +251,7 @@ class DebMirror(repo.Mirror):
                         all_comps.add(comp)
                 break
         for comp in all_comps:
-            url = dist + comp + '/binary-amd64/'
+            url = dist + comp + '/binary-' + self.arch + '/'
             repos[url] = DebRepository(self.base_url, url)
         return repos
 

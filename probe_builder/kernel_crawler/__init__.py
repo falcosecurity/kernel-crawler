@@ -26,7 +26,8 @@ DISTROS = {
 }
 
 
-def crawl_kernels(distro, version=''):
+def crawl_kernels(distro, version='', arch=''):
     dist = DISTROS[distro]
-
+    if arch:
+        return dist(arch).get_package_tree(version)
     return dist().get_package_tree(version)

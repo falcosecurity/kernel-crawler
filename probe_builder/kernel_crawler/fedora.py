@@ -10,11 +10,11 @@ def repo_filter(version):
 
 
 class FedoraMirror(repo.Distro):
-    def __init__(self):
+    def __init__(self, arch='x86_64'):
         mirrors = [
-            rpm.RpmMirror('https://mirrors.kernel.org/fedora/releases/', 'Everything/x86_64/os/', repo_filter),
-            rpm.RpmMirror('https://mirrors.kernel.org/fedora/updates/', 'Everything/x86_64/', repo_filter),
+            rpm.RpmMirror('https://mirrors.kernel.org/fedora/releases/', 'Everything/' + arch + '/os/', repo_filter),
+            rpm.RpmMirror('https://mirrors.kernel.org/fedora/updates/', 'Everything/' + arch + '/', repo_filter),
         ]
-        super(FedoraMirror, self).__init__(mirrors)
+        super(FedoraMirror, self).__init__(mirrors, arch)
 
 

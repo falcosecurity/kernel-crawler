@@ -9,12 +9,12 @@ def repo_filter(dist):
 
 
 class DebianMirror(repo.Distro):
-    def __init__(self):
+    def __init__(self, arch='amd64'):
         mirrors = [
-            deb.DebMirror('http://mirrors.edge.kernel.org/debian/', repo_filter),
-            deb.DebMirror('http://security.debian.org/', repo_filter),
+            deb.DebMirror('http://mirrors.edge.kernel.org/debian/', arch, repo_filter),
+            deb.DebMirror('http://security.debian.org/', arch, repo_filter),
         ]
-        super(DebianMirror, self).__init__(mirrors)
+        super(DebianMirror, self).__init__(mirrors, arch)
 
     # For Debian mirrors, we need to override this method so that dependencies
     # can be resolved (i.e. build_package_tree) across multiple repositories.
