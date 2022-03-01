@@ -130,8 +130,9 @@ def build(builder_image_prefix,
 @click.command()
 @click.argument('distro', type=click.Choice(sorted(DISTROS.keys())))
 @click.argument('version', required=False, default='')
-def crawl(distro, version=''):
-    kernels = crawl_kernels(distro, version)
+@click.argument('arch', required=False, default='')
+def crawl(distro, version='', arch=''):
+    kernels = crawl_kernels(distro, version, arch)
     for release, packages in kernels.items():
         print('=== {} ==='.format(release))
         for pkg in packages:

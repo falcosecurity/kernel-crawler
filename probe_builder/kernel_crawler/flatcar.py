@@ -24,9 +24,9 @@ class FlatcarRepository(Repository):
 class FlatcarMirror(Distro):
     CHANNELS = ['stable', 'beta', 'alpha']
 
-    def __init__(self):
-        mirrors = ['https://{}.release.flatcar-linux.net/amd64-usr/'.format(channel) for channel in self.CHANNELS]
-        super(FlatcarMirror, self).__init__(mirrors)
+    def __init__(self, arch='amd64'):
+        mirrors = ['https://{c}.release.flatcar-linux.net/{a}-usr/'.format(c=channel, a=arch) for channel in self.CHANNELS]
+        super(FlatcarMirror, self).__init__(mirrors, arch)
 
     def scan_repo(self, base_url):
         dists = requests.get(base_url)

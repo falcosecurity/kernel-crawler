@@ -96,6 +96,7 @@ class RpmMirror(repo.Mirror):
         if repo_filter is None:
             repo_filter = lambda _: True
         self.repo_filter = repo_filter
+        self.url = base_url
 
     def __str__(self):
         return self.base_url

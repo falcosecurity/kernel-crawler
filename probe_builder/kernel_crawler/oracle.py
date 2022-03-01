@@ -9,47 +9,49 @@ class OracleRepository(rpm.RpmRepository):
 
 
 class Oracle6Mirror(repo.Distro):
-    OL6_REPOS = [
-        'http://yum.oracle.com/repo/OracleLinux/OL6/latest/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL6/MODRHCK/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL6/UEKR3/latest/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/x86_64/',
+    def repos(self):
+        return [
+            'http://yum.oracle.com/repo/OracleLinux/OL6/latest/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL6/MODRHCK/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL6/UEKR4/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL6/UEKR3/latest/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL6/UEK/latest/' + self.arch + '/',
+        ]
 
-    ]
-
-    def __init__(self):
-        super(Oracle6Mirror, self).__init__([])
+    def __init__(self, arch='x86_64'):
+        super(Oracle6Mirror, self).__init__([], arch)
 
     def list_repos(self):
-        return [OracleRepository(url) for url in self.OL6_REPOS]
+        return [OracleRepository(url) for url in self.repos()]
 
 
 class Oracle7Mirror(repo.Distro):
-    OL7_REPOS = [
-        'http://yum.oracle.com/repo/OracleLinux/OL7/latest/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL7/MODRHCK/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR6/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR5/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR4/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR3/x86_64/',
-    ]
+    def repos(self):
+        return [
+            'http://yum.oracle.com/repo/OracleLinux/OL7/latest/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL7/MODRHCK/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR6/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR5/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR4/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL7/UEKR3/' + self.arch + '/',
+        ]
 
-    def __init__(self):
-        super(Oracle7Mirror, self).__init__([])
+    def __init__(self, arch='x86_64'):
+        super(Oracle7Mirror, self).__init__([], arch)
 
     def list_repos(self):
-        return [OracleRepository(url) for url in self.OL7_REPOS]
+        return [OracleRepository(url) for url in self.repos()]
 
 
 class Oracle8Mirror(repo.Distro):
-    OL8_REPOS = [
-        'http://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/x86_64/',
-        'http://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/x86_64/',
-    ]
+    def repos(self):
+        return [
+            'http://yum.oracle.com/repo/OracleLinux/OL8/baseos/latest/' + self.arch + '/',
+            'http://yum.oracle.com/repo/OracleLinux/OL8/UEKR6/' + self.arch + '/',
+        ]
 
-    def __init__(self):
-        super(Oracle8Mirror, self).__init__([])
+    def __init__(self, arch='x86_64'):
+        super(Oracle8Mirror, self).__init__([], arch)
 
     def list_repos(self):
-        return [OracleRepository(url) for url in self.OL8_REPOS]
+        return [OracleRepository(url) for url in self.repos()]

@@ -19,7 +19,10 @@ def to_s(s):
 
 
 class Mirror(object):
-    def list_repos(self):
+    def __init__(self, arch):
+        self.arch = arch
+
+    def list_repos(self,):
         raise NotImplementedError
 
     def get_package_tree(self, version=''):
@@ -33,8 +36,9 @@ class Mirror(object):
 
 
 class Distro(Mirror):
-    def __init__(self, mirrors):
+    def __init__(self, mirrors, arch):
         self.mirrors = mirrors
+        super().__init__(arch)
 
     def list_repos(self):
         repos = []
