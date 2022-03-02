@@ -1,8 +1,8 @@
 from . import deb
-from . import debian
+from . import repo
 
 
-class UbuntuMirror(debian.DebianLikeMirror):
+class UbuntuMirror(repo.Distro):
     def __init__(self):
         mirrors = [
             deb.DebMirror('https://mirrors.edge.kernel.org/ubuntu/'),
