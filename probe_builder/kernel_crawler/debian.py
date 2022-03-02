@@ -8,8 +8,18 @@ def repo_filter(dist):
     return 'stable' not in dist and 'testing' not in dist and not dist.startswith('Debian')
 
 
-class DebianLikeMirror(repo.Distro):
+class DebianMirror(repo.Distro):
+    def __init__(self):
+        mirrors = [
+            deb.DebMirror('https://mirrors.edge.kernel.org/debian/', repo_filter),
+            deb.DebMirror('http://security.debian.org/', repo_filter),
+        ]
+        super(DebianMirror, self).__init__(mirrors)
 
+    # For Debian mirrors, we need to override this method so that dependencies
+    # can be resolved (i.e. build_package_tree) across multiple repositories.
+    # This is namely required for the linux-kbuild package, which is typically
+    # hosted on a different repository compared to the kernel packages
     def get_package_tree(self, version=''):
         all_packages = {}
         all_kernel_packages = []
@@ -25,12 +35,3 @@ class DebianLikeMirror(repo.Distro):
         for release, dependencies in deb.DebRepository.build_package_tree(all_packages, all_kernel_packages).items():
             packages.setdefault(release, set()).update(dependencies)
         return packages
-
-
-class DebianMirror(DebianLikeMirror):
-    def __init__(self):
-        mirrors = [
-            deb.DebMirror('https://mirrors.edge.kernel.org/debian/', repo_filter),
-            deb.DebMirror('http://security.debian.org/', repo_filter),
-        ]
-        super(DebianMirror, self).__init__(mirrors)
