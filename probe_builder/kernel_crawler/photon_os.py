@@ -18,6 +18,8 @@ class PhotonOsMirror(repo.Distro):
     ]
 
     def __init__(self, arch='x86_64'):
+        if arch=='arm':
+            arch='aarch64'
         super(PhotonOsMirror, self).__init__([], arch)
 
     def list_repos(self):

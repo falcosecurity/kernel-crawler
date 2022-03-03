@@ -25,6 +25,8 @@ class FlatcarMirror(Distro):
     CHANNELS = ['stable', 'beta', 'alpha']
 
     def __init__(self, arch='amd64'):
+        if arch=='arm':
+            arch='arm64'
         mirrors = ['https://{c}.release.flatcar-linux.net/{a}-usr/'.format(c=channel, a=arch) for channel in self.CHANNELS]
         super(FlatcarMirror, self).__init__(mirrors, arch)
 
