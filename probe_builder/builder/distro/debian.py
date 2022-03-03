@@ -25,7 +25,7 @@ class DebianBuilder(DistroBuilder):
             os.symlink(build_link_target, build_link_path)
 
     def unpack_kernels(self, workspace, distro, kernels):
-        kernel_dirs = dict()
+        kernel_dirs = list()
 
         for release, debs in kernels.items():
             # we can no longer use '-' as the separator, since now also have variant
@@ -35,18 +35,17 @@ class DebianBuilder(DistroBuilder):
             release = release.replace(':', '-')
 
             target = workspace.subdir('build', distro, version)
-            kernel_dirs[release] = target
 
             try:
                 for deb in debs:
                     deb_basename = os.path.basename(deb)
                     marker = os.path.join(target, '.' + deb_basename)
                     toolkit.unpack_deb(workspace, deb, target, marker)
+                kernel_dirs.append((release, target))
             except:
                 traceback.print_exc()
-                del kernel_dirs[release]
 
-        for release, target in kernel_dirs.items():
+        for release, target in kernel_dirs:
             kerneldir = self.get_kernel_dir(workspace, release, target)
 
             base_path = workspace.subdir(target)

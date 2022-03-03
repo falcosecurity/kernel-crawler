@@ -14,11 +14,11 @@ class CentosBuilder(DistroBuilder):
     RPM_KERNEL_RELEASE_RE = re.compile(r'^kernel-(uek-)?(core-|devel-|modules-)?(?P<release>.*)\.rpm$')
 
     def unpack_kernels(self, workspace, distro, kernels):
-        kernel_dirs = dict()
+        kernel_dirs = list()
 
         for release, rpms in kernels.items():
             target = workspace.subdir('build', distro, release)
-            kernel_dirs[release] = target
+            kernel_dirs.append((release, target))
 
             for rpm in rpms:
                 rpm_basename = os.path.basename(rpm)

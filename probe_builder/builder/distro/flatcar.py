@@ -16,11 +16,11 @@ logger = logging.getLogger(__name__)
 
 class FlatcarBuilder(DistroBuilder):
     def unpack_kernels(self, workspace, distro, kernels):
-        kernel_dirs = dict()
+        kernel_dirs = list()
 
         for release, dev_containers in kernels.items():
             target = workspace.subdir('build', distro, release)
-            kernel_dirs[release] = target
+            kernel_dirs.append((release, target))
 
             for dev_container in dev_containers:
                 dev_container_basename = os.path.basename(dev_container)
