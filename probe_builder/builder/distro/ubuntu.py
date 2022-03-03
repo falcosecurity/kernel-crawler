@@ -15,8 +15,7 @@ class UbuntuBuilder(DistroBuilder):
     KERNEL_RELEASE_RE = re.compile(r'(?P<release>[0-9]\.[0-9]+\.[0-9]+-[0-9]+-[a-z0-9-]+)')
 
     def unpack_kernels(self, workspace, distro, kernels):
-        kernel_dirs = dict()
-
+        kernel_dirs = list()
         for release, debs in kernels:
             # we don't have the version handy, so gather it from all the package
             # names in the release. these all should match but at this point we can
@@ -39,7 +38,7 @@ class UbuntuBuilder(DistroBuilder):
                         ))
 
             target = workspace.subdir('build', distro, version[0], version[1])
-            kernel_dirs[release] = target
+            kernel_dirs.append((release, target))
 
             for deb in debs:
                 deb_basename = os.path.basename(deb)

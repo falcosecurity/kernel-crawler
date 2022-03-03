@@ -127,7 +127,7 @@ def build(builder_image_prefix,
 
     kernels = distro_obj.get_kernels(workspace, package, download_config)
     kernel_dirs = distro_builder.unpack_kernels(workspace, distro.distro, kernels)
-    for release, target in kernel_dirs.items():
+    for release, target in kernel_dirs:
         distro_builder.build_kernel(workspace, probe, distro.builder_distro, release, target)
 
 
