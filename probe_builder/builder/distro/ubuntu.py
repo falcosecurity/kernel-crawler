@@ -91,13 +91,13 @@ class UbuntuBuilder(DistroBuilder):
             if m:
                 release = m.group('release')
                 version_to_releases.setdefault(version, set()).add(release)
-                releases.setdefault(release, []).append(deb)
+                releases.setdefault((release, version), []).append(deb)
             else:
                 version_files.setdefault(version, []).append(deb)
 
         for version, release_ids in version_to_releases.items():
             for release_id in release_ids:
-                release_files = releases[release_id]
+                release_files = releases[(release_id, version)]
                 # add all the shared files that end up in the same directory
                 release_files.extend(version_files.get(version, []))
                 kernels.append((release_id, release_files))
