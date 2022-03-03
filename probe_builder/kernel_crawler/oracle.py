@@ -19,6 +19,8 @@ class Oracle6Mirror(repo.Distro):
         ]
 
     def __init__(self, arch='x86_64'):
+        if arch=='arm':
+            arch='aarch64'
         super(Oracle6Mirror, self).__init__([], arch)
 
     def list_repos(self):
@@ -37,6 +39,8 @@ class Oracle7Mirror(repo.Distro):
         ]
 
     def __init__(self, arch='x86_64'):
+        if arch=='arm':
+            arch='aarch64'
         super(Oracle7Mirror, self).__init__([], arch)
 
     def list_repos(self):
@@ -51,6 +55,8 @@ class Oracle8Mirror(repo.Distro):
         ]
 
     def __init__(self, arch='x86_64'):
+        if arch=='arm':
+            arch='aarch64'
         super(Oracle8Mirror, self).__init__([], arch)
 
     def list_repos(self):
