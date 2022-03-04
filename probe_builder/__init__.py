@@ -1,7 +1,7 @@
 import logging
 import os
 import sys
-
+import json
 import click
 
 from probe_builder.kernel_crawler import crawl_kernels, DISTROS
@@ -127,16 +127,29 @@ def build(builder_image_prefix,
         distro_builder.build_kernel(workspace, probe, distro.builder_distro, release, target)
 
 
+class SetEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, set):
+            return list(obj)
+        return json.JSONEncoder.default(self, obj)
+
 @click.command()
-@click.argument('distro', type=click.Choice(sorted(DISTROS.keys())))
+@click.argument('distro', type=click.Choice(sorted(DISTROS.keys()) + ['*']))
 @click.argument('version', required=False, default='')
 @click.argument('arch', required=False, default='')
-def crawl(distro, version='', arch=''):
+@click.argument('json_fmt', required=False, default=False)
+def crawl(distro, version='', arch='', json_fmt=False):
     kernels = crawl_kernels(distro, version, arch)
-    for release, packages in kernels.items():
-        print('=== {} ==='.format(release))
-        for pkg in packages:
-            print(' {}'.format(pkg))
+    if not json_fmt:
+        for dist, ks in kernels.items():
+            print('=== {} ==='.format(dist))
+            for release, packages in ks.items():
+                print('=== {} ==='.format(release))
+                for pkg in packages:
+                    print(' {}'.format(pkg))
+    else:
+        json_object = json.dumps(kernels, indent=4, cls=SetEncoder)
+        print(json_object)
 
 
 cli.add_command(build, 'build')
