@@ -51,6 +51,7 @@ class DistroBuilder(object):
 
         if skip_reason:
             logger.info('Skipping build of {} probe {}-{}: {}'.format(label, release, config_hash, skip_reason))
+            return
 
         docker.rm(container_name)
         try:
