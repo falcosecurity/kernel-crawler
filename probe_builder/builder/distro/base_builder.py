@@ -9,6 +9,7 @@ from probe_builder import docker
 from probe_builder.builder import builder_image, choose_builder
 from probe_builder.kernel_crawler import crawl_kernels
 from probe_builder.kernel_crawler.download import download_batch
+from probe_builder.py23 import make_bytes, make_string
 
 logger = logging.getLogger(__name__)
 
@@ -55,11 +56,17 @@ class DistroBuilder(object):
 
         docker.rm(container_name)
         try:
-            builder_image.run(workspace, probe, kernel_dir, release, config_hash, container_name, image_name, args)
+            lines = builder_image.run(workspace, probe, kernel_dir, release, config_hash, container_name, image_name, args)
         except subprocess.CalledProcessError:
             logger.error("Build failed for {} probe {}-{}".format(label, release, config_hash))
         else:
-            logger.info("Build for {} probe {}-{} successful".format(label, release, config_hash))
+            output_dir = workspace.subdir('output')
+            if builder_image.probe_built(probe, output_dir, release, config_hash, bpf):
+                logger.info("Build for {} probe {}-{} successful".format(label, release, config_hash))
+            else:
+                logger.warn("Build for {} probe {}-{} failed silently: no output file found".format(label, release, config_hash))
+                for line in lines:
+                    logger.warn(make_string(line))
 
     def build_kernel(self, workspace, probe, builder_distro, release, target):
         config_hash = self.hash_config(release, target)
