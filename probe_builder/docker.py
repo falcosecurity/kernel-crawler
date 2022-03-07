@@ -49,7 +49,8 @@ def run(image, volumes, command, env, privileged=False, name=None):
     cmd.append(image)
     cmd.extend(command)
 
-    pipe(cmd)
+    # return stdout
+    return pipe(cmd)
 
 
 def build(image, dockerfile, context_dir):

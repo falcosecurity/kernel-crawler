@@ -30,7 +30,7 @@ def run(workspace, probe, kernel_dir, kernel_release,
         docker.EnvVar('HASH_ORIG', config_hash)
     ]
 
-    docker.run(image_name, volumes, args, env, name=container_name)
+    return docker.run(image_name, volumes, args, env, name=container_name)
 
 
 def probe_output_file(probe, kernel_release, config_hash, bpf):
@@ -50,11 +50,12 @@ SKIPPED_KERNELS = [
     ("5.8.0-1023-aws", "3f7746be1bef4c3f68f5465d8453fa4d"),
 ]
 
+def probe_built(probe, output_dir, kernel_release, config_hash, bpf):
+    probe_file_name = probe_output_file(probe, kernel_release, config_hash, bpf)
+    return os.path.exists(os.path.join(output_dir, probe_file_name))
 
 def skip_build(probe, output_dir, kernel_release, config_hash, bpf):
-    probe_file_name = probe_output_file(probe, kernel_release, config_hash, bpf)
-
-    if os.path.exists(os.path.join(output_dir, probe_file_name)):
+    if probe_built(probe, output_dir, kernel_release, config_hash, bpf):
         return "Already built"
 
     if (kernel_release, config_hash) in SKIPPED_KERNELS:
