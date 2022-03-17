@@ -15,6 +15,17 @@ class UbuntuBuilder(DistroBuilder):
     KERNEL_VERSION_RE = re.compile(r'(?P<version>[0-9]\.[0-9]+\.[0-9]+-[0-9]+)\.(?P<update>[0-9][^_]*)')
     KERNEL_RELEASE_RE = re.compile(r'(?P<release>[0-9]\.[0-9]+\.[0-9]+-[0-9]+-[a-z0-9-]+)')
 
+    def crawl(self, workspace, distro, crawler_distro, download_config=None, filter=''):
+        crawled_dict = super().crawl(workspace=workspace, distro=distro, crawler_distro=crawler_distro, download_config=download_config, filter=filter)
+        kernels = []
+        # batch packages according to package version, e.g. '5.15.0-1001/1' as returned by the crawler
+        # (which is the package version of the main 'linux-headers-5.15.0-1001-gke_5.15.0-1001.1_amd64.deb')
+        # each of those versions may yield one or more releases e.g. '5.15.0-1001-gke'
+        for version, flattened_packages in crawled_dict.items():
+            # since the returned value is a list of tuple, we just extend them
+            kernels.extend(self.batch_packages(flattened_packages, version))
+        return kernels
+
     def unpack_kernels(self, workspace, distro, kernels):
         kernel_dirs = list()
 
@@ -60,7 +71,7 @@ class UbuntuBuilder(DistroBuilder):
     def get_kernel_dir(self, workspace, release, target):
         return workspace.subdir(target, 'usr/src/linux-headers-{}'.format(release))
 
-    def batch_packages(self, kernel_files):
+    def batch_packages(self, kernel_files, expected_version=None):
         kernels = []
 
         # ubuntu kernels have two separate versions

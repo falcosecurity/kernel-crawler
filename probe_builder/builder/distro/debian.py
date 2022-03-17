@@ -15,6 +15,22 @@ class DebianBuilder(DistroBuilder):
     KERNEL_VERSION_RE = re.compile(r'-(?P<version>[0-9]\.[0-9]+\.[0-9]+(-[^-]+)?)-(?P<vararch>[a-z0-9-]+)_')
     KBUILD_PACKAGE_RE = re.compile(r'linux-kbuild-(?P<major>[0-9]\.[0-9]+)_')
 
+
+    def crawl(self, workspace, distro, crawler_distro, download_config=None, filter=''):
+        # for debian, we essentially want to discard the classification work performed by the crawler,
+        # and batch packages together
+
+        # call the parent's method
+        crawled_dict = super().crawl(workspace=workspace, distro=distro, crawler_distro=crawler_distro, download_config=download_config, filter=filter)
+
+        # flatten that dictionary into a single list, retaining ONLY package urls and discarding the release altogether
+        flattened_packages = [pkg for pkgs in crawled_dict.values() for pkg in pkgs]
+        # then we batch that list as if it were a local distro
+        batched_packages = self.batch_packages(flattened_packages)
+
+        logger.debug("batched_packages=\n{}".format(pp.pformat(batched_packages)))
+        return batched_packages
+
     @staticmethod
     def _reparent_link(base_path, release, link_name):
         build_link_path = os.path.join(base_path, 'lib/modules', release, link_name)
