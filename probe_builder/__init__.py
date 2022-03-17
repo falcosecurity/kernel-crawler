@@ -58,9 +58,9 @@ class CrawlDistro(object):
         self.distro_builder = self.distro_obj.builder()
         self.crawler_distro = crawler_distro
 
-    def get_kernels(self, workspace, _packages, download_config):
+    def get_kernels(self, workspace, _packages, download_config, filter):
         # crawler will return a dictionary of {"release": ["http://url/for/package1.rpm", "http://url/for/package1.rpm"]}
-        crawled_dict = self.distro_builder.crawl(workspace, self.distro_obj, self.crawler_distro, download_config)
+        crawled_dict = self.distro_builder.crawl(workspace, self.distro_obj, self.crawler_distro, download_config, filter)
         # we flatten that dictionary into a single list, retaining ONLY package urls and discarding the release altogether
         flattened_packages = [pkg for pkgs in crawled_dict.values() for pkg in pkgs]
         # then we batch that list as if it were a local distro
@@ -73,7 +73,7 @@ class LocalDistro(object):
         self.distro_obj = Distro(distro, builder_distro)
         self.distro_builder = self.distro_obj.builder()
 
-    def get_kernels(self, _workspace, packages, _download_config):
+    def get_kernels(self, _workspace, packages, _download_config, filter):
         return self.distro_builder.batch_packages(packages)
 
 
@@ -105,6 +105,7 @@ def cli(debug):
 @click.option('-b', '--builder-image-prefix', default='')
 @click.option('-d', '--download-concurrency', type=click.INT, default=1)
 @click.option('-k', '--kernel-type', type=click.Choice(sorted(CLI_DISTROS.keys())))
+@click.option('-f', '--filter', default='')
 @click.option('-p', '--probe-name')
 @click.option('-r', '--retries', type=click.INT, default=1)
 @click.option('-s', '--source-dir')
@@ -112,7 +113,7 @@ def cli(debug):
 @click.option('-v', '--probe-version')
 @click.argument('package', nargs=-1)
 def build(builder_image_prefix,
-          download_concurrency, kernel_type, probe_name, retries,
+          download_concurrency, kernel_type, filter, probe_name, retries,
           source_dir, download_timeout, probe_version, package):
     workspace_dir = os.getcwd()
     builder_source = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -125,7 +126,7 @@ def build(builder_image_prefix,
     distro = distro_obj.distro_obj
     download_config = DownloadConfig(download_concurrency, download_timeout, retries, None)
 
-    kernels = distro_obj.get_kernels(workspace, package, download_config)
+    kernels = distro_obj.get_kernels(workspace, package, download_config, filter)
     kernel_dirs = distro_builder.unpack_kernels(workspace, distro.distro, kernels)
     for release, target in kernel_dirs:
         distro_builder.build_kernel(workspace, probe, distro.builder_distro, release, target)

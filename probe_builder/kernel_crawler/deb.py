@@ -120,16 +120,16 @@ class DebRepository(repo.Repository):
             all_deps.add(packages[dep]['URL'])
         return all_deps
 
-    def get_package_list(self, deps, package_filter):
+    def get_package_list(self, packages, package_filter):
         kernel_packages = []
-        for p in deps.keys():
+        for p in packages.keys():
             if not p.startswith('linux-headers-'):
                 continue
             release = p.replace('linux-headers-', '')
-            if 'linux-modules-{}'.format(release) in deps:
+            if 'linux-modules-{}'.format(release) in packages:
                 kernel_packages.append(p)
                 kernel_packages.append('linux-modules-{}'.format(release))
-            elif 'linux-image-{}'.format(release) in deps:
+            elif 'linux-image-{}'.format(release) in packages:
                 kernel_packages.append(p)
                 kernel_packages.append('linux-image-{}'.format(release))
 
@@ -141,12 +141,16 @@ class DebRepository(repo.Repository):
         linux_modules = 'linux-modules-{}'.format(package_filter)
         linux_headers = 'linux-headers-{}'.format(package_filter)
         linux_image = 'linux-image-{}'.format(package_filter)
-        if package_filter in deps:
+        # if the filter is an exact match on package name, just pick that
+        if package_filter in packages:
             return [package_filter]
-        elif linux_modules in kernel_packages and linux_headers in deps:
+        # if the filter is an exact match on the suffix for headers and modules, use both
+        elif linux_modules in kernel_packages and linux_headers in kernel_packages:
             return [linux_modules, linux_headers]
-        elif linux_image in kernel_packages and linux_headers in deps:
+        # same for image
+        elif linux_image in kernel_packages and linux_headers in kernel_packages:
             return [linux_image, linux_headers]
+        # otherwise just pick up anything matching it
         else:
             return [k for k in kernel_packages if package_filter in k]
 
@@ -188,9 +192,9 @@ class DebRepository(repo.Repository):
                 del deps[pkg]
         return deps
 
-    def get_package_tree(self, version=''):
+    def get_package_tree(self, filter=''):
         packages = self.get_raw_package_db()
-        package_list = self.get_package_list(packages, version)
+        package_list = self.get_package_list(packages, filter)
         return self.build_package_tree(packages, package_list)
 
 

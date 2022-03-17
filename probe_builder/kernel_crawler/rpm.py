@@ -38,20 +38,21 @@ class RpmRepository(repo.Repository):
         return '''name IN ('kernel', 'kernel-devel')'''
 
     @classmethod
-    def build_base_query(cls, version=''):
+    def build_base_query(cls, filter=''):
         base_query = '''SELECT version || '-' || release || '.' || arch, pkgkey FROM packages WHERE {}'''.format(
             cls.kernel_package_query())
-        if not version:
+        if not filter:
             return base_query, ()
         else:
-            return base_query + ''' AND (version = ? OR version || '-' || "release" = ?)''', (version, version)
+            # if filtering, match anythint like 5.6.6 (version) or 5.6.6-300.fc32 (version || '-' || release)
+            return base_query + ''' AND (version = ? OR version || '-' || "release" = ?)''', (filter, filter)
 
     @classmethod
-    def parse_repo_db(cls, repo_db, version=''):
+    def parse_repo_db(cls, repo_db, filter=''):
         db = sqlite3.connect(repo_db)
         cursor = db.cursor()
 
-        base_query, args = cls.build_base_query(version)
+        base_query, args = cls.build_base_query(filter)
         query = '''WITH RECURSIVE transitive_deps(version, pkgkey) AS (
                 {}
                 UNION
@@ -70,7 +71,7 @@ class RpmRepository(repo.Repository):
         pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary_db"]/repo:location/@href')
         return self.base_url + pkglist_url
 
-    def get_package_tree(self, version=''):
+    def get_package_tree(self, filter=''):
         packages = {}
         try:
             repodb_url = self.get_repodb_url()
@@ -81,7 +82,7 @@ class RpmRepository(repo.Repository):
         with tempfile.NamedTemporaryFile() as tf:
             tf.write(repodb)
             tf.flush()
-            for pkg in self.parse_repo_db(tf.name, version):
+            for pkg in self.parse_repo_db(tf.name, filter):
                 version, url = pkg
                 packages.setdefault(version, set()).add(self.base_url + url)
         return packages
