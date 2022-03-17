@@ -15,6 +15,22 @@ class DebianBuilder(DistroBuilder):
     KERNEL_VERSION_RE = re.compile(r'-(?P<version>[0-9]\.[0-9]+\.[0-9]+(-[^-]+)?)-(?P<vararch>[a-z0-9-]+)_')
     KBUILD_PACKAGE_RE = re.compile(r'linux-kbuild-(?P<major>[0-9]\.[0-9]+)_')
 
+
+    def crawl(self, workspace, distro, crawler_distro, download_config=None, filter=''):
+        # for debian, we essentially want to discard the classification work performed by the crawler,
+        # and batch packages together
+
+        # call the parent's method
+        crawled_dict = super().crawl(workspace=workspace, distro=distro, crawler_distro=crawler_distro, download_config=download_config, filter=filter)
+
+        # flatten that dictionary into a single list, retaining ONLY package urls and discarding the release altogether
+        flattened_packages = [pkg for pkgs in crawled_dict.values() for pkg in pkgs]
+        # then we batch that list as if it were a local distro
+        batched_packages = self.batch_packages(flattened_packages)
+
+        logger.debug("batched_packages=\n{}".format(pp.pformat(batched_packages)))
+        return batched_packages
+
     @staticmethod
     def _reparent_link(base_path, release, link_name):
         build_link_path = os.path.join(base_path, 'lib/modules', release, link_name)
@@ -76,7 +92,8 @@ class DebianBuilder(DistroBuilder):
         kernels = dict()
 
         # similar to ubuntu, debian has two version numbers per (kernel) package
-        # e.g. linux-headers-5.10.0-8-amd64_5.10.46-5_amd64.deb
+        # e.g. linux-headers-|5.10.0-8|-|amd64  |_5.10.46-5_amd64.deb
+        #                    | version| |vararch| <ignored>
         #
         # fortunately, we unpack to 5.10.0-8 and look for 5.10.0-8-amd64 inside
         # so we can easily find the requested directory name from the release
@@ -86,6 +103,12 @@ class DebianBuilder(DistroBuilder):
         common_packages = {}
         arch_packages = {}
         kbuild_packages = {}
+
+
+        # Step 1: we loop over all files and we arrange them in 3 buckets:
+        # kbuild_packages = { '5.16': 'file' }
+        # common_packages = { '5.16.0-1': ['files...'] }
+        # arch_packages = { '5.16.0-1': { 'rt-amd64': ['files...'] } }
 
         for deb in kernel_files:
             deb_basename = os.path.basename(deb)
@@ -120,6 +143,14 @@ class DebianBuilder(DistroBuilder):
                 #
                 arch_packages.setdefault(version, {}).setdefault(vararch, []).append(deb)
 
+
+        # Step 2: we compose a dictionary
+        #  { '5.16-0-1:rt-amd64' : [ 'linux-headers-5.16.0-1-|rt-amd64|_5.16.7-2_amd64.deb'  (from arch_packages)
+        #                             'linux-headers-5.16.0-1-|common|_5.16.7-2_all.deb'      (from common_packages)
+        #                             'linux-headers-5.16.0-1-|common-rt|_5.16.7-2_all.deb'   (from common_packages)
+        #                             'linux-kbuild-5.16....'                                 (from kbuild_packages)
+        #     ]
+        #  }
         for version, per_vararch in arch_packages.items():
             for vararch, packages in per_vararch.items():
                 packages.extend(common_packages.get(version, []))
