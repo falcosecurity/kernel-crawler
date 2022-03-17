@@ -109,7 +109,7 @@ class DistroBuilder(object):
         except OSError as exc:
             if exc.errno != errno.EEXIST:
                 raise
-
+        # kernels is a dict {'release'=>['urls'...]}
         all_urls = []
         kernel_files = {}
         for release, urls in kernels.items():
@@ -119,4 +119,5 @@ class DistroBuilder(object):
         with click.progressbar(all_urls, label='Downloading kernels', item_show_func=to_s) as all_urls:
             download_batch(all_urls, workspace.subdir(distro.distro), download_config)
 
+        # kernel_files is a dict {'release'=>['/local/path/to/files'....]}
         return kernel_files
