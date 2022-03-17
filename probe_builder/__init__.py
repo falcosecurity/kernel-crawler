@@ -20,6 +20,7 @@ def init_logging(debug):
     handler.setFormatter(logging.Formatter('%(asctime)s %(message)s'))
     handler.setLevel(level)
     logger.addHandler(handler)
+    logger.debug("DEBUG logging enabled")
 
 
 def get_probe(workspace, sysdig_dir, probe_name, probe_version):

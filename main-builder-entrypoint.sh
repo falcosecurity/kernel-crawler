@@ -53,6 +53,9 @@ Options:
 		Run the kernel crawler to list available kernel packages
 		for a particular distribution. Run without extra parameters
 		to see the supported distributions.
+
+	-d
+		Enable debug (pass --debug to the probe builder)
 EOF
 	exit 1
 }
@@ -71,7 +74,7 @@ build_probes()
 {
 	check_docker_socket
 	cd /workspace
-	probe_builder build -s /sysdig -b "$BUILDER_IMAGE_PREFIX" "$@" /kernels/*
+	probe_builder ${DEBUG_PREFIX} build -s /sysdig -b "$BUILDER_IMAGE_PREFIX" "$@" /kernels/*
 }
 
 prepare_builders()
@@ -88,11 +91,12 @@ download_from_artifactory()
 
 crawl()
 {
-	probe_builder crawl "$@"
+	probe_builder ${DEBUG_PREFIX} crawl "$@"
 }
 
 BUILDER_IMAGE_PREFIX=
-while getopts ":Ab:BCP" opt
+DEBUG_PREFIX=
+while getopts ":Ab:BCdP" opt
 do
 	case "$opt" in
 		A)
@@ -106,6 +110,9 @@ do
 			;;
 		C)
 			OP=crawl
+			;;
+		d)
+			DEBUG_PREFIX="--debug"
 			;;
 		P)
 			OP=prepare
