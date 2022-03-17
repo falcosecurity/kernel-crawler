@@ -6,12 +6,18 @@ import re
 import sys
 
 import click
+import logging
 import requests
+
 from lxml import html
 
 from . import repo
 from probe_builder.kernel_crawler.download import get_first_of, get_url
 from probe_builder.py23 import make_bytes, make_string
+import pprint
+
+logger = logging.getLogger(__name__)
+pp = pprint.PrettyPrinter(depth=4)
 
 
 class IncompletePackageListException(Exception):
@@ -120,6 +126,9 @@ class DebRepository(repo.Repository):
             all_deps.add(packages[dep]['URL'])
         return all_deps
 
+
+    # this method returns a list of available kernel-looking package _names_
+    # (i.e., without version) available from within an individual .deb repository
     def get_package_list(self, packages, package_filter):
         kernel_packages = []
         for p in packages.keys():
@@ -134,6 +143,7 @@ class DebRepository(repo.Repository):
                 kernel_packages.append('linux-image-{}'.format(release))
 
         if not package_filter:
+            logger.debug("kernel_packages[{}]=\n{}".format(str(self), pp.pformat(kernel_packages)))
             return kernel_packages
             # return [dep for dep in kernel_packages if self.is_kernel_package(dep) and not dep.endswith('-dbg')]
 
@@ -171,7 +181,19 @@ class DebRepository(repo.Repository):
 
     @classmethod
     def build_package_tree(cls, packages, package_list):
+        # this classmethod takes as input:
+        #  - packages, a dictionary of .deb packages with their metadata
+        #  - packages_list, a list of strings (package names)
+        # it traverses the dependency chain within the package_list
+        # and returns a dictionary of urls:
+        # {'5.15.0-1001/2': {'http://security.ubuntu.com/ubuntu/pool/main/l/linux-azure/linux-azure-headers-5.15.0-1001_5.15.0-1001.2_all.deb',
+        #           'http://security.ubuntu.com/ubuntu/pool/main/l/linux-azure/linux-headers-5.15.0-1001-azure_5.15.0-1001.2_amd64.deb',
+        #           'http://security.ubuntu.com/ubuntu/pool/main/l/linux-azure/linux-modules-5.15.0-1001-azure_5.15.0-1001.2_amd64.deb',
+        #           'http://security.ubuntu.com/ubuntu/pool/main/l/linux-signed-azure/linux-image-5.15.0-1001-azure_5.15.0-1001.2_amd64.deb'},
+
         deps = {}
+        logger.debug("packages=\n{}".format(pp.pformat(packages)))
+        logger.debug("package_list=\n{}".format(pp.pformat(package_list)))
         with click.progressbar(package_list, label='Building dependency tree', file=sys.stderr,
                                item_show_func=repo.to_s) as pkgs:
             for pkg in pkgs:
@@ -180,9 +202,13 @@ class DebRepository(repo.Repository):
                 if m:
                     pv = '{}/{}'.format(m.group(1), m.group(2))
                 try:
+                    logger.debug("Building dependency tree for {}, pv={}".format(str(pkg), pv))
                     deps.setdefault(pv, set()).update(cls.get_package_deps(packages, pkg))
                 except IncompletePackageListException:
+                    logger.debug("No dependencies found for {}, pv={}".format(str(pkg), pv))
                     pass
+
+        logger.debug("before pruning, deps=\n{}".format(pp.pformat(deps)))
         for pkg, dep_list in list(deps.items()):
             have_headers = False
             for dep in dep_list:
@@ -190,6 +216,7 @@ class DebRepository(repo.Repository):
                     have_headers = True
             if not have_headers:
                 del deps[pkg]
+        logger.debug("after pruning, deps=\n{}".format(pp.pformat(deps)))
         return deps
 
     def get_package_tree(self, filter=''):

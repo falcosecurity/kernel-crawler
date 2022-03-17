@@ -76,7 +76,8 @@ class DebianBuilder(DistroBuilder):
         kernels = dict()
 
         # similar to ubuntu, debian has two version numbers per (kernel) package
-        # e.g. linux-headers-5.10.0-8-amd64_5.10.46-5_amd64.deb
+        # e.g. linux-headers-|5.10.0-8|-|amd64  |_5.10.46-5_amd64.deb
+        #                    | version| |vararch| <ignored>
         #
         # fortunately, we unpack to 5.10.0-8 and look for 5.10.0-8-amd64 inside
         # so we can easily find the requested directory name from the release
@@ -86,6 +87,12 @@ class DebianBuilder(DistroBuilder):
         common_packages = {}
         arch_packages = {}
         kbuild_packages = {}
+
+
+        # Step 1: we loop over all files and we arrange them in 3 buckets:
+        # kbuild_packages = { '5.16': 'file' }
+        # common_packages = { '5.16.0-1': ['files...'] }
+        # arch_packages = { '5.16.0-1': { 'rt-amd64': ['files...'] } }
 
         for deb in kernel_files:
             deb_basename = os.path.basename(deb)
@@ -120,6 +127,14 @@ class DebianBuilder(DistroBuilder):
                 #
                 arch_packages.setdefault(version, {}).setdefault(vararch, []).append(deb)
 
+
+        # Step 2: we compose a dictionary
+        #  { '5.16-0-1:rt-amd64' : [ 'linux-headers-5.16.0-1-|rt-amd64|_5.16.7-2_amd64.deb'  (from arch_packages)
+        #                             'linux-headers-5.16.0-1-|common|_5.16.7-2_all.deb'      (from common_packages)
+        #                             'linux-headers-5.16.0-1-|common-rt|_5.16.7-2_all.deb'   (from common_packages)
+        #                             'linux-kbuild-5.16....'                                 (from kbuild_packages)
+        #     ]
+        #  }
         for version, per_vararch in arch_packages.items():
             for vararch, packages in per_vararch.items():
                 packages.extend(common_packages.get(version, []))
