@@ -46,7 +46,7 @@ class UbuntuBuilder(DistroBuilder):
                     version = (m.group('version'), m.group('update'))
                 else:
                     new_version = (m.group('version'), m.group('update'))
-                    if version != new_version:
+                    if version[0] != new_version[0] and not new_version[1].startswith(version[1]):
                         raise ValueError("Unexpected version {}/{} from package {} (expected {}/{})".format(
                             new_version[0], new_version[1], deb,
                             version[0], version[1]
@@ -122,6 +122,13 @@ class UbuntuBuilder(DistroBuilder):
             version = m.group('version')
             update = m.group('update')
             version = '{}/{}'.format(version, update)
+
+            if expected_version:
+                if version.startswith(expected_version):
+                    version = expected_version
+                else:
+                    raise ValueError("Unexpected version {} from package {} (expected to start with {})".format(
+                                version, deb, expected_version))
 
 
             # linux-headers-|5.4.0-1063-azure-cvm|_5.4.0-1063.66+cvm3_amd64.deb
