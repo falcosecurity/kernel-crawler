@@ -102,8 +102,8 @@ class DistroBuilder(object):
     def batch_packages(self, kernel_files):
         raise NotImplementedError
 
-    def crawl(self, workspace, distro, crawler_distro, download_config=None):
-        kernels = crawl_kernels(crawler_distro)
+    def crawl(self, workspace, distro, crawler_distro, download_config=None, filter=''):
+        kernels = crawl_kernels(crawler_distro, filter)
         try:
             os.makedirs(workspace.subdir(distro.distro))
         except OSError as exc:
