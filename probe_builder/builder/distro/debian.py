@@ -2,6 +2,7 @@ import logging
 import os
 import re
 import traceback
+import pprint
 
 import click
 
@@ -9,7 +10,7 @@ from probe_builder.builder import toolkit
 from probe_builder.builder.distro.base_builder import DistroBuilder
 
 logger = logging.getLogger(__name__)
-
+pp = pprint.PrettyPrinter(depth=4)
 
 class DebianBuilder(DistroBuilder):
     KERNEL_VERSION_RE = re.compile(r'-(?P<version>[0-9]\.[0-9]+\.[0-9]+(-[^-]+)?)-(?P<vararch>[a-z0-9-]+)_')
