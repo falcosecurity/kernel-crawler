@@ -24,34 +24,43 @@ logger = logging.getLogger(__name__)
 
 
 def download_file(url, output_file, download_config=None):
-    if download_config is None:
-        download_config = DownloadConfig.default()
-    resp = None
-    for i in range(download_config.retries):
-        logger.debug('Downloading {} to {}, attempt {} of {}'.format(url, output_file, i+1, download_config.retries))
-        with open(output_file, 'ab') as fp:
-            size = fp.tell()
-            if size > 0:
-                headers = {'Range': 'bytes={}-'.format(size)}
-            else:
-                headers = {}
-            if download_config.extra_headers is not None:
-                headers.update(download_config.extra_headers)
-            resp = requests.get(url, headers=headers, stream=True, timeout=download_config.timeout)
-            if resp.status_code == 206:
-                # yay, resuming the download
-                shutil.copyfileobj(resp.raw, fp)
-                return
-            elif resp.status_code == 416:
-                return  # "requested range not satisfiable", we have the whole thing
-            elif resp.status_code == 200:
-                fp.truncate(0)  # have to start over
-                shutil.copyfileobj(resp.raw, fp)
-                return
+    def download_temp_file(url, temp_file, download_config):
+        if download_config is None:
+            download_config = DownloadConfig.default()
+        resp = None
+        for i in range(download_config.retries):
+            logger.debug('Downloading {} to {}, attempt {} of {}'.format(url, temp_file, i+1, download_config.retries))
+            with open(temp_file, 'ab') as fp:
+                size = fp.tell()
+                if size > 0:
+                    headers = {'Range': 'bytes={}-'.format(size)}
+                else:
+                    headers = {}
+                if download_config.extra_headers is not None:
+                    headers.update(download_config.extra_headers)
+                resp = requests.get(url, headers=headers, stream=True, timeout=download_config.timeout)
+                if resp.status_code == 206:
+                    # yay, resuming the download
+                    shutil.copyfileobj(resp.raw, fp)
+                    return
+                elif resp.status_code == 416:
+                    return  # "requested range not satisfiable", we have the whole thing
+                elif resp.status_code == 200:
+                    fp.truncate(0)  # have to start over
+                    shutil.copyfileobj(resp.raw, fp)
+                    return
+        resp.raise_for_status()
+        raise requests.HTTPError('Unexpected status code {}'.format(resp.status_code))
 
-    resp.raise_for_status()
-    raise requests.HTTPError('Unexpected status code {}'.format(resp.status_code))
-
+    # if target path already exists, assume it's complete
+    if os.path.exists(output_file):
+        logger.debug('Downloading {} to {} not necessary'.format(url, output_file))
+        return
+    # download to .part file
+    temp_file = output_file + ".part"
+    download_temp_file(url, temp_file, download_config)
+    # and then rename it to its final target
+    shutil.move(temp_file, output_file)
 
 def download_batch(urls, output_dir, download_config=None):
     if download_config is None:
