@@ -11,7 +11,7 @@ def repo_filter(dist):
 class DebianMirror(repo.Distro):
     def __init__(self):
         mirrors = [
-            deb.DebMirror('https://mirrors.edge.kernel.org/debian/', repo_filter),
+            deb.DebMirror('http://mirrors.edge.kernel.org/debian/', repo_filter),
             deb.DebMirror('http://security.debian.org/', repo_filter),
         ]
         super(DebianMirror, self).__init__(mirrors)
