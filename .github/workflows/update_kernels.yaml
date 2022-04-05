@@ -23,11 +23,11 @@ jobs:
           
       - name: Run crawler for x86_64
         run: |
-          cd "$GITHUB_WORKSPACE/crawler" && python probe_builder/__init__.py crawl '*' "" "" true > kernels/x86_64/list.json
+          cd "$GITHUB_WORKSPACE/crawler" && python __init__.py crawl '*' "" "" true > kernels/x86_64/list.json
           
       - name: Run crawler for aarch64
         run: |
-          cd "$GITHUB_WORKSPACE/crawler" && python probe_builder/__init__.py crawl '*' "" "arm" true > kernels/aarch64/list.json    
+          cd "$GITHUB_WORKSPACE/crawler" && python __init__.py crawl '*' "" "arm" true > kernels/aarch64/list.json    
             
       - name: Push updated list
         run: |
