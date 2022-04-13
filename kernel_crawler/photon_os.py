@@ -27,3 +27,6 @@ class PhotonOsMirror(repo.Distro):
             PhotonOsRepository('https://packages.vmware.com/photon/{v}/photon{r}_{v}_{a}/'.format(
                 v=version, r=repo_tag, a=self.arch))
             for version, repo_tag in self.PHOTON_OS_VERSIONS]
+
+    def to_driverkit_config(self, release, deps):
+        return repo.DriverKitConfig(release, "photonOS")

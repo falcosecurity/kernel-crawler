@@ -11,3 +11,17 @@ class UbuntuMirror(repo.Distro):
             deb.DebMirror('http://ports.ubuntu.com/ubuntu-ports/', arch),
         ]
         super(UbuntuMirror, self).__init__(mirrors, arch)
+
+    def to_driverkit_config(self, release, deps):
+        krel, kver = release.split("/")
+        target = "ubuntu-generic"
+        for dep in deps:
+            # We only support ubuntu-aws specific builder in driverkit
+            d = dep.find("aws")
+            if d != -1:
+                target = "ubuntu-aws"
+                krel += "-aws"
+            else:
+                krel += "-generic"
+            break
+        return repo.DriverKitConfig(krel, target, kver)
