@@ -44,5 +44,4 @@ class DebianMirror(repo.Distro):
         return packages
 
     def to_driverkit_config(self, release, deps):
-        krel, kver = release.split("/")
-        return repo.DriverKitConfig(krel, "debian", kver)
+        return repo.DriverKitConfig(release + "-" + self.arch, "debian")
