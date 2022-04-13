@@ -35,3 +35,7 @@ class DebianMirror(repo.Distro):
         for release, dependencies in deb.DebRepository.build_package_tree(all_packages, all_kernel_packages).items():
             packages.setdefault(release, set()).update(dependencies)
         return packages
+
+    def to_driverkit_config(self, release, deps):
+        krel, kver = release.split("/")
+        return repo.DriverKitConfig(krel, "debian", kver)
