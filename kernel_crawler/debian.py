@@ -7,9 +7,16 @@ import sys
 def repo_filter(dist):
     return 'stable' not in dist and 'testing' not in dist and not dist.startswith('Debian')
 
+def fixup_deb_arch(arch):
+    match arch:
+        case 'x86_64':
+            return 'amd64'
+        case 'aarch64':
+            return 'arm64'
 
 class DebianMirror(repo.Distro):
-    def __init__(self, arch='amd64'):
+    def __init__(self, arch):
+        arch = fixup_deb_arch(arch)
         mirrors = [
             deb.DebMirror('http://mirrors.edge.kernel.org/debian/', arch, repo_filter),
             deb.DebMirror('http://security.debian.org/', arch, repo_filter),

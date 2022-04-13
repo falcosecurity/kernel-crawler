@@ -1,10 +1,10 @@
 from . import deb
 from . import repo
+from .debian import fixup_deb_arch
 
 class UbuntuMirror(repo.Distro):
-    def __init__(self, arch='amd64'):
-        if arch=='arm':
-            arch='arm64'
+    def __init__(self, arch):
+        arch = fixup_deb_arch(arch)
         mirrors = [
             deb.DebMirror('http://mirrors.edge.kernel.org/ubuntu/', arch),
             deb.DebMirror('http://security.ubuntu.com/ubuntu/', arch),
