@@ -3,7 +3,6 @@ from __future__ import print_function
 import click
 import sys
 
-
 class Repository(object):
     def get_package_tree(self, version=''):
         raise NotImplementedError
@@ -11,6 +10,11 @@ class Repository(object):
     def __str__(self):
         raise NotImplementedError
 
+class DriverKitConfig(object):
+    def __init__(self, kernelrelease, target, kernelversion=1):
+        self.kernelversion = kernelversion
+        self.kernelrelease = kernelrelease
+        self.target = target
 
 def to_s(s):
     if s is None:
