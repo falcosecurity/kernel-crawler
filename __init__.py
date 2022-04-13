@@ -30,7 +30,7 @@ class SetEncoder(json.JSONEncoder):
 @click.command()
 @click.option('--distro', type=click.Choice(sorted(DISTROS.keys()) + ['*'], case_sensitive=False))
 @click.option('--version', required=False, default='')
-@click.option('--arch', required=False, default='')
+@click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=False), default='x86_64')
 @click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=False),  default='plain')
 def crawl(distro, version='', arch='', out_fmt=0):
     res = crawl_kernels(distro, version, arch, out_fmt == 'driverkit')

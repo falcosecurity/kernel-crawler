@@ -14,9 +14,7 @@ def v6_or_v7(ver):
     return ver.startswith('6') or ver.startswith('7')
 
 class CentosMirror(repo.Distro):
-    def __init__(self, arch='x86_64'):
-        if arch=='arm':
-            arch='aarch64'
+    def __init__(self, arch):
         mirrors = [
             rpm.RpmMirror('http://mirror.centos.org/centos/', 'os/' + arch + '/',  v7_only),
             rpm.RpmMirror('http://mirror.centos.org/centos/', 'updates/' + arch + '/', v7_only),
