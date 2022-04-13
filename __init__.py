@@ -28,22 +28,26 @@ class SetEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 @click.command()
-@click.argument('distro', type=click.Choice(sorted(DISTROS.keys()) + ['*']))
-@click.argument('version', required=False, default='')
-@click.argument('arch', required=False, default='')
-@click.argument('json_fmt', required=False, default=False)
-def crawl(distro, version='', arch='', json_fmt=False):
-    kernels = crawl_kernels(distro, version, arch)
-    if not json_fmt:
-        for dist, ks in kernels.items():
-            print('=== {} ==='.format(dist))
-            for release, packages in ks.items():
-                print('=== {} ==='.format(release))
-                for pkg in packages:
-                    print(' {}'.format(pkg))
-    else:
-        json_object = json.dumps(kernels, indent=4, cls=SetEncoder)
-        print(json_object)
+@click.option('--distro', type=click.Choice(sorted(DISTROS.keys()) + ['*'], case_sensitive=False))
+@click.option('--version', required=False, default='')
+@click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=False), default='x86_64')
+@click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=False),  default='plain')
+def crawl(distro, version='', arch='', out_fmt=0):
+    res = crawl_kernels(distro, version, arch, out_fmt == 'driverkit')
+    match out_fmt:
+        case 'plain':
+            for dist, ks in res.items():
+                print('=== {} ==='.format(dist))
+                for release, packages in ks.items():
+                    print('=== {} ==='.format(release))
+                    for pkg in packages:
+                        print(' {}'.format(pkg))
+        case 'json':
+            json_object = json.dumps(res, indent=2, cls=SetEncoder)
+            print(json_object)
+        case 'driverkit':
+            json_object = json.dumps(res, indent=2, default=vars)
+            print(json_object)
 
 cli.add_command(crawl, 'crawl')
 

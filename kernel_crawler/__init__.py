@@ -26,12 +26,22 @@ DISTROS = {
 }
 
 
-def crawl_kernels(distro, version='', arch=''):
+def to_driverkit_config(d, res):
+    dk_configs = []
+    for ver, deps in res.items():
+        dk_configs.append(d.to_driverkit_config(ver, deps))
+    return dk_configs
+
+def crawl_kernels(distro, version, arch, to_driverkit):
     ret = {}
+
     for distname, dist in DISTROS.items():
         if distname == distro or distro == "*":
-            if arch:
-                ret[distname] = dist(arch).get_package_tree(version)
+            d = dist(arch)
+            res = d.get_package_tree(version)
+            if to_driverkit:
+                ret[distname] = to_driverkit_config(d, res)
             else:
-                ret[distname] = dist().get_package_tree(version)
+                ret[distname] = res
+
     return ret
