@@ -27,9 +27,7 @@ class AmazonLinux1Mirror(repo.Distro):
         '2018.03/main',
     ]
 
-    def __init__(self, arch='x86_64'):
-        if arch=='arm':
-            arch='aarch64'
+    def __init__(self, arch):
         super(AmazonLinux1Mirror, self).__init__([], arch)
 
     def list_repos(self):
@@ -52,9 +50,7 @@ class AmazonLinux2Mirror(repo.Distro):
         'extras/kernel-5.10/latest',
     ]
 
-    def __init__(self, arch='x86_64'):
-        if arch=='arm':
-            arch='aarch64'
+    def __init__(self, arch):
         super(AmazonLinux2Mirror, self).__init__([], arch)
 
     def list_repos(self):

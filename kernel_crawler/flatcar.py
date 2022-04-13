@@ -4,6 +4,7 @@ import requests
 from lxml import html
 
 from .repo import Repository, Distro
+from .debian import fixup_deb_arch
 
 class FlatcarRepository(Repository):
     def __init__(self, base_url):
@@ -23,9 +24,8 @@ class FlatcarRepository(Repository):
 class FlatcarMirror(Distro):
     CHANNELS = ['stable', 'beta', 'alpha']
 
-    def __init__(self, arch='amd64'):
-        if arch=='arm':
-            arch='arm64'
+    def __init__(self, arch):
+        arch = fixup_deb_arch(arch)
         mirrors = ['https://{c}.release.flatcar-linux.net/{a}-usr/'.format(c=channel, a=arch) for channel in self.CHANNELS]
         super(FlatcarMirror, self).__init__(mirrors, arch)
 
