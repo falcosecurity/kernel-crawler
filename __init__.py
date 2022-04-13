@@ -28,26 +28,26 @@ class SetEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 @click.command()
-@click.argument('distro', type=click.Choice(sorted(DISTROS.keys()) + ['*']))
-@click.argument('version', required=False, default='')
-@click.argument('arch', required=False, default='')
-@click.argument('json_fmt', required=False, default=False)
-@click.argument('driverkit_config', required=False, default=False)
-def crawl(distro, version='', arch='', json_fmt=False, driverkit_config=False):
-    res = crawl_kernels(distro, version, arch, driverkit_config)
-    if not json_fmt:
-        for dist, ks in res.items():
-            print('=== {} ==='.format(dist))
-            for release, packages in ks.items():
-                print('=== {} ==='.format(release))
-                for pkg in packages:
-                    print(' {}'.format(pkg))
-    else:
-        if driverkit_config:
-            json_object = json.dumps(res, indent=2, default=vars)
-        else:
+@click.option('--distro', type=click.Choice(sorted(DISTROS.keys()) + ['*'], case_sensitive=False))
+@click.option('--version', required=False, default='')
+@click.option('--arch', required=False, default='')
+@click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=False),  default='plain')
+def crawl(distro, version='', arch='', out_fmt=0):
+    res = crawl_kernels(distro, version, arch, out_fmt == 'driverkit')
+    match out_fmt:
+        case 'plain':
+            for dist, ks in res.items():
+                print('=== {} ==='.format(dist))
+                for release, packages in ks.items():
+                    print('=== {} ==='.format(release))
+                    for pkg in packages:
+                        print(' {}'.format(pkg))
+        case 'json':
             json_object = json.dumps(res, indent=2, cls=SetEncoder)
-        print(json_object)
+            print(json_object)
+        case 'driverkit':
+            json_object = json.dumps(res, indent=2, default=vars)
+            print(json_object)
 
 cli.add_command(crawl, 'crawl')
 
