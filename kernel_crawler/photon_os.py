@@ -17,9 +17,7 @@ class PhotonOsMirror(repo.Distro):
         ('4.0', '_updates'),
     ]
 
-    def __init__(self, arch='x86_64'):
-        if arch=='arm':
-            arch='aarch64'
+    def __init__(self, arch):
         super(PhotonOsMirror, self).__init__([], arch)
 
     def list_repos(self):
@@ -27,3 +25,6 @@ class PhotonOsMirror(repo.Distro):
             PhotonOsRepository('https://packages.vmware.com/photon/{v}/photon{r}_{v}_{a}/'.format(
                 v=version, r=repo_tag, a=self.arch))
             for version, repo_tag in self.PHOTON_OS_VERSIONS]
+
+    def to_driverkit_config(self, release, deps):
+        return repo.DriverKitConfig(release, "photonOS")

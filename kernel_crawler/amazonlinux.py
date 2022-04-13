@@ -27,9 +27,7 @@ class AmazonLinux1Mirror(repo.Distro):
         '2018.03/main',
     ]
 
-    def __init__(self, arch='x86_64'):
-        if arch=='arm':
-            arch='aarch64'
+    def __init__(self, arch):
         super(AmazonLinux1Mirror, self).__init__([], arch)
 
     def list_repos(self):
@@ -40,6 +38,9 @@ class AmazonLinux1Mirror(repo.Distro):
                 repo_urls.add(get_al_repo("http://repo.us-east-1.amazonaws.com/", r, self.arch))
         return [rpm.RpmRepository(url) for url in sorted(repo_urls)]
 
+    def to_driverkit_config(self, release, deps):
+        return repo.DriverKitConfig(release, "amazonlinux")
+
 
 class AmazonLinux2Mirror(repo.Distro):
     AL2_REPOS = [
@@ -49,9 +50,7 @@ class AmazonLinux2Mirror(repo.Distro):
         'extras/kernel-5.10/latest',
     ]
 
-    def __init__(self, arch='x86_64'):
-        if arch=='arm':
-            arch='aarch64'
+    def __init__(self, arch):
         super(AmazonLinux2Mirror, self).__init__([], arch)
 
     def list_repos(self):
@@ -61,3 +60,6 @@ class AmazonLinux2Mirror(repo.Distro):
             for r in repos:
                 repo_urls.add(get_al_repo("http://amazonlinux.us-east-1.amazonaws.com/2/", r + '/' + self.arch))
         return [rpm.RpmRepository(url) for url in sorted(repo_urls)]
+
+    def to_driverkit_config(self, release, deps):
+        return repo.DriverKitConfig(release, "amazonlinux2")

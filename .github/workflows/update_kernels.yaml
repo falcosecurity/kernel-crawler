@@ -7,31 +7,33 @@ on:
 jobs:
   crawler:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./crawler
     steps:
       - name: Install deps
         run: |
           sudo apt-get update && sudo apt-get -y install bash gawk grep curl dpkg rpm2cpio git jq multipath-tools python3 python3-pip python3-lxml python3-requests python3-click sed fdisk wget docker 
           
       - name: Checkout crawler
-        uses: actions/checkout@v2   
+        uses: actions/checkout@v2
         with:
-          path: crawler
+          path: ./crawler
 
       - name: Setup py project
         run: |
-          cd "$GITHUB_WORKSPACE/crawler" && /usr/bin/pip install -e .
+          /usr/bin/pip install -e .
           
       - name: Run crawler for x86_64
         run: |
-          cd "$GITHUB_WORKSPACE/crawler" && python __init__.py crawl '*' "" "" true > kernels/x86_64/list.json
+          python __init__.py crawl --distro=* --out_fmt=driverkit > kernels/x86_64/list.json
           
       - name: Run crawler for aarch64
         run: |
-          cd "$GITHUB_WORKSPACE/crawler" && python __init__.py crawl '*' "" "arm" true > kernels/aarch64/list.json    
+          python __init__.py crawl --distro=* --out_fmt=driverkit --arch=arm > kernels/aarch64/list.json    
             
       - name: Push updated list
         run: |
-          cd "$GITHUB_WORKSPACE/crawler"
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add kernels/x86_64/list.json kernels/aarch64/list.json

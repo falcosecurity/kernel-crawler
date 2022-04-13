@@ -9,13 +9,12 @@ def repo_filter(version):
 
 
 class FedoraMirror(repo.Distro):
-    def __init__(self, arch='x86_64'):
-        if arch=='arm':
-            arch='aarch64'
+    def __init__(self, arch):
         mirrors = [
             rpm.RpmMirror('https://mirrors.kernel.org/fedora/releases/', 'Everything/' + arch + '/os/', repo_filter),
             rpm.RpmMirror('https://mirrors.kernel.org/fedora/updates/', 'Everything/' + arch + '/', repo_filter),
         ]
         super(FedoraMirror, self).__init__(mirrors, arch)
 
-
+    def to_driverkit_config(self, release, deps):
+        return repo.DriverKitConfig(release, "fedora")
