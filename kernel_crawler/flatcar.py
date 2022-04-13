@@ -47,3 +47,6 @@ class FlatcarMirror(Distro):
         for repo in self.mirrors:
             repos.extend(self.scan_repo(repo))
         return repos
+
+    def to_driverkit_config(self, release, deps):
+        return repo.DriverKitConfig(release, "flatcar")
