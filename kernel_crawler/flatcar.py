@@ -3,6 +3,7 @@ import os
 import requests
 from lxml import html
 
+from . import repo
 from .repo import Repository, Distro
 from .debian import fixup_deb_arch
 

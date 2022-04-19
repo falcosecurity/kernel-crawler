@@ -1,7 +1,6 @@
 from . import rpm
 from . import repo
 
-
 class PhotonOsRepository(rpm.RpmRepository):
     @classmethod
     def kernel_package_query(cls):
