@@ -1,7 +1,6 @@
 from . import repo
 from . import rpm
 
-
 def v7_only(ver):
     return ver.startswith('7')
 

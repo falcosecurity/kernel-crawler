@@ -3,7 +3,6 @@ from . import deb
 import click
 import sys
 
-
 def repo_filter(dist):
     return 'stable' not in dist and 'testing' not in dist and not dist.startswith('Debian')
 

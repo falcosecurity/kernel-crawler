@@ -1,7 +1,6 @@
 from . import repo
 from . import rpm
 
-
 class OracleRepository(rpm.RpmRepository):
     @classmethod
     def kernel_package_query(cls):
