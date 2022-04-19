@@ -8,11 +8,10 @@ def repo_filter(dist):
     return 'stable' not in dist and 'testing' not in dist and not dist.startswith('Debian')
 
 def fixup_deb_arch(arch):
-    match arch:
-        case 'x86_64':
-            return 'amd64'
-        case 'aarch64':
-            return 'arm64'
+    if arch == 'x86_64':
+        return 'amd64'
+    elif arch == 'aarch64':
+        return 'arm64'
 
 class DebianMirror(repo.Distro):
     def __init__(self, arch):
