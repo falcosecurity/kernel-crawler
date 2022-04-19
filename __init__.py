@@ -32,22 +32,22 @@ class SetEncoder(json.JSONEncoder):
 @click.option('--version', required=False, default='')
 @click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=False), default='x86_64')
 @click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=False),  default='plain')
-def crawl(distro, version='', arch='', out_fmt=0):
+def crawl(distro, version='', arch='', out_fmt=''):
     res = crawl_kernels(distro, version, arch, out_fmt == 'driverkit')
-    match out_fmt:
-        case 'plain':
-            for dist, ks in res.items():
-                print('=== {} ==='.format(dist))
-                for release, packages in ks.items():
-                    print('=== {} ==='.format(release))
-                    for pkg in packages:
-                        print(' {}'.format(pkg))
-        case 'json':
-            json_object = json.dumps(res, indent=2, cls=SetEncoder)
-            print(json_object)
-        case 'driverkit':
-            json_object = json.dumps(res, indent=2, default=vars)
-            print(json_object)
+    out_fmt = str.lower(out_fmt)
+    if out_fmt == 'plain':
+        for dist, ks in res.items():
+            print('=== {} ==='.format(dist))
+            for release, packages in ks.items():
+                print('=== {} ==='.format(release))
+                for pkg in packages:
+                    print(' {}'.format(pkg))
+    elif out_fmt == 'json':
+        json_object = json.dumps(res, indent=2, cls=SetEncoder)
+        print(json_object)
+    elif out_fmt == 'driverkit':
+        json_object = json.dumps(res, indent=2, default=vars)
+        print(json_object)
 
 cli.add_command(crawl, 'crawl')
 
