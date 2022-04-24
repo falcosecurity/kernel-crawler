@@ -137,97 +137,7 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "4.14.152-98.182.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.88-72.76.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.209-117.337.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.165-103.209.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.232-123.381.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.154-99.181.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.238-125.422.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.121-85.96.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.186-110.268.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.225-121.357.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.77-69.57.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.181-108.257.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
       "kernelrelease": "4.14.33-51.34.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.262-135.489.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.123-86.109.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.114-83.126.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.173-106.229.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.88-72.73.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.97-74.72.amzn1.x86_64",
       "target": "amazonlinux"
     },
     {
@@ -237,152 +147,7 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "4.14.165-102.185.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.143-91.122.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.128-87.105.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.114-82.97.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.62-65.117.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.177-107.254.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.133-88.112.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.104-78.84.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.219-119.340.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.51-60.38.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.225-121.362.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.94-73.73.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.138-89.102.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.171-105.231.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.268-139.500.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.101-75.76.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.106-79.86.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.158-101.185.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.67-66.56.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.133-88.105.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.262-135.486.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.55-62.37.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.248-129.473.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.72-68.55.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.146-93.123.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.47-56.37.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.33-51.37.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.70-67.55.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.238-125.421.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.273-140.502.amzn1.x86_64",
+      "kernelrelease": "4.14.109-80.92.amzn1.x86_64",
       "target": "amazonlinux"
     },
     {
@@ -392,27 +157,12 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "4.14.77-70.59.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.77-70.82.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
       "kernelrelease": "4.14.203-116.332.amzn1.x86_64",
       "target": "amazonlinux"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "4.14.252-131.483.amzn1.x86_64",
-      "target": "amazonlinux"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.109-80.92.amzn1.x86_64",
+      "kernelrelease": "4.14.181-108.257.amzn1.x86_64",
       "target": "amazonlinux"
     },
     {
@@ -427,419 +177,269 @@
     },
     {
       "kernelversion": 1,
+      "kernelrelease": "4.14.104-78.84.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.158-101.185.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.209-117.337.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.238-125.421.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.225-121.362.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.262-135.489.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.171-105.231.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.33-51.37.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.133-88.112.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.106-79.86.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.225-121.357.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.77-69.57.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.121-85.96.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.219-119.340.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.154-99.181.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.238-125.422.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.248-129.473.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.62-65.117.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.273-140.502.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.114-82.97.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.47-56.37.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.101-75.76.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.232-123.381.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.268-139.500.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.94-73.73.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.173-106.229.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.128-87.105.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.77-70.82.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.67-66.56.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.123-86.109.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.70-67.55.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.143-91.122.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.97-74.72.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.186-110.268.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.77-70.59.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.262-135.486.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.72-68.55.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.152-98.182.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.114-83.126.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.138-89.102.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.55-62.37.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.51-60.38.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.252-131.483.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
       "kernelrelease": "4.14.214-118.339.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.88-72.73.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.165-103.209.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.133-88.105.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.88-72.76.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.177-107.254.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.165-102.185.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.146-93.123.amzn1.x86_64",
+      "target": "amazonlinux"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.275-142.503.amzn1.x86_64",
       "target": "amazonlinux"
     }
   ],
   "AmazonLinux2": [
     {
       "kernelversion": 1,
-      "kernelrelease": "4.14.51-66.38.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.209-160.339.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.76-38.79.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.72-73.55.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.146-120.181.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.225-168.357.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.152-127.182.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.181-142.260.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.273-207.502.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.252-195.483.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.75-1.56.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.165-131.185.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.26-54.32.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.192-147.314.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.186-146.268.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.55-68.37.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.133-113.105.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.62-10.57.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.88-88.76.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.225-169.362.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.114-103.97.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.42-61.37.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.232-177.418.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.193-149.317.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.101-91.76.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.33-59.37.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.47-63.37.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.109-99.92.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.59-68.43.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.214-160.339.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.171-136.231.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.77-86.82.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.231-173.361.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.123-111.109.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.243-185.433.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.219-161.340.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.268-205.500.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.219-164.354.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.138-114.102.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.77-80.57.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.70-72.55.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.88-88.73.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.146-119.123.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.85-46.56.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.143-118.123.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.106-97.85.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.181-140.257.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.256-197.484.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.67-71.56.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.246-187.474.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.241-184.433.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.85-47.59.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
       "kernelrelease": "4.14.133-113.112.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.200-155.322.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.209-160.335.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.177-139.254.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.198-152.320.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.77-81.59.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.238-182.422.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.154-128.181.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.114-105.126.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.70-2.243.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.231-173.360.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.104-95.84.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.97-90.72.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.165-133.209.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.121-109.96.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.47-64.38.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.94-89.73.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.158-129.185.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.33-59.34.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.203-156.332.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.262-200.489.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.128-112.105.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.152-124.171.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.232-176.381.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.173-137.229.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.81-44.57.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.173-137.228.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.9.77-41.59.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.177-139.253.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "4.14.62-70.117.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
@@ -849,12 +449,457 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "4.14.252-195.481.amzn2.x86_64",
+      "kernelrelease": "4.14.209-160.335.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.193-149.317.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.76-38.79.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.33-59.34.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.256-197.484.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.128-112.105.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.51-66.38.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.138-114.102.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.114-105.126.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.177-139.253.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.219-164.354.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.70-2.243.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.203-156.332.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.62-10.57.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.231-173.361.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.198-152.320.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
       "kernelrelease": "4.14.238-182.421.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.143-118.123.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.232-176.381.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.88-88.76.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.104-95.84.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.252-195.481.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.101-91.76.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.121-109.96.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.200-155.322.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.33-59.37.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.88-88.73.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.109-99.92.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.72-73.55.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.106-97.85.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.47-64.38.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.186-146.268.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.165-133.209.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.268-205.500.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.75-1.56.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.241-184.433.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.252-195.483.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.192-147.314.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.42-61.37.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.225-168.357.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.97-90.72.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.273-207.502.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.26-54.32.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.181-142.260.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.209-160.339.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.81-44.57.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.154-128.181.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.232-177.418.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.214-160.339.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.94-89.73.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.262-200.489.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.181-140.257.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.152-127.182.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.55-68.37.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.171-136.231.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.77-81.59.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.123-111.109.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.62-70.117.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.77-80.57.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.85-46.56.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.173-137.229.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.173-137.228.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.219-161.340.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.47-63.37.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.114-103.97.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.146-119.123.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.158-129.185.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.77-41.59.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.77-86.82.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.146-120.181.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.238-182.422.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.243-185.433.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.275-207.503.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.59-68.43.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.152-124.171.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.231-173.360.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.9.85-47.59.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.67-71.56.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.225-169.362.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.133-113.105.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.70-72.55.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.177-139.254.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.165-131.185.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "4.14.246-187.474.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.10.96-90.460.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.10.29-27.126.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.10.29-27.128.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.10.93-87.444.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.10.59-52.142.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.10.82-83.359.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.10.109-104.500.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
@@ -874,32 +919,12 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.10.29-27.126.amzn2.x86_64",
+      "kernelrelease": "5.10.47-39.130.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
       "kernelrelease": "5.10.50-44.131.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.10.29-27.128.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.10.96-90.460.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.10.82-83.359.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.10.106-102.504.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
@@ -914,32 +939,57 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.10.47-39.130.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.10.93-87.444.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
       "kernelrelease": "5.10.75-79.358.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.10.59-52.142.amzn2.x86_64",
+      "kernelrelease": "5.10.106-102.504.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.144-69.257.amzn2.x86_64",
+      "kernelrelease": "5.4.91-41.139.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.74-36.135.amzn2.x86_64",
+      "kernelrelease": "5.4.149-73.259.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.95-42.163.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.188-104.359.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.80-40.140.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.110-54.189.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.117-58.216.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.58-27.104.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.186-102.354.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
@@ -949,7 +999,32 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.149-73.259.amzn2.x86_64",
+      "kernelrelease": "5.4.144-69.257.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.110-54.182.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.46-19.75.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.156-83.273.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.38-17.76.amzn2.x86_64",
+      "target": "amazonlinux2"
+    },
+    {
+      "kernelversion": 1,
+      "kernelrelease": "5.4.46-23.77.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
@@ -964,47 +1039,12 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.105-48.177.amzn2.x86_64",
+      "kernelrelease": "5.4.172-90.336.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.95-42.163.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.91-41.139.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.117-58.216.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.162-86.275.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.50-25.83.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.58-27.104.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.176-91.338.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.38-17.76.amzn2.x86_64",
+      "kernelrelease": "5.4.74-36.135.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
@@ -1014,27 +1054,12 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.156-83.273.amzn2.x86_64",
+      "kernelrelease": "5.4.20-12.75.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.46-19.75.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.110-54.182.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.46-23.77.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.129-62.227.amzn2.x86_64",
+      "kernelrelease": "5.4.176-91.338.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
@@ -1044,27 +1069,22 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.20-12.75.amzn2.x86_64",
+      "kernelrelease": "5.4.50-25.83.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.186-102.354.amzn2.x86_64",
+      "kernelrelease": "5.4.129-62.227.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.110-54.189.amzn2.x86_64",
+      "kernelrelease": "5.4.162-86.275.amzn2.x86_64",
       "target": "amazonlinux2"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.4.172-90.336.amzn2.x86_64",
-      "target": "amazonlinux2"
-    },
-    {
-      "kernelversion": 1,
-      "kernelrelease": "5.4.80-40.140.amzn2.x86_64",
+      "kernelrelease": "5.4.105-48.177.amzn2.x86_64",
       "target": "amazonlinux2"
     }
   ],
@@ -7320,12 +7340,12 @@
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "5.17.1-1~exp1-amd64",
+      "kernelrelease": "3.16.56-1+deb8u1-amd64",
       "target": "debian"
     },
     {
       "kernelversion": 1,
-      "kernelrelease": "3.16.56-1+deb8u1-amd64",
+      "kernelrelease": "5.17.3-1-amd64",
       "target": "debian"
     },
     {
@@ -7446,6 +7466,11 @@
       "target": "ubuntu-generic"
     },
     {
+      "kernelversion": "117",
+      "kernelrelease": "4.15.0-1114-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "123",
       "kernelrelease": "4.15.0-1116-aws",
       "target": "ubuntu-aws"
@@ -7481,6 +7506,11 @@
       "target": "ubuntu-generic"
     },
     {
+      "kernelversion": "136",
+      "kernelrelease": "4.15.0-1122-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "133",
       "kernelrelease": "4.15.0-1124-aws",
       "target": "ubuntu-aws"
@@ -7493,6 +7523,11 @@
     {
       "kernelversion": "136",
       "kernelrelease": "4.15.0-1127-aws",
+      "target": "ubuntu-aws"
+    },
+    {
+      "kernelversion": "137",
+      "kernelrelease": "4.15.0-1128-aws",
       "target": "ubuntu-aws"
     },
     {
@@ -7558,6 +7593,11 @@
     {
       "kernelversion": "185",
       "kernelrelease": "4.15.0-176-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "186",
+      "kernelrelease": "4.15.0-177-generic",
       "target": "ubuntu-generic"
     },
     {
@@ -7647,8 +7687,8 @@
     },
     {
       "kernelversion": "69~18.04.1",
-      "kernelrelease": "5.4.0-1066-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1066-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "72~18.04.1",
@@ -7702,8 +7742,8 @@
     },
     {
       "kernelversion": "77~18.04.1",
-      "kernelrelease": "5.4.0-1072-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1072-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "79~18.04.1",
@@ -7762,8 +7802,8 @@
     },
     {
       "kernelversion": "9",
-      "kernelrelease": "4.15.0-1009-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "4.15.0-1009-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "12",
@@ -7792,8 +7832,8 @@
     },
     {
       "kernelversion": "11",
-      "kernelrelease": "4.15.0-1011-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "4.15.0-1011-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "12",
@@ -7847,8 +7887,8 @@
     },
     {
       "kernelversion": "16",
-      "kernelrelease": "4.15.0-1016-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "4.15.0-1016-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "17",
@@ -7892,8 +7932,8 @@
     },
     {
       "kernelversion": "19",
-      "kernelrelease": "4.15.0-1019-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "4.15.0-1019-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "20",
@@ -7907,8 +7947,8 @@
     },
     {
       "kernelversion": "21",
-      "kernelrelease": "4.15.0-1021-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "4.15.0-1021-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "22",
@@ -7937,8 +7977,8 @@
     },
     {
       "kernelversion": "23",
-      "kernelrelease": "4.15.0-1023-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "4.15.0-1023-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "24",
@@ -7987,8 +8027,8 @@
     },
     {
       "kernelversion": "27",
-      "kernelrelease": "4.15.0-1027-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "4.15.0-1027-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "28",
@@ -8072,8 +8112,8 @@
     },
     {
       "kernelversion": "34",
-      "kernelrelease": "4.15.0-1032-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "4.15.0-1032-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "33",
@@ -8197,8 +8237,8 @@
     },
     {
       "kernelversion": "43",
-      "kernelrelease": "4.15.0-1041-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "4.15.0-1041-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "45",
@@ -8232,8 +8272,8 @@
     },
     {
       "kernelversion": "46",
-      "kernelrelease": "4.15.0-1044-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "4.15.0-1044-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "70",
@@ -10547,8 +10587,8 @@
     },
     {
       "kernelversion": "22~18.04.1",
-      "kernelrelease": "5.4.0-1022-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1022-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "23~18.04.1",
@@ -10567,8 +10607,8 @@
     },
     {
       "kernelversion": "24~18.04.1",
-      "kernelrelease": "5.4.0-1024-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1024-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "25~18.04.1",
@@ -10602,8 +10642,8 @@
     },
     {
       "kernelversion": "29~18.04.1",
-      "kernelrelease": "5.4.0-1028-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1028-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "30~18.04.1",
@@ -10657,8 +10697,8 @@
     },
     {
       "kernelversion": "37~18.04.1",
-      "kernelrelease": "5.4.0-1035-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1035-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "36~18.04.1",
@@ -10717,8 +10757,8 @@
     },
     {
       "kernelversion": "41~18.04.1",
-      "kernelrelease": "5.4.0-1039-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1039-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "42~18.04.1",
@@ -10807,8 +10847,8 @@
     },
     {
       "kernelversion": "49~18.04.1",
-      "kernelrelease": "5.4.0-1047-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1047-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "50~18.04.1",
@@ -10927,8 +10967,8 @@
     },
     {
       "kernelversion": "62~18.04.1",
-      "kernelrelease": "5.4.0-1059-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1059-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "63~18.04.1",
@@ -10952,8 +10992,8 @@
     },
     {
       "kernelversion": "68~18.04.1",
-      "kernelrelease": "5.4.0-1065-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1065-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "71~18.04.1",
@@ -11187,8 +11227,8 @@
     },
     {
       "kernelversion": "25",
-      "kernelrelease": "4.15.0-1025-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "4.15.0-1025-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "31",
@@ -11336,6 +11376,41 @@
       "target": "ubuntu-generic"
     },
     {
+      "kernelversion": "3",
+      "kernelrelease": "5.15.0-1003-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "5",
+      "kernelrelease": "5.15.0-1003-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "7",
+      "kernelrelease": "5.15.0-1004-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "7",
+      "kernelrelease": "5.15.0-1005-aws",
+      "target": "ubuntu-aws"
+    },
+    {
+      "kernelversion": "6",
+      "kernelrelease": "5.15.0-1005-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "28",
+      "kernelrelease": "5.15.0-27-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "8~22.04.2",
+      "kernelrelease": "5.17.0-8-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "2",
       "kernelrelease": "5.15.0-1002-generic",
       "target": "ubuntu-generic"
@@ -11357,8 +11432,8 @@
     },
     {
       "kernelversion": "6",
-      "kernelrelease": "5.15.0-1004-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.15.0-1004-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "4",
@@ -11392,8 +11467,8 @@
     },
     {
       "kernelversion": "23~20.04.1",
-      "kernelrelease": "5.11.0-1022-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.11.0-1022-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "31~20.04.1",
@@ -11402,8 +11477,8 @@
     },
     {
       "kernelversion": "32~20.04.1",
-      "kernelrelease": "5.11.0-1029-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.11.0-1029-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "32~20.04.2",
@@ -11451,6 +11526,11 @@
       "target": "ubuntu-generic"
     },
     {
+      "kernelversion": "11",
+      "kernelrelease": "5.13.0-1011-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "15~20.04.1",
       "kernelrelease": "5.13.0-1014-aws",
       "target": "ubuntu-aws"
@@ -11482,8 +11562,8 @@
     },
     {
       "kernelversion": "21~20.04.1",
-      "kernelrelease": "5.13.0-1019-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.13.0-1019-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "22~20.04.1",
@@ -11516,8 +11596,18 @@
       "target": "ubuntu-generic"
     },
     {
+      "kernelversion": "29~20.04.1",
+      "kernelrelease": "5.13.0-1024-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "31~20.04.2",
       "kernelrelease": "5.13.0-1026-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "32~20.04.1",
+      "kernelrelease": "5.13.0-1027-generic",
       "target": "ubuntu-generic"
     },
     {
@@ -11568,6 +11658,11 @@
     {
       "kernelversion": "45~20.04.1",
       "kernelrelease": "5.13.0-40-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "46~20.04.1",
+      "kernelrelease": "5.13.0-41-generic",
       "target": "ubuntu-generic"
     },
     {
@@ -11651,6 +11746,11 @@
       "target": "ubuntu-generic"
     },
     {
+      "kernelversion": "37",
+      "kernelrelease": "5.14.0-1034-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "4~20.04.2",
       "kernelrelease": "5.15.0-1002-generic",
       "target": "ubuntu-generic"
@@ -11721,6 +11821,11 @@
       "target": "ubuntu-generic"
     },
     {
+      "kernelversion": "41",
+      "kernelrelease": "5.4.0-1040-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "119",
       "kernelrelease": "5.4.0-105-generic",
       "target": "ubuntu-generic"
@@ -11772,8 +11877,8 @@
     },
     {
       "kernelversion": "63",
-      "kernelrelease": "5.4.0-1060-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1060-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "64",
@@ -11792,8 +11897,8 @@
     },
     {
       "kernelversion": "66",
-      "kernelrelease": "5.4.0-1063-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1063-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "66+cvm3",
@@ -11822,8 +11927,8 @@
     },
     {
       "kernelversion": "69",
-      "kernelrelease": "5.4.0-1066-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1066-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "72",
@@ -11892,8 +11997,13 @@
     },
     {
       "kernelversion": "77",
-      "kernelrelease": "5.4.0-1072-generic",
+      "kernelrelease": "5.4.0-1071-generic",
       "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "77",
+      "kernelrelease": "5.4.0-1072-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "76",
@@ -11938,6 +12048,11 @@
     {
       "kernelversion": "123",
       "kernelrelease": "5.4.0-109-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "124",
+      "kernelrelease": "5.4.0-110-generic",
       "target": "ubuntu-generic"
     },
     {
@@ -12162,8 +12277,8 @@
     },
     {
       "kernelversion": "24~20.04.1",
-      "kernelrelease": "5.11.0-1023-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.11.0-1023-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "25~20.04.1",
@@ -12177,8 +12292,8 @@
     },
     {
       "kernelversion": "27~20.04.1",
-      "kernelrelease": "5.11.0-1025-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.11.0-1025-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "29~20.04.1",
@@ -12187,8 +12302,8 @@
     },
     {
       "kernelversion": "30~20.04.1",
-      "kernelrelease": "5.11.0-1027-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.11.0-1027-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "31~20.04.2",
@@ -12272,8 +12387,8 @@
     },
     {
       "kernelversion": "10",
-      "kernelrelease": "5.13.0-1009-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.13.0-1009-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "10",
@@ -12487,8 +12602,8 @@
     },
     {
       "kernelversion": "11",
-      "kernelrelease": "5.4.0-1011-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1011-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "12",
@@ -12512,8 +12627,8 @@
     },
     {
       "kernelversion": "15",
-      "kernelrelease": "5.4.0-1015-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1015-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "16",
@@ -12537,8 +12652,8 @@
     },
     {
       "kernelversion": "18",
-      "kernelrelease": "5.4.0-1018-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1018-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "19",
@@ -12567,8 +12682,8 @@
     },
     {
       "kernelversion": "21",
-      "kernelrelease": "5.4.0-1021-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1021-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "22",
@@ -12637,8 +12752,8 @@
     },
     {
       "kernelversion": "30",
-      "kernelrelease": "5.4.0-1029-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1029-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "31",
@@ -12677,8 +12792,8 @@
     },
     {
       "kernelversion": "37",
-      "kernelrelease": "5.4.0-1035-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1035-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "38",
@@ -12702,8 +12817,8 @@
     },
     {
       "kernelversion": "39",
-      "kernelrelease": "5.4.0-1037-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1037-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "40",
@@ -12756,14 +12871,9 @@
       "target": "ubuntu-generic"
     },
     {
-      "kernelversion": "41",
-      "kernelrelease": "5.4.0-1040-generic",
-      "target": "ubuntu-generic"
-    },
-    {
       "kernelversion": "43",
-      "kernelrelease": "5.4.0-1041-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1041-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "44",
@@ -12832,13 +12942,13 @@
     },
     {
       "kernelversion": "49",
-      "kernelrelease": "5.4.0-1047-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1047-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "50",
-      "kernelrelease": "5.4.0-1048-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1048-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "52",
@@ -12862,8 +12972,8 @@
     },
     {
       "kernelversion": "53",
-      "kernelrelease": "5.4.0-1051-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.4.0-1051-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "55",
@@ -12917,23 +13027,23 @@
     },
     {
       "kernelversion": "59",
-      "kernelrelease": "5.4.0-1056-generic",
-      "target": "ubuntu-generic"
-    },
-    {
-      "kernelversion": "60",
-      "kernelrelease": "5.4.0-1056-generic",
-      "target": "ubuntu-generic"
-    },
-    {
-      "kernelversion": "60",
-      "kernelrelease": "5.4.0-1057-aws",
+      "kernelrelease": "5.4.0-1056-aws",
       "target": "ubuntu-aws"
     },
     {
-      "kernelversion": "61",
-      "kernelrelease": "5.4.0-1058-generic",
+      "kernelversion": "60",
+      "kernelrelease": "5.4.0-1056-generic",
       "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "60",
+      "kernelrelease": "5.4.0-1057-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "61",
+      "kernelrelease": "5.4.0-1058-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "60",
@@ -12957,8 +13067,8 @@
     },
     {
       "kernelversion": "68",
-      "kernelrelease": "5.4.0-1065-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.4.0-1065-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "71",
@@ -13332,8 +13442,8 @@
     },
     {
       "kernelversion": "40~20.04.1",
-      "kernelrelease": "5.8.0-1038-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.8.0-1038-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "39~20.04.1",
@@ -13632,8 +13742,8 @@
     },
     {
       "kernelversion": "23",
-      "kernelrelease": "5.11.0-1022-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.11.0-1022-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "27",
@@ -13642,8 +13752,8 @@
     },
     {
       "kernelversion": "30",
-      "kernelrelease": "5.11.0-1027-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.11.0-1027-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "32",
@@ -13682,8 +13792,8 @@
     },
     {
       "kernelversion": "7",
-      "kernelrelease": "5.13.0-1006-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.13.0-1006-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "6",
@@ -13697,8 +13807,8 @@
     },
     {
       "kernelversion": "9",
-      "kernelrelease": "5.13.0-1008-aws",
-      "target": "ubuntu-aws"
+      "kernelrelease": "5.13.0-1008-generic",
+      "target": "ubuntu-generic"
     },
     {
       "kernelversion": "12",
@@ -13712,13 +13822,13 @@
     },
     {
       "kernelversion": "13",
-      "kernelrelease": "5.13.0-1012-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.13.0-1012-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "14",
-      "kernelrelease": "5.13.0-1013-generic",
-      "target": "ubuntu-generic"
+      "kernelrelease": "5.13.0-1013-aws",
+      "target": "ubuntu-aws"
     },
     {
       "kernelversion": "16",
@@ -13786,6 +13896,11 @@
       "target": "ubuntu-aws"
     },
     {
+      "kernelversion": "23",
+      "kernelrelease": "5.13.0-1022-generic",
+      "target": "ubuntu-generic"
+    },
+    {
       "kernelversion": "27",
       "kernelrelease": "5.13.0-1022-generic",
       "target": "ubuntu-generic"
@@ -13803,6 +13918,11 @@
     {
       "kernelversion": "31",
       "kernelrelease": "5.13.0-1026-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "32",
+      "kernelrelease": "5.13.0-1027-generic",
       "target": "ubuntu-generic"
     },
     {
@@ -13843,6 +13963,11 @@
     {
       "kernelversion": "45",
       "kernelrelease": "5.13.0-40-generic",
+      "target": "ubuntu-generic"
+    },
+    {
+      "kernelversion": "46",
+      "kernelrelease": "5.13.0-41-generic",
       "target": "ubuntu-generic"
     },
     {
@@ -17833,26 +17958,6 @@
     {
       "kernelversion": "37",
       "kernelrelease": "4.4.0-21-generic",
-      "target": "ubuntu-generic"
-    },
-    {
-      "kernelversion": "28",
-      "kernelrelease": "5.15.0-27-generic",
-      "target": "ubuntu-generic"
-    },
-    {
-      "kernelversion": "29~20.04.1",
-      "kernelrelease": "5.13.0-1024-generic",
-      "target": "ubuntu-generic"
-    },
-    {
-      "kernelversion": "32~20.04.1",
-      "kernelrelease": "5.13.0-1027-generic",
-      "target": "ubuntu-generic"
-    },
-    {
-      "kernelversion": "32",
-      "kernelrelease": "5.13.0-1027-generic",
       "target": "ubuntu-generic"
     }
   ],
