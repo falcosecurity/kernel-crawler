@@ -24,8 +24,9 @@ class Oracle6Mirror(repo.Distro):
         return [OracleRepository(url) for url in self.repos()]
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "oracle6")
-
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "oracle6", dep)
 
 class Oracle7Mirror(repo.Distro):
     def repos(self):
@@ -45,7 +46,9 @@ class Oracle7Mirror(repo.Distro):
         return [OracleRepository(url) for url in self.repos()]
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "oracle7")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "oracle7", dep)
 
 
 class Oracle8Mirror(repo.Distro):
@@ -62,4 +65,6 @@ class Oracle8Mirror(repo.Distro):
         return [OracleRepository(url) for url in self.repos()]
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "oracle8")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "oracle8", dep)

@@ -42,4 +42,8 @@ class DebianMirror(repo.Distro):
         return packages
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release + "-" + self.arch, "debian")
+        headers = []
+        for dep in deps:
+            if dep.find("headers") != -1:
+                headers.append(dep)
+        return repo.DriverKitConfig(release + "-" + self.arch, "debian", headers)
