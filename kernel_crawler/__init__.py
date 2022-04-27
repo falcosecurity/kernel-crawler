@@ -29,8 +29,19 @@ DISTROS = {
 
 def to_driverkit_config(d, res):
     dk_configs = []
+    # Note, this is not good performance-wise because we are post-processing the list
+    # while we could do the same at generation time.
+    # But this is much simpler and involved touching less code.
+    # Moreover, we do not really care about performance here.
     for ver, deps in res.items():
-        dk_configs.append(d.to_driverkit_config(ver, deps))
+        dk_conf = d.to_driverkit_config(ver, deps)
+        try:
+            # Ubuntu returns multiple for each
+            dk_configs.extend(dk_conf)
+        except TypeError:
+            # Others return just a single dk config
+            dk_configs.append(dk_conf)
+
     return dk_configs
 
 def crawl_kernels(distro, version, arch, to_driverkit):

@@ -50,4 +50,4 @@ class FlatcarMirror(Distro):
         return repos
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "flatcar")
+        return repo.DriverKitConfig(release, "flatcar", list(deps))

@@ -17,4 +17,6 @@ class FedoraMirror(repo.Distro):
         super(FedoraMirror, self).__init__(mirrors, arch)
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "fedora")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "fedora", dep)
