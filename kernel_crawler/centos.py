@@ -26,4 +26,6 @@ class CentosMirror(repo.Distro):
         super(CentosMirror, self).__init__(mirrors, arch)
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "centos")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "centos", dep)

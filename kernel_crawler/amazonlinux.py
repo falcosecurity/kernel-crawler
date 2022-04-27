@@ -40,7 +40,9 @@ class AmazonLinux1Mirror(repo.Distro):
         return [rpm.RpmRepository(url) for url in sorted(repo_urls)]
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "amazonlinux")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "amazonlinux", dep)
 
 
 class AmazonLinux2Mirror(repo.Distro):
@@ -63,7 +65,9 @@ class AmazonLinux2Mirror(repo.Distro):
         return [rpm.RpmRepository(url) for url in sorted(repo_urls)]
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "amazonlinux2")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "amazonlinux2", dep)
 
 class AmazonLinux2022Mirror(repo.Distro):
     # This was obtained by running
@@ -88,4 +92,6 @@ class AmazonLinux2022Mirror(repo.Distro):
         return [rpm.RpmRepository(url) for url in sorted(repo_urls)]
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "amazonlinux2")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "amazonlinux2", dep)

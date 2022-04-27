@@ -26,4 +26,6 @@ class PhotonOsMirror(repo.Distro):
             for version, repo_tag in self.PHOTON_OS_VERSIONS]
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "photonOS")
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "photonOS", dep)
