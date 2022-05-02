@@ -1,8 +1,10 @@
 name: Update list of kernels weekly
 
-on:
- schedule:
-   - cron: '0 0 * * 0'  # every sunday at midnight
+#on:
+# schedule:
+#   - cron: '0 0 * * 0'  # every sunday at midnight
+
+on: push
 
 jobs:
   crawler:
