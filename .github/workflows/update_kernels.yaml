@@ -4,6 +4,8 @@ on:
  schedule:
    - cron: '0 0 * * 0'  # every sunday at midnight
 
+permissions: read-all|write-all
+
 jobs:
   crawler:
     runs-on: ubuntu-latest
