@@ -1,6 +1,6 @@
 # Falcosecurity kernel-crawler
 
-[![Update list of kernels weekly](https://github.com/FedeDP/probe-builder/actions/workflows/update_kernels.yaml/badge.svg)](https://github.com/FedeDP/probe-builder/actions/workflows/update_kernels.yaml)
+[![Update list of kernels weekly](https://github.com/falcosecurity/kernel-crawler/actions/workflows/update_kernels.yaml/badge.svg)](https://github.com/falcosecurity/kernel-crawler/actions/workflows/update_kernels.yaml)
 
 Helper text and options:
 ```commandline
