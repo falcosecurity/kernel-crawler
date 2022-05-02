@@ -4,8 +4,6 @@ on:
  schedule:
    - cron: '0 0 * * 0'  # every sunday at midnight
 
-permissions: read-all|write-all
-
 jobs:
   crawler:
     runs-on: ubuntu-latest
@@ -28,11 +26,10 @@ jobs:
       - name: Run crawler for aarch64
         run: |
           python __init__.py crawl --distro=* --out_fmt=driverkit --arch=aarch64 > kernels/aarch64/list.json
-            
-      - name: Push updated list
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add kernels/x86_64/list.json kernels/aarch64/list.json
-          git commit -m "[CI] updated kernel json lists."
-          git push
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with: 
+          signoff: true
+          commit-message: 'update(kernels): updated kernel json lists.'
+          title: '[CI] Update kernel lists'
