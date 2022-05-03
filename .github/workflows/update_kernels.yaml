@@ -9,6 +9,8 @@ on: push
 jobs:
   crawler:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: Checkout crawler
         uses: actions/checkout@v3
