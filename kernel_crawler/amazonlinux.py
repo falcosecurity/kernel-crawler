@@ -94,4 +94,4 @@ class AmazonLinux2022Mirror(repo.Distro):
     def to_driverkit_config(self, release, deps):
         for dep in deps:
             if dep.find("devel") != -1:
-                return repo.DriverKitConfig(release, "amazonlinux2", dep)
+                return repo.DriverKitConfig(release, "amazonlinux2022", dep)
