@@ -3,6 +3,7 @@ name: Update list of kernels weekly
 on:
  schedule:
    - cron: '0 0 * * 0'  # every sunday at midnight
+ workflow_dispatch:
 
 jobs:
   crawler:
@@ -34,5 +35,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with: 
           signoff: true
+          base: main
+          branch: ci/update_kernels
           commit-message: 'update(kernels): updated kernel json lists.'
           title: '[CI] Update kernel lists'
