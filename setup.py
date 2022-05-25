@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup, find_packages
+
 
 setup(name='kernel_crawler',
       version='1.0.0',
@@ -8,7 +9,7 @@ setup(name='kernel_crawler',
       author='Grzegorz Nosek',
       author_email='grzegorz.nosek@sysdig.com',
       url='https://falco.org/',
-      packages=['kernel_crawler'],
+      packages=find_packages(),
       install_requires=[
           'click',
           'requests',
