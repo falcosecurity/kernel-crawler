@@ -46,4 +46,6 @@ class DebianMirror(repo.Distro):
         for dep in deps:
             if dep.find("headers") != -1:
                 headers.append(dep)
+            if dep.find("kbuild") != -1:
+                headers.append(dep)
         return repo.DriverKitConfig(release + "-" + self.arch, "debian", headers)
