@@ -9,6 +9,8 @@ from .ubuntu import UbuntuMirror
 
 from .flatcar import FlatcarMirror
 
+from .redhat import RedhatContainer
+
 DISTROS = {
     'AmazonLinux': AmazonLinux1Mirror,
     'AmazonLinux2': AmazonLinux2Mirror,
@@ -26,6 +28,9 @@ DISTROS = {
     'Flatcar': FlatcarMirror,
 }
 
+CONTAINER_DISTROS = {
+    'Redhat': RedhatContainer,
+}
 
 def to_driverkit_config(d, res):
     dk_configs = []
@@ -45,7 +50,7 @@ def to_driverkit_config(d, res):
 
     return dk_configs
 
-def crawl_kernels(distro, version, arch, to_driverkit):
+def crawl_kernels(distro, version, arch, image, to_driverkit):
     ret = {}
 
     for distname, dist in DISTROS.items():
@@ -56,5 +61,10 @@ def crawl_kernels(distro, version, arch, to_driverkit):
                 ret[distname] = to_driverkit_config(d, res)
             else:
                 ret[distname] = res
+
+    for distname, container in CONTAINER_DISTROS.items():
+        if distname == distro:
+            c = container(image)
+            res = c.get_kernel_versions()
 
     return ret
