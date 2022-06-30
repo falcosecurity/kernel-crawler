@@ -13,3 +13,6 @@ class RedhatContainer(repo.ContainerDistro):
             if m:
                 kernels[m.group(0)] = []
         return kernels
+
+    def to_driverkit_config(self, release, deps):
+        return repo.DriverKitConfig(release, "redhat", list(deps))
