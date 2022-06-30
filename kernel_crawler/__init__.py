@@ -66,5 +66,8 @@ def crawl_kernels(distro, version, arch, image, to_driverkit):
         if distname == distro:
             c = container(image)
             res = c.get_kernel_versions()
-
+            if to_driverkit:
+                ret[distname] = to_driverkit_config(c, res)
+            else:
+                ret[distname] = res
     return ret
