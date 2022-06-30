@@ -14,5 +14,6 @@ setup(name='kernel_crawler',
           'click',
           'requests',
           'lxml',
+          'docker',
       ],
 )

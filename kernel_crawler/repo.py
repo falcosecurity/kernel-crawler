@@ -1,4 +1,5 @@
 from __future__ import print_function
+from . import container
 
 import click
 import sys
@@ -56,3 +57,11 @@ class Distro(Mirror):
             for mirror in mirrors:
                 repos.extend(mirror.list_repos())
         return repos
+
+
+class ContainerDistro(container.Container):
+    def __init__(self, container_name):
+        super(ContainerDistro, self).__init__(container_name)
+
+    def get_kernel_versions(self):
+        raise NotImplementedError
