@@ -1,4 +1,10 @@
 import docker
+import click
+
+def decoded_str(s):
+    if s is None:
+        return ''
+    return s.decode("utf-8")
 
 class Container():
     def __init__(self, image):
@@ -9,8 +15,9 @@ class Container():
         container = client.containers.run(self.image, cmd, detach=True)
         logs = container.attach(stdout=True, stderr=True, stream=True, logs=True)
         cmd_output = []
-        for line in logs:
-            decoded_line = line.decode(encoding)
-            sp = list(filter(None, decoded_line.split("\n")))
-            cmd_output.extend(sp)
+        with click.progressbar(logs, label='Running command \'' + cmd + '\'', item_show_func=decoded_str) as logs:
+            for line in logs:
+                decoded_line = line.decode(encoding)
+                sp = list(filter(None, decoded_line.split("\n")))
+                cmd_output.extend(sp)
         return cmd_output
