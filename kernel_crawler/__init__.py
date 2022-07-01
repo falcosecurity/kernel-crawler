@@ -30,10 +30,6 @@ DISTROS = {
     'Redhat': RedhatContainer
 }
 
-CONTAINER_DISTROS = {
-    'Redhat': RedhatContainer,
-}
-
 def to_driverkit_config(d, res):
     dk_configs = []
     # Note, this is not good performance-wise because we are post-processing the list

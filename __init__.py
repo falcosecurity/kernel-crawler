@@ -3,7 +3,7 @@ import json
 import sys
 import click
 
-from kernel_crawler import crawl_kernels, DISTROS, CONTAINER_DISTROS
+from kernel_crawler import crawl_kernels, DISTROS
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ class DistroImageValidation(click.Option):
         return super(DistroImageValidation, self).handle_parse_result(ctx, opts, args)
 
 @click.command()
-@click.option('--distro', type=click.Choice(sorted(list(DISTROS.keys()) + list(CONTAINER_DISTROS.keys())) + ['*'], case_sensitive=False))
+@click.option('--distro', type=click.Choice(sorted(list(DISTROS.keys())) + ['*'], case_sensitive=False))
 @click.option('--version', required=False, default='')
 @click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=False), default='x86_64')
 @click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=False),  default='plain')
