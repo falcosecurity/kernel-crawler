@@ -26,6 +26,8 @@ DISTROS = {
     'Ubuntu': UbuntuMirror,
 
     'Flatcar': FlatcarMirror,
+
+    'Redhat': RedhatContainer
 }
 
 CONTAINER_DISTROS = {
@@ -55,19 +57,20 @@ def crawl_kernels(distro, version, arch, image, to_driverkit):
 
     for distname, dist in DISTROS.items():
         if distname == distro or distro == "*":
-            d = dist(arch)
-            res = d.get_package_tree(version)
-            if to_driverkit:
-                ret[distname] = to_driverkit_config(d, res)
+            if issubclass(dist, repo.ContainerDistro):
+                if image:
+                    d = dist(image)
+                    res = d.get_kernel_versions()
+                else:
+                    d = None
+                    res.clear()
             else:
-                ret[distname] = res
+                d = dist(arch)
+                res = d.get_package_tree(version)
 
-    for distname, container in CONTAINER_DISTROS.items():
-        if distname == distro:
-            c = container(image)
-            res = c.get_kernel_versions()
-            if to_driverkit:
-                ret[distname] = to_driverkit_config(c, res)
-            else:
-                ret[distname] = res
+            if d and res:
+                if to_driverkit:
+                    ret[distname] = to_driverkit_config(d, res)
+                else:
+                    ret[distname] = res
     return ret

@@ -1,5 +1,5 @@
 from __future__ import print_function
-from . import container
+from abc import ABC, abstractmethod
 
 import click
 import sys
@@ -59,9 +59,15 @@ class Distro(Mirror):
         return repos
 
 
-class ContainerDistro(container.Container):
-    def __init__(self, container_name):
-        super(ContainerDistro, self).__init__(container_name)
+class ContainerDistro(ABC):
+    def __init__(self, images):
+        self.images = images
 
+    @classmethod
+    def __subclasshook__(cls, other):
+        hook = getattr(other, 'get_kernel_versions', None)
+        return callable(hook)
+
+    @abstractmethod
     def get_kernel_versions(self):
-        raise NotImplementedError
+        pass
