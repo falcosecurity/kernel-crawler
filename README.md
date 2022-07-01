@@ -1,7 +1,5 @@
 # Falcosecurity kernel-crawler
 
-[![Update list of kernels weekly](https://github.com/falcosecurity/kernel-crawler/actions/workflows/update_kernels.yaml/badge.svg)](https://github.com/falcosecurity/kernel-crawler/actions/workflows/update_kernels.yaml)
-
 Helper text and options:
 ```commandline
 python __init__.py crawl --help
@@ -31,6 +29,9 @@ python __init__.py crawl --distro=Ubuntu --out_fmt=driverkit
 ```commandline
 python __init__.py crawl --distro=* --out_fmt=json
 ```
+| :exclamation: **Note**: Passing ```--image``` argument is supported with ```--distro=*``` |
+|-------------------------------------------------------------------------------------------|
+
 * Crawl Redhat kernels (specific to the container supplied), with no-formatted output:
 ```commandline
 python __init__.py crawl --distro=Redhat --container=redhat/ubi8:registered
