@@ -4,7 +4,7 @@ import click
 def decoded_str(s):
     if s is None:
         return ''
-    return s.decode("utf-8")
+    return s.partition(b'\n')[0].decode("utf-8")
 
 class Container():
     def __init__(self, image):
@@ -15,7 +15,7 @@ class Container():
         container = client.containers.run(self.image, cmd, detach=True)
         logs = container.attach(stdout=True, stderr=True, stream=True, logs=True)
         cmd_output = []
-        with click.progressbar(logs, label='Running command \'' + cmd + '\'', item_show_func=decoded_str) as logs:
+        with click.progressbar(logs, label='[' + self.image + '] Running command \'' + cmd + '\'', item_show_func=decoded_str) as logs:
             for line in logs:
                 decoded_line = line.decode(encoding)
                 sp = list(filter(None, decoded_line.split("\n")))
