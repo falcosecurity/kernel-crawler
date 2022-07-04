@@ -10,7 +10,7 @@ Options:
     --version TEXT
     --arch [x86_64|aarch64]
     --out_fmt [plain|json|driverkit]
-    --container TEXT
+    --image TEXT
     --help
 ```
 ## Examples
@@ -34,5 +34,5 @@ python __init__.py crawl --distro=* --out_fmt=json
 
 * Crawl Redhat kernels (specific to the container supplied), with no-formatted output:
 ```commandline
-python __init__.py crawl --distro=Redhat --container=redhat/ubi8:registered
+python __init__.py crawl --distro=Redhat --image=redhat/ubi8:registered
 ```
