@@ -17,15 +17,20 @@ class UbuntuMirror(repo.Distro):
         dk_configs = {}
         krel, kver = release.split("/")
         for dep in deps:
-            if dep.find("headers") != -1:
-                # example: http://security.ubuntu.com/ubuntu/pool/main/l/linux-oracle/linux-headers-4.15.0-1087-oracle_4.15.0-1087.95_amd64.deb
-                d = re.search(r"(\bl/linux(\-.+\/)?\b)", dep)
-                if d is None:
-                    continue
+            if 'headers' in dep:
 
-                d = d.group(0)
-                target = "ubuntu"
-                release = krel + d[7:len(d) - 1]
+                # set a default flavor
+                flavor = 'generic'
+                # capture the flavor from the string after 'linux-' in the url subdir
+                # example: http://security.ubuntu.com/ubuntu/pool/main/l/linux-oracle/linux-headers-4.15.0-1087-oracle_4.15.0-1087.95_amd64.deb
+                flavor_capture = re.search(r"^.*l/linux-(.+)/.*$", dep)
+
+                # if capture was successful, set the flavor
+                if flavor_capture is not None:
+                    flavor = flavor_capture.group(1)  # set flavor to the first capture group
+
+                target = 'ubuntu'  # driverkit just uses 'ubuntu'
+                release = f'{krel}-{flavor}'  # add flavor to release
 
                 val = dk_configs.get(target)
                 if val is None:
