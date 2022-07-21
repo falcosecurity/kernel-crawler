@@ -35,12 +35,13 @@ def to_driverkit_config(d, res):
     # Moreover, we do not really care about performance here.
     for ver, deps in res.items():
         dk_conf = d.to_driverkit_config(ver, deps)
-        try:
-            # Ubuntu returns multiple for each
-            dk_configs.extend(dk_conf)
-        except TypeError:
-            # Others return just a single dk config
-            dk_configs.append(dk_conf)
+        if dk_conf is not None:
+            try:
+                # Ubuntu returns multiple for each
+                dk_configs.extend(dk_conf)
+            except TypeError:
+                # Others return just a single dk config
+                dk_configs.append(dk_conf)
 
     return dk_configs
 
