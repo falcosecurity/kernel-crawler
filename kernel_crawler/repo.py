@@ -21,6 +21,9 @@ class DriverKitConfig(object):
         
         if isinstance(headers, list):
             self.headers = headers
+        elif headers != None:
+            # Fake single-list
+            self.headers = [headers]
 
 def to_s(s):
     if s is None:
