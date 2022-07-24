@@ -15,5 +15,7 @@ setup(name='kernel_crawler',
           'requests',
           'lxml',
           'docker',
+          'semantic-version',
+          'pygit2'
       ],
 )
