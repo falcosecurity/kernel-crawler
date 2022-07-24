@@ -1,3 +1,4 @@
+from .minikube import MinikubeMirror
 from .amazonlinux import AmazonLinux1Mirror, AmazonLinux2Mirror, AmazonLinux2022Mirror
 from .centos import CentosMirror
 from .fedora import FedoraMirror
@@ -26,6 +27,8 @@ DISTROS = {
     'Ubuntu': UbuntuMirror,
 
     'Flatcar': FlatcarMirror,
+    
+    'Minikube': MinikubeMirror,
 
     'Redhat': RedhatContainer
 }
