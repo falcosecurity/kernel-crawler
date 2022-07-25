@@ -60,8 +60,8 @@ class Distro(Mirror):
 
 
 class ContainerDistro(ABC):
-    def __init__(self, images):
-        self.images = images
+    def __init__(self, image):
+        self.image = image
 
     @classmethod
     def __subclasshook__(cls, other):
