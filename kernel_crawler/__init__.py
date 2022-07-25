@@ -48,18 +48,26 @@ def to_driverkit_config(d, res):
 
     return dk_configs
 
-def crawl_kernels(distro, version, arch, image, to_driverkit):
+def crawl_kernels(distro, version, arch, images, to_driverkit):
     ret = {}
 
     for distname, dist in DISTROS.items():
         if distname == distro or distro == "*":
+            # If the distro requires an image (Redhat only so far), we need to amalgamate
+            # the kernel versions from the supplied images before choosing the output.
             if issubclass(dist, repo.ContainerDistro):
-                if image:
-                    d = dist(image)
-                    res = d.get_kernel_versions()
+                if images:
+                    kv = {}
+                    for image in images:
+                        d = dist(image)
+                        if len(kv) == 0:
+                            kv = d.get_kernel_versions()
+                        else:
+                            kv.update(d.get_kernel_versions())
+                    # We should now have a list of all kernel versions for the supplied images
+                    res = kv
                 else:
                     d = None
-                    res.clear()
             else:
                 d = dist(arch)
                 res = d.get_package_tree(version)
