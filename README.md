@@ -6,7 +6,7 @@ python __init__.py crawl --help
 Usage: __init__.py crawl [OPTIONS]
 
 Options:
-    --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|CentOS|Debian|Fedora|Flatcar|Oracle6|Oracle7|Oracle8|PhotonOS|Redhat|Ubuntu|*]
+    --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|CentOS|Debian|Fedora|Flatcar|Minikube|Oracle6|Oracle7|Oracle8|PhotonOS|Redhat|Ubuntu|*]
     --version TEXT
     --arch [x86_64|aarch64]
     --out_fmt [plain|json|driverkit]
