@@ -4,7 +4,6 @@ import re
 import os
 import base64
 import sys
-from types import NoneType
 
 from click import progressbar as ProgressBar
 from semantic_version import Version as SemVersion
@@ -69,7 +68,7 @@ class MinikubeMirror(Distro):
             for name in files :
                 if name == file_name:
                     return os.path.join(dirpath, name)
-        return NoneType
+        return None
     
     def extract_kernel_release(self, minikube_version, repo):
         # here kernel release is the same a the one given by "uname -r"
