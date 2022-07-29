@@ -1,1 +1,1 @@
-Here a weekly GH action will store current list of supported kernels.
+Home of the crawled kernels for the supported distros.
