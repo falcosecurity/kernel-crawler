@@ -47,10 +47,10 @@ class DistroImageValidation(click.Option):
         return super(DistroImageValidation, self).handle_parse_result(ctx, opts, args)
 
 @click.command()
-@click.option('--distro', type=click.Choice(sorted(list(DISTROS.keys())) + ['*'], case_sensitive=False))
+@click.option('--distro', type=click.Choice(sorted(list(DISTROS.keys())) + ['*'], case_sensitive=True))
 @click.option('--version', required=False, default='')
-@click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=False), default='x86_64')
-@click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=False),  default='plain')
+@click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=True), default='x86_64')
+@click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=True),  default='plain')
 @click.option('--image', cls=DistroImageValidation, required_if_distro=["Redhat"], multiple=True)
 def crawl(distro, version='', arch='', out_fmt='', image=''):
     res = crawl_kernels(distro, version, arch, image, out_fmt == 'driverkit')
