@@ -29,7 +29,7 @@ class UbuntuMirror(repo.Distro):
                 if flavor_capture is not None:
                     flavor = flavor_capture.group(1)  # set flavor to the first capture group
 
-                target = 'ubuntu'  # driverkit just uses 'ubuntu'
+                target = f'ubuntu-{flavor}'    # expose the correct ubuntu flavor
                 release = f'{krel}-{flavor}'  # add flavor to release
 
                 val = dk_configs.get(target)
