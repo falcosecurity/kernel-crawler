@@ -1,6 +1,0 @@
-lxml
-click
-requests
-docker
-semantic-version
-pygit2
