@@ -1,5 +1,5 @@
 # Falcosecurity kernel-crawler
-
+ 
 It is a tool used to crawl supported kernels by multiple distros, and generate a [driverkit](https://github.com/falcosecurity/driverkit)-like config json.  
 Output json can be found, for each supported architecture, under [kernels](/kernels) folder.  
 
