@@ -72,7 +72,7 @@
                             if (data === undefined) {
                                 return '';
                             }
-                            return '<button class="btn btn-link" onclick="myFunction(\''+data+'\')"><i class="bi bi-gear"></i></button>';
+                            return '<a href="data:application/octet-stream;charset=utf-8;base64,'+data+'" download="config.txt"><i class="bi bi-download"></a>'
                         },
                     },
                     { 
@@ -110,10 +110,6 @@
     </table>
     </body>
     <script>
-        function myFunction(data) {
-            const decodeddata = atob(data);
-            alert(decodeddata);
-        }
         $.getJSON('https://raw.githubusercontent.com/falcosecurity/kernel-crawler/kernels/'+arch+'/list.json', function(data) {
             for (var key in data) {
                 var spanelement = document.createElement('span');
