@@ -56,11 +56,23 @@
                     {
                         "data": 'headers',
                         render: function (data, type) {
+                            if (data === undefined) {
+                                return '';
+                            }
                             let s = '';
                             for (const value of Object.values(data)) {
                                 s += '<a href="'+value+'" download="'+value+'"><i class="bi bi-download" style="margin-right: 8px;"></i></a>'
                             }
                             return s;
+                        },
+                    },
+                    {
+                        "data": 'kernelconfigdata',
+                        render: function (data, type) {
+                            if (data === undefined) {
+                                return '';
+                            }
+                            return '<button class="btn btn-link" onclick="myFunction(\''+data+'\')"><i class="bi bi-gear"></i></button>';
                         },
                     },
                     { 
@@ -91,12 +103,17 @@
                 <th>Kernel Release</th> 
                 <th>Kernel Version</th>
                 <th>Headers</th>
+                <th>Config</th>
                 <th>Link</th>
             </tr>
         </thead>
     </table>
     </body>
     <script>
+        function myFunction(data) {
+            const decodeddata = atob(data);
+            alert(decodeddata);
+        }
         $.getJSON('https://raw.githubusercontent.com/falcosecurity/kernel-crawler/kernels/'+arch+'/list.json', function(data) {
             for (var key in data) {
                 var spanelement = document.createElement('span');
