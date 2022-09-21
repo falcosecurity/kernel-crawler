@@ -1,30 +1,29 @@
 version: 2.1
 jobs:
-  "build-image":
+  "build-images":
     docker:
       - image: alpine:3.16
     steps:
-      checkout
-    - setup_remote_docker:
+      - checkout
+      - setup_remote_docker:
           version: 20.10.12
           docker_layer_caching: true
-    - run:
+      - run:
           name: Install deps
           command: |
             apk update
-            apk add make bash git docker docker-cli-buildx py3-pip
-            pip install awscli
-     - run:
+            apk add make bash git docker docker-cli-buildx
+      - run:
           name: Prepare env
           command: |
             docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
             docker context create falco-env
             docker buildx create falco-env --driver docker-container --use
-     - run:
+      - run:
           name: Login to registry
           command: |
             echo ${DOCKERHUB_SECRET} | docker login -u ${DOCKERHUB_USER} --password-stdin
-     - run:
+      - run:
           name: Build and publish kernel_crawler image
           command: |
             docker buildx build --push \
@@ -40,7 +39,6 @@ workflows:
       - "build-images":
           context:
             - falco
-            - test-infra
           filters:
             tags:
               only: /.*/
