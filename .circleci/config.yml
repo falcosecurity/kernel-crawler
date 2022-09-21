@@ -14,27 +14,35 @@ jobs:
             apk update
             apk add make bash git docker docker-cli-buildx py3-pip
             pip install awscli
-      - run:
+     - run:
+          name: Prepare env
+          command: |
+            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+            docker context create falco-env
+            docker buildx create falco-env --driver docker-container --use
+     - run:
           name: Login to registry
           command: |
             echo ${DOCKERHUB_SECRET} | docker login -u ${DOCKERHUB_USER} --password-stdin
-      - run:
+     - run:
           name: Build and publish kernel_crawler image
           command: |
             docker buildx build --push \
-              -t falcosecurity/kernel_crawler:main \
+              --platform "arm64,amd64" \
+              -t falcosecurity/kernel-crawler:${CIRCLE_TAG} \
+              -t falcosecurity/kernel-crawler:latest \
               -f docker/Dockerfile .
 
 workflows:
   version: 2.1
-  build_and_test:
+  release:
     jobs:
-      - "build-image":
+      - "build-images":
           context:
             - falco
             - test-infra
           filters:
             tags:
-              ignore: /.*/
+              only: /.*/
             branches:
-              only: main
+              ignore: /.*/
