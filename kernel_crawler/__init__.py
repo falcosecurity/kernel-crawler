@@ -3,7 +3,7 @@ from .amazonlinux import AmazonLinux1Mirror, AmazonLinux2Mirror, AmazonLinux2022
 from .centos import CentosMirror
 from .fedora import FedoraMirror
 from .oracle import Oracle6Mirror, Oracle7Mirror, Oracle8Mirror
-from .photon_os import PhotonOsMirror
+from .photon import PhotonOsMirror
 
 from .debian import DebianMirror
 from .ubuntu import UbuntuMirror
