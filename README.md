@@ -19,6 +19,16 @@ Options:
     --image TEXT
     --help
 ```
+
+## Docker image
+
+A docker image is provided for main branch, by a circleCI job.  
+You can also build it yourself, by issuing:
+```commandline
+docker build -t falcosecurity/kernel_crawler:main -f docker/Dockerfile .
+```
+from project root.
+
 ## Examples
 
 * Crawl amazonlinux2 kernels, with no-formatted output:
