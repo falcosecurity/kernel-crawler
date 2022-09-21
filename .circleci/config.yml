@@ -1,0 +1,40 @@
+version: 2.1
+jobs:
+  "build-image":
+    docker:
+      - image: alpine:3.16
+    steps:
+      checkout
+    - setup_remote_docker:
+          version: 20.10.12
+          docker_layer_caching: true
+    - run:
+          name: Install deps
+          command: |
+            apk update
+            apk add make bash git docker docker-cli-buildx py3-pip
+            pip install awscli
+      - run:
+          name: Login to registry
+          command: |
+            echo ${DOCKERHUB_SECRET} | docker login -u ${DOCKERHUB_USER} --password-stdin
+      - run:
+          name: Build and publish kernel_crawler image
+          command: |
+            docker buildx build --push \
+              -t falcosecurity/kernel_crawler:main \
+              -f docker/Dockerfile .
+
+workflows:
+  version: 2.1
+  build_and_test:
+    jobs:
+      - "build-image":
+          context:
+            - falco
+            - test-infra
+          filters:
+            tags:
+              ignore: /.*/
+            branches:
+              only: main
