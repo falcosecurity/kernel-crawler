@@ -7,17 +7,30 @@ A weekly [prow job](https://github.com/falcosecurity/test-infra/blob/master/conf
 As soon as the PR is merged and the json updated, another [prow job](https://github.com/falcosecurity/test-infra/blob/master/config/jobs/update-dbg/update-dbg.yaml) will create a PR on [test-infra](https://github.com/falcosecurity/test-infra) to generate the new Driverkit configs from the updated json.
 
 Helper text and options:
+
+Main:
 ```commandline
-python __init__.py crawl --help
-Usage: __init__.py crawl [OPTIONS]
+Usage: kernel-crawler [OPTIONS] COMMAND [ARGS]...
+
+Options:
+    --debug / --no-debug
+    --help                Show this message and exit.
+
+Commands:
+    crawl
+```
+
+Crawl command:
+```commandline
+Usage: kernel-crawler crawl [OPTIONS]
 
 Options:
     --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|CentOS|Debian|Fedora|Flatcar|Minikube|Oracle6|Oracle7|Oracle8|PhotonOS|Redhat|Ubuntu|*]
     --version TEXT
     --arch [x86_64|aarch64]
     --out_fmt [plain|json|driverkit]
-    --image TEXT
-    --help
+    --image TEXT                    Option is required when distro is Redhat.
+    --help                          Show this message and exit.
 ```
 
 ## Docker image
@@ -29,26 +42,30 @@ docker build -t falcosecurity/kernel_crawler:main -f docker/Dockerfile .
 ```
 from project root.
 
+## Install
+
+To install the project, a simple `pip3 install .` from project root is enough.  
+
 ## Examples
 
 * Crawl amazonlinux2 kernels, with no-formatted output:
 ```commandline
-python __init__.py crawl --distro=AmazonLinux2
+kernel-crawler crawl --distro=AmazonLinux2
 ```
 
 * Crawl ubuntu kernels, with [driverkit](https://github.com/falcosecurity/driverkit) config-like output:
 ```commandline
-python __init__.py crawl --distro=Ubuntu --out_fmt=driverkit
+kernel-crawler crawl --distro=Ubuntu --out_fmt=driverkit
 ```
 
 * Crawl all supported distros kernels, with json output:
 ```commandline
-python __init__.py crawl --distro=* --out_fmt=json
+kernel-crawler crawl --distro=* --out_fmt=json
 ```
 | :exclamation: **Note**: Passing ```--image``` argument is supported with ```--distro=*``` |
 |-------------------------------------------------------------------------------------------|
 
 * Crawl Redhat kernels (specific to the container supplied), with no-formatted output:
 ```commandline
-python __init__.py crawl --distro=Redhat --image=redhat/ubi8:registered
+kernel-crawler crawl --distro=Redhat --image=redhat/ubi8:registered
 ```

@@ -3,7 +3,7 @@ import json
 import sys
 import click
 
-from kernel_crawler import crawl_kernels, DISTROS
+from .crawler import crawl_kernels, DISTROS
 
 logger = logging.getLogger(__name__)
 

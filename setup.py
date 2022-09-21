@@ -3,12 +3,17 @@
 from setuptools import setup, find_packages
 
 
-setup(name='kernel_crawler',
+setup(name='kernel-crawler',
       version='1.0.0',
       description='Falcosecurity kernel crawler',
       author='Grzegorz Nosek',
       author_email='grzegorz.nosek@sysdig.com',
       url='https://falco.org/',
+      entry_points = {
+              'console_scripts': [
+                  'kernel-crawler = kernel_crawler.main:cli',                  
+              ],              
+      },
       packages=find_packages(),
       install_requires=[
           'click',
