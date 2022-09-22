@@ -1,3 +1,4 @@
+from . import repo
 from .minikube import MinikubeMirror
 from .amazonlinux import AmazonLinux1Mirror, AmazonLinux2Mirror, AmazonLinux2022Mirror
 from .centos import CentosMirror
