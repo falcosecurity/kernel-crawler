@@ -1,5 +1,8 @@
 # Falcosecurity kernel-crawler
  
+[![Latest](https://img.shields.io/github/v/release/falcosecurity/kernel-crawler?style=for-the-badge)](https://github.com/falcosecurity/kernel-crawler/releases/latest)
+![Architectures](https://img.shields.io/badge/ARCHS-x86__64%7Caarch64-blueviolet?style=for-the-badge)
+ 
 It is a tool used to crawl supported kernels by multiple distros, and generate a [driverkit](https://github.com/falcosecurity/driverkit)-like config json.  
 Output json can be found, for each supported architecture, under [kernels](https://github.com/falcosecurity/kernel-crawler/tree/kernels) branch and on gh pages: https://falcosecurity.github.io/kernel-crawler/.  
 
@@ -38,7 +41,7 @@ Options:
 A docker image is provided for releases, by a circleCI job: `falcosecurity/kernel-crawler:latest`.
 You can also build it yourself, by issuing:
 ```commandline
-docker build -t falcosecurity/kernel_crawler:main -f docker/Dockerfile .
+docker build -t falcosecurity/kernel_crawler -f docker/Dockerfile .
 ```
 from project root.
 
