@@ -1,4 +1,5 @@
 import os
+import base64
 
 import requests
 from lxml import html
@@ -15,8 +16,9 @@ class FlatcarRepository(Repository):
         release = os.path.basename(self.base_url.rstrip('/'))
         if version not in release:
             return {}
-        dev_container = os.path.join(self.base_url, 'flatcar_developer_container.bin.bz2')
-        return {release: [dev_container]}
+        defconfig = os.path.join(self.base_url, 'flatcar_production_image_kernel_config.txt')
+        defconfig_base64 = base64.b64encode(requests.get(defconfig).content).decode()
+        return {release: [defconfig_base64]}
 
     def __str__(self):
         return self.base_url
@@ -50,4 +52,4 @@ class FlatcarMirror(Distro):
         return repos
 
     def to_driverkit_config(self, release, deps):
-        return repo.DriverKitConfig(release, "flatcar", list(deps))
+        return repo.DriverKitConfig(release, "flatcar", None, 1, list(deps)[0])
