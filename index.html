@@ -20,13 +20,38 @@
             padding-bottom: 15px;
         }
     </style>
+    </head>
+    <body>
+    <div>
+        <img src="https://sysdig.com/wp-content/uploads/2018/10/Falco-horizontal-logo-teal_2x.png" height="55" alt="falco logo">
+    </div>
+    <div id="archs" style="padding-left: 10px;">
+        Architecture:
+    </div>
+    <div id="targets" style="padding-left: 10px;">
+        Target:
+    </div>
+    <table id="kernels" class="table table-striped table-condensed" style="padding-left: 10px;">
+        <thead>
+            <tr>
+                <th>Target</th>
+                <th>Kernel Release</th> 
+                <th>Kernel Version</th>
+                <th>Headers</th>
+                <th>Config</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+    </table>
+    </body>
     <script>
-        var urlParams = new URLSearchParams(window.location.search);
-        var arch = urlParams.get('arch');
+        var url = new URL(window.location);
+        var arch = url.searchParams.get('arch');
         if (arch == null) {
             arch = "x86_64";
+            url.searchParams.set('arch', arch);
         };
-        var target = urlParams.get('target')
+        var target = url.searchParams.get('target')
         if (target == null) {
             if (arch == "x86_64") {
                 target = "AmazonLinux";
@@ -34,11 +59,49 @@
             if (arch == "aarch64") {
                 target = "AmazonLinux2";
             }
+            url.searchParams.set('target', target);
         };
-        var search = urlParams.get('search')
+        var search = url.searchParams.get('search')
         if (search == null) {
             search = "";
         };
+        window.history.pushState({}, '', url);
+
+        const archs = ['x86_64', 'aarch64']
+        archs.forEach ((item) => {
+            var searchPrms = new URLSearchParams(window.location.search);
+            searchPrms.delete('search');
+            var selected = searchPrms.get('arch');
+            searchPrms.set('arch', item);
+            var element = document.createElement('a');
+            element.className = "btn btn-outline-primary btn-sm";
+            if (selected == item) {
+                element.className = "btn btn-primary btn-sm";
+            }
+            element.style = "margin: 5px; padding-top: 8px; padding-bottom: 10px;"
+            element.text = item;
+            element.href = "?"+searchPrms.toString();
+            document.getElementById('archs').appendChild(element);
+        });
+
+        $.getJSON('https://raw.githubusercontent.com/falcosecurity/kernel-crawler/kernels/'+arch+'/list.json', function(data) {
+            Object.keys(data).forEach ((key) => {
+                var searchPrms = new URLSearchParams(window.location.search);
+                searchPrms.delete('search');
+                var selected = searchPrms.get('target');
+                searchPrms.set('target', key);
+                var element = document.createElement('a');
+                element.className = "btn btn-outline-primary btn-sm";
+                if (selected == key) {
+                    element.className = "btn btn-primary btn-sm";
+                }
+                element.style = "margin: 5px; padding-top: 8px; padding-bottom: 10px;"
+                element.text = key;
+                element.href = "?"+searchPrms.toString();
+                document.getElementById('targets').appendChild(element);
+            });
+        });
+
         $(document).ready(function() {
             $('#kernels').DataTable({
                 "search": {"search": search },
@@ -83,46 +146,6 @@
                     },
                 ]
             });
-        });
-    </script>
-    </head>
-    <body>
-    <div>
-        <img src="https://sysdig.com/wp-content/uploads/2018/10/Falco-horizontal-logo-teal_2x.png" height="55" alt="falco logo">
-    </div>
-    <div style="padding-left: 10px;">
-        Architecture: <a href="?arch=x86_64" class="btn btn-link">x86_64</a><a href="?arch=aarch64" class="btn btn-link">aarch64</a> 
-    </div>
-    <div id="targets" style="padding-left: 10px;">
-        Target:
-    </div>
-    <table id="kernels" class="table table-striped table-condensed" style="padding-left: 10px;">
-        <thead>
-            <tr>
-                <th>Target</th>
-                <th>Kernel Release</th> 
-                <th>Kernel Version</th>
-                <th>Headers</th>
-                <th>Config</th>
-                <th>Link</th>
-            </tr>
-        </thead>
-    </table>
-    </body>
-    <script>
-        $.getJSON('https://raw.githubusercontent.com/falcosecurity/kernel-crawler/kernels/'+arch+'/list.json', function(data) {
-            for (var key in data) {
-                var spanelement = document.createElement('span');
-                spanelement.className = "btn btn-link";
-                spanelement.style = "padding-bottom: 15px;";
-                var aelement = document.createElement('a');
-                var linkText = document.createTextNode(key);
-                aelement.appendChild(linkText);
-                aelement.title = key;
-                aelement.href = "?target="+key+"&arch="+arch;
-                spanelement.appendChild(aelement);
-                document.getElementById("targets").appendChild(spanelement);
-            }
         });
     </script>
 </html>
