@@ -51,6 +51,7 @@ class AmazonLinux2Mirror(repo.Distro):
         'core/latest',
         'extras/kernel-5.4/latest',
         'extras/kernel-5.10/latest',
+        'extras/kernel-5.15/latest',
     ]
 
     def __init__(self, arch):
