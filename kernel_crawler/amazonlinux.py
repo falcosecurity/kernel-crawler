@@ -70,7 +70,6 @@ class AmazonLinux2Mirror(repo.Distro):
             if dep.find("devel") != -1:
                 return repo.DriverKitConfig(release, "amazonlinux2", dep)
 
-
 class AmazonLinux2022Mirror(repo.Distro):
     # This was obtained by running
     # docker run -it --rm amazonlinux:2022 python3 -c 'import dnf, json; db = dnf.dnf.Base(); print(json.dumps(db.conf.substitutions, indent=2))'
@@ -97,3 +96,4 @@ class AmazonLinux2022Mirror(repo.Distro):
         for dep in deps:
             if dep.find("devel") != -1:
                 return repo.DriverKitConfig(release, "amazonlinux2022", dep)
+
