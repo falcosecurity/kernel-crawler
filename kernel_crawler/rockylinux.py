@@ -25,4 +25,4 @@ class RockyLinuxMirror(repo.Distro):
     def to_driverkit_config(self, release, deps):
         for dep in deps:
             if dep.find("devel") != -1:
-                return repo.DriverKitConfig(release, "rockylinux", dep)
+                return repo.DriverKitConfig(release, "rocky", dep)
