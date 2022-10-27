@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from __future__ import print_function
+from asyncio import base_tasks
 import traceback
 
 import requests
@@ -126,3 +127,66 @@ class RpmMirror(repo.Mirror):
                 and self.repo_filter(dist)
                 and self.dist_exists(dist)
                 ]
+
+
+class SUSERpmMirror(RpmMirror):
+
+    def __init__(self, base_url, variant, arch, repo_filter=None):
+        self.base_url = base_url
+        self.variant = variant
+        self.arch = arch
+        if repo_filter is None:
+            repo_filter = lambda _: True
+        self.repo_filter = repo_filter
+        self.url = base_url
+
+    def list_repos(self):
+        dists = requests.get(self.base_url)
+        dists.raise_for_status()
+        dists = dists.content
+        doc = html.fromstring(dists, self.base_url)
+        dists = doc.xpath('/html/body//a[not(@href="../")]/@href')
+        ret = [SUSERpmRepository(self.dist_url(dist), self.arch) for dist in dists
+                if dist.endswith('/')
+                and not dist.startswith('/')
+                and not dist.startswith('?')
+                and not dist.startswith('http')
+                and self.repo_filter(dist)
+                and self.dist_exists(dist)
+                ]
+
+        return ret
+
+class SUSERpmRepository(RpmRepository):
+
+    def __init__(self, base_url, arch):
+        self.base_url = base_url
+        self.arch = arch
+
+    def get_repodb_url(self):
+        repomd = get_url(self.base_url + 'repodata/repomd.xml')
+        pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary"]/repo:location/@href')
+        return self.base_url + pkglist_url
+
+    def parse_kernel_release(self, kernel_devel_pkg):
+        trimmed = kernel_devel_pkg.replace(f'{self.arch}/kernel-debug-devel-', '')
+        version = trimmed.replace('.rpm', '')
+
+        return version
+
+    def get_package_tree(self, filter=''):
+
+        packages = {}
+        try:
+            repodb_url = self.get_repodb_url()
+            repodb = get_url(repodb_url)
+        except requests.exceptions.RequestException:
+            # traceback.print_exc()
+            return {}
+
+        expression = f'//common:location/@href[starts-with(., "{self.arch}/kernel-debug-devel")]'
+        kernel_devel_pkg_url = self.get_loc_by_xpath(repodb, expression)
+
+        packages.setdefault(self.parse_kernel_release(kernel_devel_pkg_url), set()).add(self.base_url + kernel_devel_pkg_url)
+
+        return packages

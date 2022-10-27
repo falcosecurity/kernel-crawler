@@ -8,6 +8,8 @@ from .oracle import Oracle6Mirror, Oracle7Mirror, Oracle8Mirror
 from .photon import PhotonOsMirror
 from .rockylinux import RockyLinuxMirror
 
+from .opensuse import OpenSUSEMirror
+
 from .debian import DebianMirror
 from .ubuntu import UbuntuMirror
 
@@ -27,6 +29,8 @@ DISTROS = {
     'Oracle8': Oracle8Mirror,
     'PhotonOS': PhotonOsMirror,
     'RockyLinux': RockyLinuxMirror,
+
+    'OpenSUSE': OpenSUSEMirror,
 
     'Debian': DebianMirror,
     'Ubuntu': UbuntuMirror,
