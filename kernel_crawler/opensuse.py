@@ -9,19 +9,17 @@ import requests
 import sys
 
 def opensuse_filter(dist):
-    return not dist.startswith('linux-next') \
-    and (
-        dist.startswith('openSUSE')   or
-        dist.startswith('./openSUSE') or
-        dist.startswith('HEAD')       or
+    return dist.startswith('openSUSE') or \
+        dist.startswith('./openSUSE')  or \
+        dist.startswith('HEAD')        or \
         dist.startswith('stable')
-    )
 
 def tumbleweed_filter(dist):
     return dist.startswith('tumbleweed')
 
 
 class OpenSUSEMirror(repo.Distro):
+
 
     def __init__(self, arch):
         mirrors = [
@@ -48,7 +46,23 @@ class OpenSUSEMirror(repo.Distro):
 
         super(OpenSUSEMirror, self).__init__(mirrors, arch)
 
+
     def to_driverkit_config(self, release, deps):
+
+        # matches driverkit target cli option
+        target = 'opensuse'
+
+        # dict for storing list of 
+        dk_configs = {}
+
+        # loop over deps for a given release and append
         for dep in deps:
-            if dep.find("devel") != -1:
-                return repo.DriverKitConfig(release, "opensuse", dep)
+            val = dk_configs.get(target)
+            if not val:
+                headers = [dep]
+                dk_configs[target] = repo.DriverKitConfig(release, target, headers)
+            else:
+                val.headers.append(dep)
+                dk_configs[target] = val
+
+        return dk_configs.values()
