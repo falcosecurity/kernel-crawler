@@ -1,13 +1,6 @@
 from . import repo
 from . import rpm
 
-from lxml import etree, html
-from bs4 import BeautifulSoup
-from kernel_crawler.utils.download import get_url
-
-import requests
-import sys
-
 def opensuse_filter(dist):
     return dist.startswith('openSUSE') or \
         dist.startswith('./openSUSE')  or \
