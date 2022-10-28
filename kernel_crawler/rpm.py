@@ -131,6 +131,11 @@ class RpmMirror(repo.Mirror):
 class SUSERpmMirror(RpmMirror):
 
     def __init__(self, base_url, variant, arch, repo_filter=None):
+        '''
+        SUSERpmMirror looks like a regular RpmMirror, except that it requires
+        the arch in the constructor. The arch is used for passing through to SUSERpmRepository,
+        which uses the arch to query for the correct kernel-default-devel out of the package listing.
+        '''
         self.base_url = base_url
         self.variant = variant
         self.arch = arch
@@ -140,6 +145,9 @@ class SUSERpmMirror(RpmMirror):
         self.url = base_url
 
     def list_repos(self):
+        '''
+        Overridden from RpmMirror exchanging RpmRepository for SUSERpmRepository.
+        '''
         dists = requests.get(self.base_url)
         dists.raise_for_status()
         dists = dists.content
@@ -158,34 +166,76 @@ class SUSERpmMirror(RpmMirror):
 
 class SUSERpmRepository(RpmRepository):
 
+    # the kernel headers package name pattern to search for in the package listing XML
+    _kernel_devel_pattern = 'kernel-default-devel-'
+
     def __init__(self, base_url, arch):
+        '''
+        Constructor, which sets the base URL and the arch.
+        The arch is used for finding the correct package in the repomd.
+        '''
         self.base_url = base_url
         self.arch = arch
 
     def get_repodb_url(self):
+        '''
+        SUSE stores their primary package listing under a different path in the XML from a normal RPM repomd.
+        '''
         repomd = get_url(self.base_url + 'repodata/repomd.xml')
         pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary"]/repo:location/@href')
         return self.base_url + pkglist_url
 
     def parse_kernel_release(self, kernel_devel_pkg):
-        trimmed = kernel_devel_pkg.replace(f'{self.arch}/kernel-debug-devel-', '')
+        '''
+        Given the kernel devel package string, parse it for the kernel release
+        by trimming off the front bits of the string and the extension.
+
+        Example:
+            x86_64/kernel-default-devel-5.14.21-150400.22.1.x86_64.rpm -> 5.14.21-150400.22.1.x86_64
+        '''
+        trimmed = kernel_devel_pkg.replace(f'{self.arch}/{self._kernel_devel_pattern}', '')
         version = trimmed.replace('.rpm', '')
 
         return version
 
+    def build_kernel_devel_noarch_url(self, kernel_release):
+        '''
+        A simple method for building the noarch kernel-devel package using the kernel release.
+        The kernel release will contain the package arch, but kernel-devel will be a noarch package.
+        '''
+        return f'{self.base_url}noarch/kernel-devel-{kernel_release}.rpm'.replace(self.arch, 'noarch')
+
     def get_package_tree(self, filter=''):
+        '''
+        Build the package tree for SUSE, which finds the repomd, parses it for the primary package listing,
+        and queries for the kernel-default-devel package url. SUSE stores the primary package listing in XML.
+        Once parsed, use the package URL to parse the kernel release and determine the kernel-devel*noarch package URL.
+        '''
 
         packages = {}
+
+        # attempt to query for the repomd - bail out if 404
         try:
             repodb_url = self.get_repodb_url()
             repodb = get_url(repodb_url)
         except requests.exceptions.RequestException:
-            # traceback.print_exc()
+            # traceback.print_exc()  # extremely verbose, uncomment if debugging
             return {}
 
-        expression = f'//common:location/@href[starts-with(., "{self.arch}/kernel-debug-devel")]'
-        kernel_devel_pkg_url = self.get_loc_by_xpath(repodb, expression)
+        # SUSE stores their package information in raw XML
+        # parse it for the kernel-default-devel package
+        expression = f'//common:location/@href[starts-with(., "{self.arch}/{self._kernel_devel_pattern}")]'
+        kernel_default_devel_pkg_url = self.get_loc_by_xpath(repodb, expression)
 
-        packages.setdefault(self.parse_kernel_release(kernel_devel_pkg_url), set()).add(self.base_url + kernel_devel_pkg_url)
+        # parse out the kernel release from the url, faster than re-parsing the xml
+        parsed_kernel_release = self.parse_kernel_release(kernel_default_devel_pkg_url)
+
+        # add the kernel-devel-default package
+        packages.setdefault(parsed_kernel_release, set()).add(self.base_url + kernel_default_devel_pkg_url)
+
+        # also add the noarch kernel-devel pacakge
+        # SUSE combines the kernel-default-devel package and kernel-devel*.noarch pacakge for compilation
+        noarch_kernel_devel = self.build_kernel_devel_noarch_url(parsed_kernel_release)
+        packages.setdefault(parsed_kernel_release, set()).add(noarch_kernel_devel)
 
         return packages
