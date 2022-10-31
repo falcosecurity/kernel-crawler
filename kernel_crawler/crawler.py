@@ -17,6 +17,8 @@ from .flatcar import FlatcarMirror
 
 from .redhat import RedhatContainer
 
+from .archlinux import ArchLinuxMirror
+
 DISTROS = {
     'AlmaLinux': AlmaLinuxMirror,
     'AmazonLinux': AmazonLinux1Mirror,
@@ -39,7 +41,9 @@ DISTROS = {
     
     'Minikube': MinikubeMirror,
 
-    'Redhat': RedhatContainer
+    'Redhat': RedhatContainer,
+
+    'ArchLinux': ArchLinuxMirror,
 }
 
 def to_driverkit_config(d, res):
