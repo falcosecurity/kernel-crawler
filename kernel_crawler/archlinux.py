@@ -9,16 +9,22 @@ class ArchLinuxRepository(repo.Repository):
     _linux_headers_pattern = 'linux.*headers-'
     _package_suffix_pattern = '.pkg.tar.*'
 
-    def __init__(self, base_url):
+    def __init__(self, base_url, arch):
         self.base_url = base_url
+        self.arch = arch
 
     def __str__(self):
         return self.base_url
 
     def parse_kernel_release(self, kernel_package):
 
+        # trim off 'linux*headers'
         trimmed = re.sub(self._linux_headers_pattern, '', kernel_package)
-        version = re.sub(self._package_suffix_pattern, '', trimmed)
+        # trim off the '.pkg.tar.*'
+        version_with_arch = re.sub(self._package_suffix_pattern, '', trimmed)
+
+        # trim off the architecture
+        version = re.sub(f'-{self.arch}', '', version_with_arch)
 
         return version
 
@@ -39,14 +45,22 @@ class ArchLinuxRepository(repo.Repository):
 
 class ArchLinuxMirror(repo.Distro):
 
-    _base_urls = [
-        'https://archive.archlinux.org/packages/l/linux-headers/',           # stable
-        'https://archive.archlinux.org/packages/l/linux-hardened-headers/',  # hardened
-        'https://archive.archlinux.org/packages/l/linux-lts-headers/',       # lts
-        'https://archive.archlinux.org/packages/l/linux-zen-headers/',       # zen
-    ]
+    _base_urls = []
 
     def __init__(self, arch):
+
+        if arch == 'x86_64':
+            self._base_urls.append('https://archive.archlinux.org/packages/l/linux-headers/')                 # stable
+            self._base_urls.append('https://archive.archlinux.org/packages/l/linux-hardened-headers/')        # hardened
+            self._base_urls.append('https://archive.archlinux.org/packages/l/linux-lts-headers/')             # lts
+            self._base_urls.append('https://archive.archlinux.org/packages/l/linux-zen-headers/')             # zen
+        else:
+            self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-aarch64-headers/')       # arm 64-bit
+            self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-armv5-headers/')         # arm v5
+            self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-armv7-headers/')         # arm v7
+            self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-raspberrypi4-headers/')  # rpi4
+            self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-raspberrypi-headers/')   # other rpi
+
         super(ArchLinuxMirror, self).__init__(self._base_urls, arch)
 
 
@@ -54,7 +68,7 @@ class ArchLinuxMirror(repo.Distro):
         mirrors = []
 
         for mirror in self._base_urls:
-            mirrors.append(ArchLinuxRepository(mirror))
+            mirrors.append(ArchLinuxRepository(mirror, self.arch))
 
         return mirrors
 
