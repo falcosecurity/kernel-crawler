@@ -54,8 +54,9 @@ class ArchLinuxMirror(repo.Distro):
             self._base_urls.append('https://archive.archlinux.org/packages/l/linux-hardened-headers/')        # hardened
             self._base_urls.append('https://archive.archlinux.org/packages/l/linux-lts-headers/')             # lts
             self._base_urls.append('https://archive.archlinux.org/packages/l/linux-zen-headers/')             # zen
-        else:
+        elif arch == 'aarch64':
             self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-aarch64-headers/')       # arm 64-bit
+        else:  # can be implemented later
             self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-armv5-headers/')         # arm v5
             self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-armv7-headers/')         # arm v7
             self._base_urls.append('http://tardis.tiny-vps.com/aarm/packages/l/linux-raspberrypi4-headers/')  # rpi4
