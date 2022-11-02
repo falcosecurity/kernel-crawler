@@ -4,3 +4,4 @@ requests
 docker
 semantic-version
 pygit2
+beautifulsoup4
