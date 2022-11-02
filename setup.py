@@ -21,6 +21,7 @@ setup(name='kernel-crawler',
           'lxml',
           'docker',
           'semantic-version',
-          'pygit2'
+          'pygit2',
+          'beautifulsoup4'
       ],
 )
