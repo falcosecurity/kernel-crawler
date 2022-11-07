@@ -24,4 +24,8 @@ jobs:
           
       - name: Run crawler
         run: |
-          kernel-crawler crawl --distro "*" --out_fmt driverkit  
+          kernel-crawler crawl --distro "*" --out_fmt driverkit > kernels.json
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          path: kernels.json
