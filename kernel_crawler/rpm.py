@@ -7,6 +7,8 @@ from lxml import etree, html
 import sqlite3
 import tempfile
 
+from io import BytesIO
+
 from . import repo
 from kernel_crawler.utils.download import get_url
 
@@ -31,6 +33,12 @@ class RpmRepository(repo.Repository):
             'repo': 'http://linux.duke.edu/metadata/repo',
             'rpm': 'http://linux.duke.edu/metadata/rpm'
         })
+
+        # if unable to find the expression in the XML, return None
+        if not loc:
+            return None
+
+        # else return the first item out of the tuple
         return loc[0]
 
     @classmethod
@@ -183,6 +191,12 @@ class SUSERpmRepository(RpmRepository):
         '''
         repomd = get_url(self.base_url + 'repodata/repomd.xml')
         pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary"]/repo:location/@href')
+
+        # if no pkglist was found, return None
+        if not pkglist_url:
+            return None
+
+        # else add the pkglist_url to the base_url
         return self.base_url + pkglist_url
 
     def parse_kernel_release(self, kernel_devel_pkg):
@@ -212,7 +226,6 @@ class SUSERpmRepository(RpmRepository):
         Once parsed, use the package URL to parse the kernel release and determine the kernel-devel*noarch package URL.
         '''
 
-        packages = {}
 
         # attempt to query for the repomd - bail out if 404
         try:
@@ -222,20 +235,31 @@ class SUSERpmRepository(RpmRepository):
             # traceback.print_exc()  # extremely verbose, uncomment if debugging
             return {}
 
-        # SUSE stores their package information in raw XML
-        # parse it for the kernel-default-devel package
-        expression = f'//common:location/@href[starts-with(., "{self.arch}/{self._kernel_devel_pattern}")]'
-        kernel_default_devel_pkg_url = self.get_loc_by_xpath(repodb, expression)
 
-        # parse out the kernel release from the url, faster than re-parsing the xml
-        parsed_kernel_release = self.parse_kernel_release(kernel_default_devel_pkg_url)
+        # using iterparse, loop over the XML to find the kernel devel package
+        # iterparse is used over xpath as iterparse does not load the giant file into memory all at once
+        package_match = f'{self.arch}/{self._kernel_devel_pattern}'
+        for _, element in etree.iterparse(BytesIO(repodb)):
+            if 'href' in element.attrib.keys() and package_match in element.attrib['href']:
+                kernel_default_devel_pkg_url = element.attrib['href']
+                break  # found the entry, no need to keep looping
 
-        # add the kernel-devel-default package
-        packages.setdefault(parsed_kernel_release, set()).add(self.base_url + kernel_default_devel_pkg_url)
+        # check to ensure a kernel_devel_pkg was found
+        if not kernel_default_devel_pkg_url:
+            return {}  # return an empty packages dict
 
-        # also add the noarch kernel-devel pacakge
-        # SUSE combines the kernel-default-devel package and kernel-devel*.noarch pacakge for compilation
-        noarch_kernel_devel = self.build_kernel_devel_noarch_url(parsed_kernel_release)
-        packages.setdefault(parsed_kernel_release, set()).add(noarch_kernel_devel)
+        else:  # was able to find some packages
+            packages = {}
 
-        return packages
+            # parse out the kernel release from the url, faster than re-parsing the xml
+            parsed_kernel_release = self.parse_kernel_release(kernel_default_devel_pkg_url)
+
+            # add the kernel-devel-default package
+            packages.setdefault(parsed_kernel_release, set()).add(self.base_url + kernel_default_devel_pkg_url)
+
+            # also add the noarch kernel-devel pacakge
+            # SUSE combines the kernel-default-devel package and kernel-devel*.noarch pacakge for compilation
+            noarch_kernel_devel = self.build_kernel_devel_noarch_url(parsed_kernel_release)
+            packages.setdefault(parsed_kernel_release, set()).add(noarch_kernel_devel)
+
+            return packages
