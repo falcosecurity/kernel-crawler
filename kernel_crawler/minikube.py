@@ -15,13 +15,17 @@ from .repo import Distro, DriverKitConfig
 class ProgressCallback(pygit2.RemoteCallbacks):
     def __init__(self):
         self.progress_bar_initialized = False
+        self.bar = None
         super().__init__()
     def transfer_progress(self, stats):
         if not self.progress_bar_initialized:
-            bar = ProgressBar(label='Cloning minikube repository',length=stats.total_objects, file=sys.stderr)
-        bar.update(stats.indexed_objects)
+            self.bar = ProgressBar(label='Cloning minikube repository',length=stats.total_objects, file=sys.stderr)
+            self.bar.update(1)
+            self.progress_bar_initialized = True
+        if not self.bar.is_hidden:
+            self.bar.update(1, stats.indexed_objects)
         if stats.indexed_objects == stats.total_objects:
-            bar.render_finish()
+            self.bar.render_finish()
 
 class MinikubeMirror(Distro):
     # dictionary keys used to build the kernel configuration dict.
@@ -97,6 +101,8 @@ class MinikubeMirror(Distro):
 
     def get_package_tree(self, version=''):
         repo = self.list_repos()
+        print("the repo has been downloaded")
+        sys.stdout.flush()
         kernel_configs = {}
         minikube_versions = self.getVersions(repo)
         
