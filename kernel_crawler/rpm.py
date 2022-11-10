@@ -6,8 +6,7 @@ import requests
 from lxml import etree, html
 import sqlite3
 import tempfile
-
-from io import BytesIO
+import re
 
 from . import repo
 from kernel_crawler.utils.download import get_url
@@ -235,14 +234,17 @@ class SUSERpmRepository(RpmRepository):
             # traceback.print_exc()  # extremely verbose, uncomment if debugging
             return {}
 
-
-        # using iterparse, loop over the XML to find the kernel devel package
-        # iterparse is used over xpath as iterparse does not load the giant file into memory all at once
         package_match = f'{self.arch}/{self._kernel_devel_pattern}'
-        for _, element in etree.iterparse(BytesIO(repodb)):
-            if 'href' in element.attrib.keys() and package_match in element.attrib['href']:
-                kernel_default_devel_pkg_url = element.attrib['href']
-                break  # found the entry, no need to keep looping
+
+        # write the repodb xml to a tempfile for parsing
+        with tempfile.NamedTemporaryFile() as tf:
+            tf.write(repodb)
+            tf.flush()
+            # regex searching through a file is more memory efficient
+            # than parsing the xml into an object structure with lxml etree
+            search = re.search(f'.*href="({package_match}.*rpm)', str(open(tf.name).read()))
+            kernel_default_devel_pkg_url = search.group(1)
+            tf.close()  # delete the tempfile to free up memory
 
         # check to ensure a kernel_devel_pkg was found
         if not kernel_default_devel_pkg_url:
