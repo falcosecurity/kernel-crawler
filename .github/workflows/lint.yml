@@ -1,0 +1,33 @@
+---
+name: Lint
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Lints and Scans
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo ⤵️
+        uses: actions/checkout@v3
+
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v2.0.0
+        with:
+          dockerfile: docker/Dockerfile
+
+      - name: Lint kernel-crawler
+        uses: cclauss/GitHub-Action-for-pylint@0.7.0
+        with:
+          args: "pip install -r requirements.txt ; pylint kernel_crawler"
+        continue-on-error: true  # allow failure for now
+
+      - name: Lint YAML
+        uses: karancode/yamllint-github-action@v2.1.1
+        with:
+          yamllint_file_or_dir: '.github/workflows/'
+          yamllint_strict: false
+          yamllint_comment: false
+          yamllint_config_filepath: .yamllint
