@@ -1,9 +1,12 @@
-name: CI Build
+---
+name: Test
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   test:
@@ -12,24 +15,24 @@ jobs:
     steps:
       - name: Checkout repo ⤵️
         uses: actions/checkout@v3
-        
+
       - name: Install deps
         run: |
           sudo apt update
           sudo apt install python3 python3-pip python3-pygit2 jq
-  
+
       - name: Install crawler
         run: |
           pip3 install .
-          
+
       - name: Run crawler
         run: |
           kernel-crawler crawl --distro "*" > kernels.json
-          
+
       - name: Validate json
         run: |
           cat kernels.json | jq empty
-      
+
       - uses: actions/upload-artifact@v3
         with:
           path: kernels.json
