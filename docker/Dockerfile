@@ -2,9 +2,15 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY . .
-RUN pip3 install .
+COPY requirements.txt .
+COPY setup.py .
+COPY kernel_crawler ./kernel_crawler
 
-COPY ./docker/root /
+RUN pip3 install --no-cache-dir . && \
+    useradd --create-home appuser
 
-ENTRYPOINT [ "entrypoint" ]
+USER appuser
+
+ENV PATH=/home/appuser/.local/bin:$PATH
+
+ENTRYPOINT ["kernel-crawler"]

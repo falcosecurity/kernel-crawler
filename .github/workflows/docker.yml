@@ -1,0 +1,28 @@
+---
+name: Docker
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docker/*'
+
+jobs:
+  build:
+    name: Build Dockerfile
+    runs-on: ubuntu-latest
+    outputs:
+      dockerfile_changed: ${{ steps.filter.outputs.docker }}
+    steps:
+      - name: Checkout repo ⤵️
+        uses: actions/checkout@v3
+
+      # test that the Dockerfile builds at all
+      # CircleCI handles pushes for now
+      - name: Build Image
+        uses: docker/build-push-action@v3
+        with:
+          file: docker/Dockerfile
+          context: .
+          push: false
+          tags: falcosecurity/kernel-crawler:test
