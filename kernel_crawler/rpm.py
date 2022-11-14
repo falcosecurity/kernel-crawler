@@ -235,6 +235,7 @@ class SUSERpmRepository(RpmRepository):
             return {}
 
         package_match = f'{self.arch}/{self._kernel_devel_pattern}'
+        kernel_default_devel_pkg_url = None
 
         # write the repodb xml to a tempfile for parsing
         with tempfile.NamedTemporaryFile() as tf:
