@@ -243,7 +243,8 @@ class SUSERpmRepository(RpmRepository):
             # regex searching through a file is more memory efficient
             # than parsing the xml into an object structure with lxml etree
             search = re.search(f'.*href="({package_match}.*rpm)', str(open(tf.name).read()))
-            kernel_default_devel_pkg_url = search.group(1)
+            if search:
+                kernel_default_devel_pkg_url = search.group(1)
             tf.close()  # delete the tempfile to free up memory
 
         # check to ensure a kernel_devel_pkg was found
