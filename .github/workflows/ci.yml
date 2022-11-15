@@ -1,0 +1,24 @@
+name: CI Build
+on:
+  pull_request:
+    branches: [kernels]
+  push:
+    branches: [kernels]
+
+jobs:
+  test:
+    name: test kernel-crawler
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo ⤵️
+        uses: actions/checkout@v3
+        
+      - name: Install deps
+        run: |
+          sudo apt update
+          sudo apt install -y jq
+  
+      - name: Validate jsons
+        run: |
+          cat x86_64/list.json | jq empty
+          cat aarch64/list.json | jq empty
