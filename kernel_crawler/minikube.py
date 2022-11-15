@@ -101,7 +101,6 @@ class MinikubeMirror(Distro):
 
     def get_package_tree(self, version=''):
         repo = self.list_repos()
-        print("the repo has been downloaded")
         sys.stdout.flush()
         kernel_configs = {}
         minikube_versions = self.getVersions(repo)
