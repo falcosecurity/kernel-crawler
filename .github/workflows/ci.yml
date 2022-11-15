@@ -16,7 +16,7 @@ jobs:
       - name: Install deps
         run: |
           sudo apt update
-          sudo apt install python3 python3-pip python3-pygit2
+          sudo apt install python3 python3-pip python3-pygit2 jq
   
       - name: Install crawler
         run: |
@@ -25,6 +25,10 @@ jobs:
       - name: Run crawler
         run: |
           kernel-crawler crawl --distro "*" --out_fmt driverkit > kernels.json
+          
+      - name: Validate json
+        run: |
+          cat kernels.json | jq empty
       
       - uses: actions/upload-artifact@v3
         with:
