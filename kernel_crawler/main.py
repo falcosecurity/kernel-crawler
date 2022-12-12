@@ -21,12 +21,6 @@ def init_logging(debug):
 def cli(debug):
     init_logging(debug)
 
-class SetEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, set):
-            return list(obj)
-        return json.JSONEncoder.default(self, obj)
-
 class DistroImageValidation(click.Option):
     def __init__(self, *args, **kwargs):
         self.required_if_distro:list = kwargs.pop("required_if_distro")
@@ -50,24 +44,11 @@ class DistroImageValidation(click.Option):
 @click.option('--distro', type=click.Choice(sorted(list(DISTROS.keys())) + ['*'], case_sensitive=True))
 @click.option('--version', required=False, default='')
 @click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=True), default='x86_64')
-@click.option('--out_fmt', required=False, type=click.Choice(['plain', 'json', 'driverkit'], case_sensitive=True),  default='plain')
 @click.option('--image', cls=DistroImageValidation, required_if_distro=["Redhat"], multiple=True)
-def crawl(distro, version='', arch='', out_fmt='', image=''):
-    res = crawl_kernels(distro, version, arch, image, out_fmt == 'driverkit')
-    out_fmt = str.lower(out_fmt)
-    if out_fmt == 'plain':
-        for dist, ks in res.items():
-            print('=== {} ==='.format(dist))
-            for release, packages in ks.items():
-                print('=== {} ==='.format(release))
-                for pkg in packages:
-                    print(' {}'.format(pkg))
-    elif out_fmt == 'json':
-        json_object = json.dumps(res, indent=2, cls=SetEncoder)
-        print(json_object)
-    elif out_fmt == 'driverkit':
-        json_object = json.dumps(res, indent=2, default=vars)
-        print(json_object)
+def crawl(distro, version='', arch='', image=''):
+    res = crawl_kernels(distro, version, arch, image)
+    json_object = json.dumps(res, indent=2, default=vars)
+    print(json_object)
 
 cli.add_command(crawl, 'crawl')
 
