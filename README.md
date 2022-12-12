@@ -28,10 +28,9 @@ Crawl command:
 Usage: kernel-crawler crawl [OPTIONS]
 
 Options:
-    --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|CentOS|Debian|Fedora|Flatcar|Minikube|Oracle6|Oracle7|Oracle8|PhotonOS|Redhat|Ubuntu|*]
+    --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|BottleRocketCentOS|Debian|Fedora|Flatcar|Minikube|Oracle6|Oracle7|Oracle8|PhotonOS|Redhat|Ubuntu|*]
     --version TEXT
     --arch [x86_64|aarch64]
-    --out_fmt [plain|json|driverkit]
     --image TEXT                    Option is required when distro is Redhat.
     --help                          Show this message and exit.
 ```
@@ -51,19 +50,14 @@ To install the project, a simple `pip3 install .` from project root is enough.
 
 ## Examples
 
-* Crawl amazonlinux2 kernels, with no-formatted output:
+* Crawl amazonlinux2 kernels:
 ```commandline
 kernel-crawler crawl --distro=AmazonLinux2
 ```
 
-* Crawl ubuntu kernels, with [driverkit](https://github.com/falcosecurity/driverkit) config-like output:
+* Crawl all supported distros kernels:
 ```commandline
-kernel-crawler crawl --distro=Ubuntu --out_fmt=driverkit
-```
-
-* Crawl all supported distros kernels, with json output:
-```commandline
-kernel-crawler crawl --distro=* --out_fmt=json
+kernel-crawler crawl --distro=*
 ```
 | :exclamation: **Note**: Passing ```--image``` argument is supported with ```--distro=*``` |
 |-------------------------------------------------------------------------------------------|

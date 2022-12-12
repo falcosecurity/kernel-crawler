@@ -24,7 +24,7 @@ jobs:
           
       - name: Run crawler
         run: |
-          kernel-crawler crawl --distro "*" --out_fmt driverkit > kernels.json
+          kernel-crawler crawl --distro "*" > kernels.json
           
       - name: Validate json
         run: |

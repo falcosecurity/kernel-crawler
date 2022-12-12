@@ -68,7 +68,7 @@ def to_driverkit_config(d, res):
 
     return dk_configs
 
-def crawl_kernels(distro, version, arch, images, to_driverkit):
+def crawl_kernels(distro, version, arch, images):
     ret = {}
 
     for distname, dist in DISTROS.items():
@@ -93,8 +93,5 @@ def crawl_kernels(distro, version, arch, images, to_driverkit):
                 res = d.get_package_tree(version)
 
             if d and res:
-                if to_driverkit:
-                    ret[distname] = to_driverkit_config(d, res)
-                else:
-                    ret[distname] = res
+                ret[distname] = to_driverkit_config(d, res)
     return ret
