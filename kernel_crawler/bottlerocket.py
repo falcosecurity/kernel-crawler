@@ -19,19 +19,19 @@ class BottleRocketMirror(GitMirror):
         return "kernel-" + kver + ".spec"
 
     def get_package_tree(self, version=''):
-        repo = self.list_repos()
+        self.list_repo()
         sys.stdout.flush()
         kernel_configs = {}
-        bottlerocket_versions = self.getVersions(repo, 3)
+        bottlerocket_versions = self.getVersions(3)
 
         for v in bottlerocket_versions:
             bar = ProgressBar(label="Building config for bottlerocket v{}".format(v), length=1, file=sys.stderr)
-            self.checkout_version(v, repo)
+            self.checkout_version(v)
             # same meaning as the output of "uname -r"
             for kver in self.supported_kernel_releases:
-                kernel_release = self.extract_kernel_release(v, repo, self.get_bottlerocket_kernel_spec(kver))
+                kernel_release = self.extract_value(self.get_bottlerocket_kernel_spec(kver), "Version", ":")
                 kernel_version = "1_" + v
-                defconfig_base64 = self.encode_base64_defconfig(v, repo, self.get_kernel_config_file_name())
+                defconfig_base64 = self.encode_base64_defconfig(self.get_kernel_config_file_name())
                 kernel_configs[v + "_" + kver] = {
                     self.KERNEL_VERSION: kernel_version,
                     self.KERNEL_RELEASE: kernel_release,
@@ -41,5 +41,5 @@ class BottleRocketMirror(GitMirror):
             bar.update(1)
             bar.render_finish()
 
-        shutil.rmtree(repo.workdir, True)
+        self.cleanup_repo()
         return kernel_configs
