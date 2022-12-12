@@ -33,8 +33,11 @@ class FlatcarMirror(Distro):
         super(FlatcarMirror, self).__init__(mirrors, arch)
 
     def scan_repo(self, base_url):
-        dists = requests.get(base_url)
-        dists.raise_for_status()
+        try:
+            dists = requests.get(base_url)
+            dists.raise_for_status()
+        except requests.exceptions.RequestException:
+            return {}
         dists = dists.content
         doc = html.fromstring(dists, base_url)
         dists = doc.xpath('/html/body//a[not(@href="../")]/@href')
