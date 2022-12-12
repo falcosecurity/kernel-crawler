@@ -22,10 +22,10 @@ class MinikubeMirror(GitMirror):
         return "minikube_defconfig"
 
     def get_package_tree(self, version=''):
-        repo = self.list_repos()
+        self.list_repo()
         sys.stdout.flush()
         kernel_configs = {}
-        minikube_versions = self.getVersions(repo, 3)
+        minikube_versions = self.getVersions(3)
         
         for v in minikube_versions:
             bar = ProgressBar(label="Building config for minikube v{}".format(v), length=1, file=sys.stderr)
@@ -33,9 +33,10 @@ class MinikubeMirror(GitMirror):
             # versions older than 1.26.0 are just skipped if building for aarch64.
             if self.arch == "aarch64" and SemVersion(v) < SemVersion("1.26.0"):
                 continue
-            self.checkout_version(v, repo)
+            self.checkout_version(v)
             # same meaning as the output of "uname -r"
-            kernel_release = self.extract_kernel_release(v, repo, self.get_minikube_config_file_name(v))
+            kernel_release = self.extract_value(self.get_minikube_config_file_name(v),
+                                                "BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE", "=")
             # kernelversion is computed as "1_" + minikube version.
             # The reason behind that is due to how minikube distributes the iso images.
             # It could happen that two different minikube versions use the same kernel release but
@@ -43,7 +44,7 @@ class MinikubeMirror(GitMirror):
             # makes easier to get the right falco drivers from within a minikube instance.
             # same meaning as "uname -v"
             kernel_version = "1_" + v
-            defconfig_base64 = self.encode_base64_defconfig(v, repo, self.get_kernel_config_file_name(v))
+            defconfig_base64 = self.encode_base64_defconfig(self.get_kernel_config_file_name(v))
             kernel_configs[v] = {
                 self.KERNEL_VERSION: kernel_version, 
                 self.KERNEL_RELEASE: kernel_release,
@@ -53,5 +54,5 @@ class MinikubeMirror(GitMirror):
             bar.update(1)
             bar.render_finish()
         
-        shutil.rmtree(repo.workdir, True)
+        self.cleanup_repo()
         return kernel_configs
