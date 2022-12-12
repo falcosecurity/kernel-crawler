@@ -19,6 +19,8 @@ from .redhat import RedhatContainer
 
 from .archlinux import ArchLinuxMirror
 
+from .bottlerocket import BottleRocketMirror
+
 DISTROS = {
     'AlmaLinux': AlmaLinuxMirror,
     'AmazonLinux': AmazonLinux1Mirror,
@@ -44,6 +46,8 @@ DISTROS = {
     'Redhat': RedhatContainer,
 
     'ArchLinux': ArchLinuxMirror,
+
+    'BottleRocket': BottleRocketMirror,
 }
 
 def to_driverkit_config(d, res):
