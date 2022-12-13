@@ -74,8 +74,8 @@ class GitMirror(Distro):
     def checkout_version(self, vers):
         self.repo.checkout("refs/tags/v" + vers)
 
-    def search_files(self, directory, file_name):
-        for dirpath, dirnames, files in os.walk(directory):
+    def search_file(self, file_name):
+        for dirpath, dirnames, files in os.walk(self.repo.workdir):
             for name in files:
                 if name == file_name:
                     return os.path.join(dirpath, name)
@@ -83,14 +83,17 @@ class GitMirror(Distro):
 
     def extract_value(self, file_name, key, sep):
         # here kernel release is the same as the one given by "uname -r"
-        full_path = self.search_files(self.repo.workdir, file_name)
+        full_path = self.search_file(file_name)
         for line in open(full_path):
             if re.search(r'^'+key + sep, line):
-                tokens = line.strip().split(sep)
+                tokens = line.strip().split(sep, 1)
                 return tokens[1].strip('"').strip()
+        return None
 
     def encode_base64_defconfig(self, file_name):
-        full_path = self.search_files(self.repo.workdir, file_name)
+        full_path = self.search_file(file_name)
+        if full_path is None:
+            return None
         with open(full_path, "rb") as config_file:
             return base64.b64encode(config_file.read()).decode()
 
