@@ -22,6 +22,7 @@ setup(name='kernel-crawler',
           'docker',
           'semantic-version',
           'pygit2',
-          'beautifulsoup4'
+          'beautifulsoup4',
+          'rpmfile'
       ],
 )
