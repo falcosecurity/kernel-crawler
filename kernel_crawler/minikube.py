@@ -1,4 +1,3 @@
-import shutil
 import sys
 
 from click import progressbar as ProgressBar
