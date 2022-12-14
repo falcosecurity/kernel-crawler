@@ -81,6 +81,17 @@ class GitMirror(Distro):
                     return os.path.join(dirpath, name)
         return None
 
+    def match_file(self, pattern, fullpath=True):
+        matches = []
+        for dirpath, dirnames, files in os.walk(self.repo.workdir):
+            for name in files:
+                if re.search(r'^'+pattern, name):
+                    if fullpath:
+                        matches.append(os.path.join(dirpath, name))
+                    else:
+                        matches.append(name)
+        return matches
+
     def extract_value(self, file_name, key, sep):
         # here kernel release is the same as the one given by "uname -r"
         full_path = self.search_file(file_name)
