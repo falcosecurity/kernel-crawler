@@ -112,7 +112,8 @@ class BottleRocketMirror(GitMirror):
 
                     kernel_version = "1_" + v + "-" + flavor
                     defconfig_base64 = base64.b64encode(b''.join(finalconfig)).decode()
-                    kernel_configs[v + "_" + kver] = {
+                    # Unique key
+                    kernel_configs[v + "_" + kver + "-" + flavor] = {
                         self.KERNEL_VERSION: kernel_version,
                         self.KERNEL_RELEASE: kernel_release,
                         self.DISTRO_TARGET: "bottlerocket",
