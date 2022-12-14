@@ -1,5 +1,6 @@
 import base64
 import os
+import re
 import sys
 
 import requests
@@ -10,20 +11,11 @@ from .git import GitMirror
 
 
 class BottleRocketMirror(GitMirror):
-    supported_kernel_releases = ["5.10", "5.15"]
-    supported_flavors = ["aws", "metal", "vmware"]
-
     def __init__(self, arch):
         super(BottleRocketMirror, self).__init__("bottlerocket-os", "bottlerocket", arch)
 
-    def get_kernel_config_file_name(self, flavor=''):
-        return "config-bottlerocket"+flavor
-
-    def get_bottlerocket_kernel_spec(self, kver):
-        return "kernel-" + kver + ".spec"
-
-    def fetch_base_config(self, kver):
-        source = self.extract_value(self.get_bottlerocket_kernel_spec(kver), "Source0", ":")
+    def fetch_base_config(self, kverspec):
+        source = self.extract_value(kverspec, "Source0", ":")
         if source is None:
             return None
 
@@ -39,6 +31,13 @@ class BottleRocketMirror(GitMirror):
 
         os.remove('/tmp/alkernel.rpm')
         return baseconfig
+
+    def extract_flavor(self, flavorconfig_path):
+        flavorconfig_file = os.path.basename(flavorconfig_path)
+        return re.match(r"^config-bottlerocket-(.*)", flavorconfig_file).group(1)
+
+    def extract_kver(self, kverspec_file):
+        return re.match(r"^kernel-(.*).spec", kverspec_file).group(1)
 
     def set_kernel_config(self, baseconfig, key, value):
         for i, line in enumerate(baseconfig):
@@ -76,29 +75,33 @@ class BottleRocketMirror(GitMirror):
         for v in bottlerocket_versions:
             bar = ProgressBar(label="Building config for bottlerocket v{}".format(v), length=1, file=sys.stderr)
             self.checkout_version(v)
-            for kver in self.supported_kernel_releases:
+
+            # Find supported kernels dynamically
+            supported_kernel_specs = self.match_file("kernel-.*.spec", False)
+            for kverspec_file in supported_kernel_specs:
+                kver = self.extract_kver(kverspec_file)
+
                 # same meaning as the output of "uname -r"
-                kernel_release = self.extract_value(self.get_bottlerocket_kernel_spec(kver), "Version", ":")
+                kernel_release = self.extract_value(kverspec_file, "Version", ":")
                 if kernel_release is None:
                     continue
 
                 # Load base config
-                baseconfig = self.fetch_base_config(kver)
+                baseconfig = self.fetch_base_config(kverspec_file)
                 if baseconfig is None:
                     continue
 
                 # Load common config
-                commonconfig_file = self.search_file(self.get_kernel_config_file_name())
+                commonconfig_file = self.search_file("config-bottlerocket")
                 if commonconfig_file is None:
                     continue
-
                 with open(commonconfig_file, 'r') as fd:
                     commonconfig = fd.readlines()
 
-                for flavor in self.supported_flavors:
-                    flavorconfig_file = self.search_file(self.get_kernel_config_file_name("-" + flavor))
-                    if flavorconfig_file is None:
-                        continue
+                # Find supported flavors dynamically
+                supported_flavors = self.match_file("config-bottlerocket-.*")
+                for flavorconfig_file in supported_flavors:
+                    flavor = self.extract_flavor(flavorconfig_file)
 
                     # Load flavor specific config
                     with open(flavorconfig_file, 'r') as fd:
@@ -109,9 +112,10 @@ class BottleRocketMirror(GitMirror):
 
                     # Finally, patch baseconfig with flavor config
                     finalconfig = self.patch_config(baseconfig, flavorconfig)
+                    defconfig_base64 = base64.b64encode(b''.join(finalconfig)).decode()
 
                     kernel_version = "1_" + v + "-" + flavor
-                    defconfig_base64 = base64.b64encode(b''.join(finalconfig)).decode()
+
                     # Unique key
                     kernel_configs[v + "_" + kver + "-" + flavor] = {
                         self.KERNEL_VERSION: kernel_version,
