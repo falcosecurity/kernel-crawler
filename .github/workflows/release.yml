@@ -4,10 +4,6 @@ on:
   push:
     tags:
 
-permissions:
-  # needed to upload archives as Github Releases.
-  contents: write
-
 jobs:
   build-images:
     runs-on: ubuntu-22.04
