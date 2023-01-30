@@ -3,7 +3,7 @@ name: Update Kernels
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 2 * * 1'
+    - cron: '30 6 * * 1'
 
 jobs:
   update-kernels:
@@ -14,11 +14,16 @@ jobs:
       contents: write
       pull-requests: write
     steps:
+      - name: Git set-up
+        run: |
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends
+          git
+          && sudo apt-get clean
+
       - name: Checkout crawler
         uses: actions/checkout@v3
-        ref: kernels
         with:
-          fetch-depth: 0
+          ref: kernels
       
       - name: Run crawler for x86_64
         run: |
@@ -33,6 +38,7 @@ jobs:
         with:
           signoff: true
           branch: update/kernels
+          base: kernels
           title: 'update(kernels): update kernel json lists.'
           body: 'This PR updates the list of kernels from the latest crawling. Do not edit this PR.'
           commit-message: 'update(kernels): update kernel json lists.'
