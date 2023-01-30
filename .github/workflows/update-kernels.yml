@@ -16,9 +16,7 @@ jobs:
     steps:
       - name: Git set-up
         run: |
-          apt-get update && apt-get install -y --no-install-recommends
-          git
-          && apt-get clean
+          apt-get update && apt-get install -y --no-install-recommends git && apt-get clean
 
       - name: Checkout crawler
         uses: actions/checkout@v3
