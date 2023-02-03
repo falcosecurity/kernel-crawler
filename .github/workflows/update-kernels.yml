@@ -1,0 +1,43 @@
+name: Update Kernels
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 6 * * 1'
+
+jobs:
+  update-kernels:
+    runs-on: ubuntu-latest
+    container:
+      image: falcosecurity/kernel-crawler:latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Git set-up
+        run: |
+          apt-get update && apt-get install -y --no-install-recommends git && apt-get clean
+
+      - name: Checkout crawler
+        uses: actions/checkout@v3
+        with:
+          ref: kernels
+
+      - name: Run crawler for x86_64
+        run: |
+          kernel-crawler crawl --distro=* > x86_64/list.json
+
+      - name: Run crawler for aarch64
+        run: |
+          kernel-crawler crawl --distro=* --arch=aarch64 > aarch64/list.json
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5-rc
+        with:
+          signoff: true
+          branch: update/kernels
+          base: kernels
+          title: 'update(kernels): update kernel json lists.'
+          body: 'This PR updates the list of kernels from the latest crawling. Do not edit this PR.'
+          commit-message: 'update(kernels): update kernel json lists.'
+          token: ${{ secrets.GITHUB_TOKEN }}
