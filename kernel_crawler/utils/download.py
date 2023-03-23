@@ -7,7 +7,12 @@ except ImportError:
     from backports import lzma
 
 def get_url(url):
-    resp = requests.get(url)
+    resp = requests.get(
+        url,
+        headers={  # some URLs require a user-agent, otherwise they return HTTP 406 - this one is fabricated
+            'user-agent': 'dummy'
+        }
+    )
     resp.raise_for_status()
     if url.endswith('.gz'):
         return zlib.decompress(resp.content, 47)
