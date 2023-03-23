@@ -5,3 +5,4 @@ docker
 semantic-version
 pygit2
 beautifulsoup4
+rpmfile
