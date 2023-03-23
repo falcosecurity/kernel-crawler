@@ -28,7 +28,12 @@ class CentosMirror(repo.Distro):
             rpm.RpmMirror('http://archive.kernel.org/centos/', 'BaseOS/' + arch + '/os/', v8_only),
             # It seems like centos stream uses /AppStream for kernel-devel, instead of BaseOS
             rpm.RpmMirror('http://mirror.stream.centos.org/', 'BaseOS/' + arch + '/os/', v9_only),
-            rpm.RpmMirror('http://mirror.stream.centos.org/', 'AppStream/' + arch + '/os/', v9_only)
+            rpm.RpmMirror('http://mirror.stream.centos.org/', 'AppStream/' + arch + '/os/', v9_only),
+            # These are some advanced mirrors for CentOS that enable newer kernels for ML
+            rpm.RpmMirror('http://elrepo.org/linux/kernel/', f'{arch}/'),
+            rpm.RpmMirror('http://mirrors.coreix.net/elrepo/kernel/', f'{arch}/'),
+            rpm.RpmMirror('http://mirror.rackspace.com/elrepo/kernel/', f'{arch}/'),
+            rpm.RpmMirror('http://linux-mirrors.fnal.gov/linux/elrepo/kernel/', f'{arch}/'),
         ]
         super(CentosMirror, self).__init__(mirrors, arch)
 
