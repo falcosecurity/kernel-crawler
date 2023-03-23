@@ -42,7 +42,7 @@ class RpmRepository(repo.Repository):
 
     @classmethod
     def kernel_package_query(cls):
-        return '''name IN ('kernel', 'kernel-devel')'''
+        return '''name IN ('kernel', 'kernel-devel', 'kernel-ml', 'kernel-ml-devel')'''
 
     @classmethod
     def build_base_query(cls, filter=''):
@@ -113,14 +113,24 @@ class RpmMirror(repo.Mirror):
 
     def dist_exists(self, dist):
         try:
-            r = requests.get(self.dist_url(dist))
+            r = requests.get(
+                self.dist_url(dist),
+                headers={  # some URLs require a user-agent, otherwise they return HTTP 406 - this one is fabricated
+                    'user-agent': 'dummy'
+                }
+            )
             r.raise_for_status()
         except requests.exceptions.RequestException:
             return False
         return True
 
     def list_repos(self):
-        dists = requests.get(self.base_url)
+        dists = requests.get(
+            self.base_url, 
+            headers={  # some URLs require a user-agent, otherwise they return HTTP 406 - this one is fabricated
+                'user-agent': 'dummy'
+            }
+        )
         dists.raise_for_status()
         dists = dists.content
         doc = html.fromstring(dists, self.base_url)
@@ -155,7 +165,12 @@ class SUSERpmMirror(RpmMirror):
         '''
         Overridden from RpmMirror exchanging RpmRepository for SUSERpmRepository.
         '''
-        dists = requests.get(self.base_url)
+        dists = requests.get(
+            self.base_url,
+            headers={  # some URLs require a user-agent, otherwise they return HTTP 406 - this one is fabricated
+                'user-agent': 'dummy'
+            }
+        )
         dists.raise_for_status()
         dists = dists.content
         doc = html.fromstring(dists, self.base_url)
