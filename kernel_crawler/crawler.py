@@ -1,5 +1,6 @@
 from . import repo
 from .minikube import MinikubeMirror
+from .aliyunlinux import AliyunLinux2Mirror, AliyunLinux3Mirror
 from .almalinux import AlmaLinuxMirror
 from .amazonlinux import AmazonLinux1Mirror, AmazonLinux2Mirror, AmazonLinux2022Mirror
 from .centos import CentosMirror
@@ -22,6 +23,8 @@ from .archlinux import ArchLinuxMirror
 from .bottlerocket import BottleRocketMirror
 
 DISTROS = {
+    'AliyunLinux2': AliyunLinux2Mirror,
+    'AliyunLinux3': AliyunLinux3Mirror,
     'AlmaLinux': AlmaLinuxMirror,
     'AmazonLinux': AmazonLinux1Mirror,
     'AmazonLinux2': AmazonLinux2Mirror,
