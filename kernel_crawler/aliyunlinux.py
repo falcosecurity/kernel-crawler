@@ -23,7 +23,7 @@ class AliyunLinux2Mirror(repo.Distro):
     def to_driverkit_config(self, release, deps):
         for dep in deps:
             if dep.find("devel") != -1:
-                return repo.DriverKitConfig(release, "aliyunlinux2", dep)
+                return repo.DriverKitConfig(release, "alinux", dep)
 
 class AliyunLinux3Mirror(repo.Distro):
     def __init__(self, arch):
@@ -41,4 +41,4 @@ class AliyunLinux3Mirror(repo.Distro):
     def to_driverkit_config(self, release, deps):
         for dep in deps:
             if dep.find("devel") != -1:
-                return repo.DriverKitConfig(release, "aliyunlinux3", dep)
+                return repo.DriverKitConfig(release, "alinux", dep)
