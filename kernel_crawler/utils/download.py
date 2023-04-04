@@ -1,6 +1,7 @@
 import bz2
 import zlib
 import requests
+
 try:
     import lzma
 except ImportError:
@@ -13,7 +14,14 @@ def get_url(url):
             'user-agent': 'dummy'
         }
     )
-    resp.raise_for_status()
+
+    # if 404, silently fail
+    if resp.status_code == 404:
+        return None
+    else:  # if any other error, raise the error - might be a bug in crawler
+        resp.raise_for_status()
+
+    # if no error, return the contents
     if url.endswith('.gz'):
         return zlib.decompress(resp.content, 47)
     elif url.endswith('.xz'):
