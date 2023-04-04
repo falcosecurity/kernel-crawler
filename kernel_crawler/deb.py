@@ -173,11 +173,14 @@ class DebRepository(repo.Repository):
         except requests.HTTPError:
             return {}
 
-        repo_packages = repo_packages.splitlines(True)
-        packages = self.scan_packages(repo_packages)
-        for name, details in packages.items():
-            details['URL'] = self.repo_base + details['Filename']
-        return packages
+        if repo_packages:
+            repo_packages = repo_packages.splitlines(True)
+            packages = self.scan_packages(repo_packages)
+            for name, details in packages.items():
+                details['URL'] = self.repo_base + details['Filename']
+            return packages
+        else:
+            return {}
 
     @classmethod
     def build_package_tree(cls, packages, package_list):
@@ -241,18 +244,19 @@ class DebMirror(repo.Mirror):
         repos = {}
         all_comps = set()
         release = get_url(self.base_url + dist + 'Release')
-        for line in release.splitlines(False):
-            if line.startswith(make_bytes('Components: ')):
-                for comp in line.split(None)[1:]:
-                    comp = make_string(comp)
-                    if comp in ('main', 'updates', 'updates/main'):
-                        if dist.endswith('updates/') and comp.startswith('updates/'):
-                            comp = comp.replace('updates/', '')
-                        all_comps.add(comp)
-                break
-        for comp in all_comps:
-            url = dist + comp + '/binary-' + self.arch + '/'
-            repos[url] = DebRepository(self.base_url, url)
+        if release:  # if release exists
+            for line in release.splitlines(False):
+                if line.startswith(make_bytes('Components: ')):
+                    for comp in line.split(None)[1:]:
+                        comp = make_string(comp)
+                        if comp in ('main', 'updates', 'updates/main'):
+                            if dist.endswith('updates/') and comp.startswith('updates/'):
+                                comp = comp.replace('updates/', '')
+                            all_comps.add(comp)
+                    break
+            for comp in all_comps:
+                url = dist + comp + '/binary-' + self.arch + '/'
+                repos[url] = DebRepository(self.base_url, url)
         return repos
 
     def list_repos(self):

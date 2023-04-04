@@ -75,6 +75,8 @@ class RpmRepository(repo.Repository):
 
     def get_repodb_url(self):
         repomd = get_url(self.base_url + 'repodata/repomd.xml')
+        if not repomd:
+            return None
         pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary_db"]/repo:location/@href')
         return self.base_url + pkglist_url
 
@@ -82,6 +84,8 @@ class RpmRepository(repo.Repository):
         packages = {}
         try:
             repodb_url = self.get_repodb_url()
+            if not repodb_url:
+                return {}
             repodb = get_url(repodb_url)
         except requests.exceptions.RequestException:
             traceback.print_exc()
@@ -204,6 +208,8 @@ class SUSERpmRepository(RpmRepository):
         SUSE stores their primary package listing under a different path in the XML from a normal RPM repomd.
         '''
         repomd = get_url(self.base_url + 'repodata/repomd.xml')
+        if not repomd:
+            return None
         pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary"]/repo:location/@href')
 
         # if no pkglist was found, return None
@@ -245,6 +251,8 @@ class SUSERpmRepository(RpmRepository):
         try:
             repodb_url = self.get_repodb_url()
             repodb = get_url(repodb_url)
+            if not repodb:
+                return {}
         except requests.exceptions.RequestException:
             # traceback.print_exc()  # extremely verbose, uncomment if debugging
             return {}

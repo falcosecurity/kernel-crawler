@@ -9,11 +9,11 @@ class OracleRepository(rpm.RpmRepository):
 
 
 class OracleMirror(repo.Distro):
+
     def repos(self):
 
         # all the base URLs for major versions of OracleLinux
         base_urls = [
-            # Oracle 6
             'http://yum.oracle.com/repo/OracleLinux/OL6',  # Oracle 6
             'http://yum.oracle.com/repo/OracleLinux/OL7',  # Oracle 7
             'http://yum.oracle.com/repo/OracleLinux/OL8',  # Oracle 8
