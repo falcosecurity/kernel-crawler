@@ -87,6 +87,8 @@ class RpmRepository(repo.Repository):
             if not repodb_url:
                 return {}
             repodb = get_url(repodb_url)
+            if not repodb:
+                return {}
         except requests.exceptions.RequestException:
             traceback.print_exc()
             return {}
