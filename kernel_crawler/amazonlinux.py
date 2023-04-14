@@ -49,6 +49,7 @@ class AmazonLinux2Mirror(repo.Distro):
     AL2_REPOS = [
         'core/2.0',
         'core/latest',
+        'extras/kernel-ng/latest',
         'extras/kernel-5.4/latest',
         'extras/kernel-5.10/latest',
         'extras/kernel-5.15/latest',
