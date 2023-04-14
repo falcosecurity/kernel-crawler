@@ -74,6 +74,7 @@ class AmazonLinux2022Mirror(repo.Distro):
     # This was obtained by running
     # docker run -it --rm amazonlinux:2022 python3 -c 'import dnf, json; db = dnf.dnf.Base(); print(json.dumps(db.conf.substitutions, indent=2))'
     AL2022_REPOS = [
+        'latest',
         '2022.0.20220202',
         '2022.0.20220315',
     ]
@@ -97,3 +98,23 @@ class AmazonLinux2022Mirror(repo.Distro):
             if dep.find("devel") != -1:
                 return repo.DriverKitConfig(release, "amazonlinux2022", dep)
 
+class AmazonLinux2023Mirror(repo.Distro):
+    AL2023_REPOS = [
+        'latest',
+    ]
+
+    def __init__(self, arch):
+        super(AmazonLinux2023Mirror, self).__init__([], arch)
+
+    def list_repos(self):
+        repo_urls = set()
+        with click.progressbar(
+                self.AL2023_REPOS, label='Checking repositories', file=sys.stderr, item_show_func=repo.to_s) as repos:
+            for r in repos:
+                repo_urls.add(get_al_repo("https://cdn.amazonlinux.com/al2023/core/mirrors/", r + '/' + self.arch))
+        return [rpm.RpmRepository(url) for url in sorted(repo_urls)]
+
+    def to_driverkit_config(self, release, deps):
+        for dep in deps:
+            if dep.find("devel") != -1:
+                return repo.DriverKitConfig(release, "amazonlinux2023", dep)
