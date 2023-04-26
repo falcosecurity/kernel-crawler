@@ -3,12 +3,35 @@ name: Update Kernels
 
 on:
   workflow_dispatch:
+    inputs:
+      distro:
+        description: distro of which to perform the update
+        type: choice
+        required: false
+        options:
+          - '*'
+          - AmazonLinux
+          - AmazonLinux2
+          - AmazonLinux2022
+          - AmazonLinux2023
+          - BottleRocket
+          - CentOS
+          - Debian
+          - Fedora
+          - Flatcar
+          - Minikube
+          - OracleLinux
+          - PhotonOS
+          - Redhat
+          - Ubuntu
   schedule:
     - cron: '30 6 * * 1'
 
 jobs:
   update-kernels:
     runs-on: ubuntu-latest
+    env:
+      DISTRO: ${{ inputs.distro }}
     container:
       image: falcosecurity/kernel-crawler:latest
       options: -u root
@@ -21,13 +44,31 @@ jobs:
         with:
           ref: kernels
 
+      - name: Setup jq
+        run: apt-get update && apt-get install jq -y
+
       - name: Run crawler for x86_64
         run: |
-          kernel-crawler crawl --distro=* > x86_64/list.json
+          mkdir x86_64_tmp
+          kernel-crawler crawl --distro=${{ env.DISTRO }} > x86_64_tmp/list.json
 
       - name: Run crawler for aarch64
         run: |
-          kernel-crawler crawl --distro=* --arch=aarch64 > aarch64/list.json
+          mkdir aarch64_tmp
+          kernel-crawler crawl --distro=${{ env.DISTRO }} --arch=aarch64 > aarch64_tmp/list.json
+
+      - name: Single distro update
+        if: github.event_name == 'workflow_dispatch' && env.DISTRO != '*'
+        run: |
+          jq --arg distroKey "${{ env.DISTRO }}" --slurpfile newValues x86_64_tmp/list.json \
+          'if .[$distroKey] then .distroKey = $newValues else . end' x86_64_tmp/list.json > x86_64_tmp/output.json
+          jq --arg distroKey "${{ env.DISTRO }}" --slurpfile newValues aarch64_tmp/list.json \
+          'if .[$distroKey] then .distroKey = $newValues else . end' aarch64_tmp/list.json > aarch64_tmp/output.json
+
+      - name: Update json lists
+        run: |
+          cp x86_64_tmp/output.json x86_64/list.json
+          cp aarch64_tmp/output.json aarch64/list.json
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5-rc
