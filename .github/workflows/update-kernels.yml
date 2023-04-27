@@ -7,7 +7,7 @@ on:
       distro:
         description: distro of which to perform the update
         type: choice
-        required: false
+        required: true
         options:
           - '*'
           - AmazonLinux
