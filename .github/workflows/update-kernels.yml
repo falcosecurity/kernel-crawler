@@ -66,11 +66,13 @@ jobs:
           --slurpfile newValues $RUNNER_TEMP/aarch64/list.json \
           'if .[$distroKey] then .distroKey = $newValues else . end' \
           aarch64/list.json > $RUNNER_TEMP/aarch64/output.json
+          mv $RUNNER_TEMP/x86_64/output.json $RUNNER_TEMP/x86_64/list.json
+          mv $RUNNER_TEMP/aarch64/output.json $RUNNER_TEMP/aarch64/list.json
 
       - name: Update json lists
         run: |
-          mv $RUNNER_TEMP/x86_64/output.json x86_64/list.json
-          mv $RUNNER_TEMP/aarch64/output.json aarch64/list.json
+          mv $RUNNER_TEMP/x86_64/list.json x86_64/list.json
+          mv $RUNNER_TEMP/aarch64/list.json aarch64/list.json
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5-rc
