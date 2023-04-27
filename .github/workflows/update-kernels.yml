@@ -30,8 +30,6 @@ on:
 jobs:
   update-kernels:
     runs-on: ubuntu-latest
-    env:
-      DISTRO: ${{ inputs.distro }}
     container:
       image: falcosecurity/kernel-crawler:latest
       options: -u root
@@ -49,26 +47,30 @@ jobs:
 
       - name: Run crawler for x86_64
         run: |
-          mkdir x86_64_tmp
-          kernel-crawler crawl --distro=${{ env.DISTRO }} > x86_64_tmp/list.json
+          mkdir $RUNNER_TEMP/x86_64
+          kernel-crawler crawl --distro=${{ inputs.distro }} > $RUNNER_TEMP/x86_64/list.json
 
       - name: Run crawler for aarch64
         run: |
-          mkdir aarch64_tmp
-          kernel-crawler crawl --distro=${{ env.DISTRO }} --arch=aarch64 > aarch64_tmp/list.json
+          mkdir $RUNNER_TEMP/aarch64
+          kernel-crawler crawl --distro=${{ inputs.distro }} --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
 
       - name: Single distro update
-        if: github.event_name == 'workflow_dispatch' && env.DISTRO != '*'
+        if: github.event_name == 'workflow_dispatch' && ${{ inputs.distro }} != '*'
         run: |
-          jq --arg distroKey "${{ env.DISTRO }}" --slurpfile newValues x86_64_tmp/list.json \
-          'if .[$distroKey] then .distroKey = $newValues else . end' x86_64_tmp/list.json > x86_64_tmp/output.json
-          jq --arg distroKey "${{ env.DISTRO }}" --slurpfile newValues aarch64_tmp/list.json \
-          'if .[$distroKey] then .distroKey = $newValues else . end' aarch64_tmp/list.json > aarch64_tmp/output.json
+          jq --arg distroKey "${{ inputs.distro }}" \
+          --slurpfile newValues $RUNNER_TEMP/x86_64/list.json \
+          'if .[$distroKey] then .distroKey = $newValues else . end' \
+          x86_64/list.json > $RUNNER_TEMP/x86_64/output.json
+          jq --arg distroKey "${{ inputs.distro }}" \
+          --slurpfile newValues $RUNNER_TEMP/aarch64/list.json \
+          'if .[$distroKey] then .distroKey = $newValues else . end' \
+          aarch64/list.json > $RUNNER_TEMP/aarch64/output.json
 
       - name: Update json lists
         run: |
-          cp x86_64_tmp/output.json x86_64/list.json
-          cp aarch64_tmp/output.json aarch64/list.json
+          mv $RUNNER_TEMP/x86_64/output.json x86_64/list.json
+          mv $RUNNER_TEMP/aarch64/output.json aarch64/list.json
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5-rc
