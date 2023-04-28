@@ -13,6 +13,8 @@ class FedoraMirror(repo.Distro):
         mirrors = [
             rpm.RpmMirror('https://mirrors.kernel.org/fedora/releases/', 'Everything/' + arch + '/os/', repo_filter),
             rpm.RpmMirror('https://mirrors.kernel.org/fedora/updates/', 'Everything/' + arch + '/', repo_filter),
+            rpm.RpmMirror('https://archives.fedoraproject.org/pub/archive/fedora/linux/releases/', 'Everything/' + arch + '/os/', repo_filter),
+            rpm.RpmMirror('https://archives.fedoraproject.org/pub/archive/fedora/linux/updates/', 'Everything/' + arch + '/os/', repo_filter),
         ]
         super(FedoraMirror, self).__init__(mirrors, arch)
 
