@@ -55,7 +55,7 @@ jobs:
       - name: Run crawler for aarch64
         run: |
           INPUT_DISTRO=${{ inputs.distro }}
-          DISTRO=${INPUT_DISTRO:-'*''}
+          DISTRO=${INPUT_DISTRO:-'*'}
           mkdir $RUNNER_TEMP/aarch64
           kernel-crawler crawl --distro=$DISTRO --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
 
