@@ -45,6 +45,14 @@ jobs:
       - name: Setup jq
         run: apt-get update && apt-get install jq -y
 
+      - name: Prepare commit body
+        id: prep_commit_msg
+        run: |
+          COMMIT_MSG="This PR updates the list of kernels from the latest crawling \
+          $(if [ "$DISTRO" != '*' ]; then echo " for distro $DISTRO"; fi). \
+          Do not edit this PR."
+          echo "commit_msg=$COMMIT_MSG" >> $GITHUB_OUTPUT
+
       - name: Run crawler for x86_64
         run: |
           INPUT_DISTRO=${{ inputs.distro }}
@@ -85,6 +93,6 @@ jobs:
           branch: update/kernels
           base: kernels
           title: 'update(kernels): update kernel json lists.'
-          body: 'This PR updates the list of kernels from the latest crawling. Do not edit this PR.'
+          body: ${{ steps.prep_commit_msg.outputs.commit_msg }}
           commit-message: 'update(kernels): update kernel json lists.'
           token: ${{ secrets.GITHUB_TOKEN }}
