@@ -48,7 +48,7 @@ jobs:
       - name: Run crawler for x86_64
         run: |
           INPUT_DISTRO=${{ inputs.distro }}
-          DISTRO=${INPUT_DISTRO:-'*''}
+          DISTRO=${INPUT_DISTRO:-'*'}
           mkdir $RUNNER_TEMP/x86_64
           kernel-crawler crawl --distro=$DISTRO > $RUNNER_TEMP/x86_64/list.json
 
