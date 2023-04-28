@@ -48,6 +48,8 @@ jobs:
       - name: Prepare commit body
         id: prep_commit_msg
         run: |
+          INPUT_DISTRO=${{ inputs.distro }}
+          DISTRO=${INPUT_DISTRO:-'*'}
           COMMIT_MSG="This PR updates the list of kernels from the latest crawling \
           $(if [ "$DISTRO" != '*' ]; then echo " for distro $DISTRO"; fi). \
           Do not edit this PR."
