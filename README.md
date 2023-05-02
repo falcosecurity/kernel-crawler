@@ -37,7 +37,7 @@ Options:
 
 ## Docker image
 
-A docker image is provided for releases, by a circleCI job: `falcosecurity/kernel-crawler:latest`.
+A docker image is provided for releases, by a GitHub Actions workflow: `falcosecurity/kernel-crawler:latest`.
 You can also build it yourself, by issuing:
 ```commandline
 docker build -t falcosecurity/kernel_crawler -f docker/Dockerfile .
