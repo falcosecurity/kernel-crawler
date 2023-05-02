@@ -60,7 +60,7 @@ jobs:
           kernel-crawler crawl --distro=$DISTRO --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
 
       - name: Single distro update
-        if: github.event_name == 'workflow_dispatch' && ${{ inputs.distro }} != '*'
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.distro != '*' }}
         run: |
           jq --arg distroKey "${{ inputs.distro }}" \
           --slurpfile newValues $RUNNER_TEMP/x86_64/list.json \
