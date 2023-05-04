@@ -96,8 +96,9 @@ class GitMirror(Distro):
         # here kernel release is the same as the one given by "uname -r"
         full_path = self.search_file(file_name)
         for line in open(full_path):
-            if re.search(r'^'+key + sep, line):
-                tokens = line.strip().split(sep, 1)
+            stripped_line = line.lstrip()
+            if re.search(r'^'+key + sep, stripped_line):
+                tokens = stripped_line.strip().split(sep, 1)
                 return tokens[1].strip('"').strip()
         return None
 
