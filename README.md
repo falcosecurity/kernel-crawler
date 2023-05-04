@@ -28,7 +28,7 @@ Crawl command:
 Usage: kernel-crawler crawl [OPTIONS]
 
 Options:
-    --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|AmazonLinux2023|BottleRocket|CentOS|Debian|Fedora|Flatcar|Minikube|OracleLinux|PhotonOS|Redhat|Ubuntu|*]
+    --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|AmazonLinux2023|BottleRocket|CentOS|Debian|Fedora|Flatcar|Minikube|OracleLinux|PhotonOS|Redhat|Talos|Ubuntu|*]
     --version TEXT
     --arch [x86_64|aarch64]
     --image TEXT                    Option is required when distro is Redhat.
