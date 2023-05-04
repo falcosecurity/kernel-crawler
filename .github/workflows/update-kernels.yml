@@ -23,6 +23,7 @@ on:
           - OracleLinux
           - PhotonOS
           - Redhat
+          - Talos
           - Ubuntu
   schedule:
     - cron: '30 6 * * 1'
