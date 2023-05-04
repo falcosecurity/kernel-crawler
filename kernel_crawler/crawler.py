@@ -22,6 +22,8 @@ from .archlinux import ArchLinuxMirror
 
 from .bottlerocket import BottleRocketMirror
 
+from .talos import TalosMirror
+
 DISTROS = {
     'AliyunLinux': AliyunLinuxMirror,
     'AlmaLinux': AlmaLinuxMirror,
@@ -49,6 +51,8 @@ DISTROS = {
     'ArchLinux': ArchLinuxMirror,
 
     'BottleRocket': BottleRocketMirror,
+    
+    'Talos': TalosMirror,
 }
 
 def to_driverkit_config(d, res):
