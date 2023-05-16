@@ -73,6 +73,16 @@ class GitMirror(Distro):
 
     def checkout_version(self, vers):
         self.repo.checkout("refs/tags/v" + vers)
+    
+    # Since pygit does not support checking out commits,
+    # we create a fake ref for the hash, and checkout it.
+    def checkout_hash(self, commithash):
+        try:
+            self.repo.references.create('refs/tags/v' + commithash, commithash)
+        except pygit2.AlreadyExistsError:
+            pass # already existent
+            
+        return self.checkout_version(commithash)
 
     def search_file(self, file_name):
         for dirpath, dirnames, files in os.walk(self.repo.workdir):
@@ -100,6 +110,12 @@ class GitMirror(Distro):
             if re.search(r'^'+key + sep, stripped_line):
                 tokens = stripped_line.strip().split(sep, 1)
                 return tokens[1].strip('"').strip()
+        return None
+    
+    def extract_line(self, file_path):
+        full_path = self.repo.workdir + file_path
+        for line in open(full_path):
+            return line
         return None
 
     def encode_base64_defconfig(self, file_name):
