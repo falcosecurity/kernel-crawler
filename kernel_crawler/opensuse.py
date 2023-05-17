@@ -8,7 +8,8 @@ def opensuse_filter(dist):
         dist.startswith('stable')
 
 def tumbleweed_filter(dist):
-    return dist.startswith('tumbleweed')
+    return dist.startswith('tumbleweed') or \
+        dist.startswith('./tumbleweed')
 
 
 class OpenSUSEMirror(repo.Distro):
