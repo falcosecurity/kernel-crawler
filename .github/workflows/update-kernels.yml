@@ -10,19 +10,24 @@ on:
         required: true
         options:
           - '*'
+          - AliyunLinux
+          - AlmaLinux
           - AmazonLinux
           - AmazonLinux2
           - AmazonLinux2022
           - AmazonLinux2023
+          - ArchLinux
           - BottleRocket
           - CentOS
           - Debian
           - Fedora
           - Flatcar
           - Minikube
+          - OpenSUSE
           - OracleLinux
           - PhotonOS
           - Redhat
+          - RockyLinux
           - Talos
           - Ubuntu
   schedule:
