@@ -1,12 +1,6 @@
 from . import repo
 from . import rpm
 
-def opensuse_filter(dist):
-    return dist.startswith('openSUSE') or \
-        dist.startswith('./openSUSE')  or \
-        dist.startswith('HEAD')        or \
-        dist.startswith('stable')
-
 def tumbleweed_filter(dist):
     return dist.startswith('tumbleweed') or \
         dist.startswith('./tumbleweed')
@@ -27,16 +21,20 @@ class OpenSUSEMirror(repo.Distro):
             rpm.SUSERpmMirror('http://download.opensuse.org/', 'repo/oss/', arch, tumbleweed_filter),
             # opensuse site: leaps
             rpm.SUSERpmMirror('http://download.opensuse.org/distribution/leap/', 'repo/oss/', arch),
+            # opensuse Kernel repo - common
+            rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'Backport/standard/', arch),
         ]
 
         # other arch's are stored differently on SUSE's site
         # in general, the /repositories/Kernel:/ are stored differently and require a filter
         if arch == 'x86_64':
-            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'Submit/standard/', arch, opensuse_filter))
-            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'standard/', arch, opensuse_filter))
+            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'Submit/standard/', arch))
+            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'standard/', arch))
         else:
-            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'Submit/ports/', arch, opensuse_filter))
-            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'ports/', arch, opensuse_filter))
+            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'Submit/ports/', arch))
+            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'ports/', arch))
+            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'ARM/', arch))
+            mirrors.append(rpm.SUSERpmMirror('https://download.opensuse.org/repositories/Kernel:/', 'Backport/ports/', arch)),
 
         super(OpenSUSEMirror, self).__init__(mirrors, arch)
 
