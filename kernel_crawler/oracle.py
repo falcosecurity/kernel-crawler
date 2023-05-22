@@ -5,7 +5,7 @@ from . import rpm
 class OracleRepository(rpm.RpmRepository):
     @classmethod
     def kernel_package_query(cls):
-        return '''(name IN ('kernel', 'kernel-devel', 'kernel-uek', 'kernel-uek-devel') AND arch = 'x86_64')'''
+        return '''(name IN ('kernel', 'kernel-devel', 'kernel-uek', 'kernel-uek-devel'))'''
 
 
 class OracleMirror(repo.Distro):
@@ -55,4 +55,10 @@ class OracleMirror(repo.Distro):
     def to_driverkit_config(self, release, deps):
         for dep in deps:
             if dep.find("devel") != -1:
-                return repo.DriverKitConfig(release, "ol", dep)
+                if 'uek' in release:  # uek kernels have kernel versions of "2"
+                    # example:
+                    #  # uname -a
+                    #  Linux vm-ol8 5.15.0-100.96.32.el8uek.x86_64 #2 SMP Tue ...
+                    return repo.DriverKitConfig(release, "ol", dep, kernelversion=2)
+                else:  # else return default with kernelversion=1
+                    return repo.DriverKitConfig(release, "ol", dep)
