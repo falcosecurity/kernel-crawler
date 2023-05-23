@@ -16,8 +16,9 @@ Main:
 Usage: kernel-crawler [OPTIONS] COMMAND [ARGS]...
 
 Options:
-    --debug / --no-debug
-    --help                Show this message and exit.
+    --debug         Enable debug logs.
+    --noexceptions  Skip exceptions, logging them.
+    --help          Show this message and exit.
 
 Commands:
     crawl

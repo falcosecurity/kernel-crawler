@@ -7,7 +7,10 @@ from .crawler import crawl_kernels, DISTROS
 
 logger = logging.getLogger(__name__)
 
-def init_logging(debug):
+def skip_exception_handler(type, value, tb):
+    logger.exception("Uncaught exception: {0}".format(str(value))) 
+
+def init_logging(debug, noexceptions):
     level = 'DEBUG' if debug else 'INFO'
     logger.setLevel(level)
     handler = logging.StreamHandler(sys.stderr)
@@ -15,11 +18,15 @@ def init_logging(debug):
     handler.setLevel(level)
     logger.addHandler(handler)
     logger.debug("DEBUG logging enabled")
+    if noexceptions:
+        # Install exception handler that just logs
+        sys.excepthook = skip_exception_handler
 
 @click.group()
-@click.option('--debug/--no-debug')
-def cli(debug):
-    init_logging(debug)
+@click.option('--debug', required=False, is_flag=True, default=False, help="Enable debug logs.")
+@click.option('--noexceptions', required=False, is_flag=True, default=False, help="Skip exceptions, logging them.")
+def cli(debug, noexceptions):
+    init_logging(debug, noexceptions)
 
 class DistroImageValidation(click.Option):
     def __init__(self, *args, **kwargs):

@@ -27,7 +27,7 @@ jobs:
 
       - name: Run crawler
         run: |
-          kernel-crawler crawl --distro "*" > kernels.json
+          kernel-crawler --noexceptions crawl --distro "*" > kernels.json
 
       - name: Validate json
         run: |

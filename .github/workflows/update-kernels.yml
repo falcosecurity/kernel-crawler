@@ -66,14 +66,14 @@ jobs:
           INPUT_DISTRO=${{ inputs.distro }}
           DISTRO=${INPUT_DISTRO:-'*'}
           mkdir $RUNNER_TEMP/x86_64
-          kernel-crawler crawl --distro=$DISTRO > $RUNNER_TEMP/x86_64/list.json
+          kernel-crawler --noexceptions crawl --distro=$DISTRO > $RUNNER_TEMP/x86_64/list.json
 
       - name: Run crawler for aarch64
         run: |
           INPUT_DISTRO=${{ inputs.distro }}
           DISTRO=${INPUT_DISTRO:-'*'}
           mkdir $RUNNER_TEMP/aarch64
-          kernel-crawler crawl --distro=$DISTRO --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
+          kernel-crawler --noexceptions crawl --distro=$DISTRO --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
 
       - name: Single distro update
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.distro != '*' }}
