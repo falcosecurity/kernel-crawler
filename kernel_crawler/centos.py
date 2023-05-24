@@ -16,19 +16,25 @@ def v6_or_v7(ver):
 class CentosMirror(repo.Distro):
     def __init__(self, arch):
         mirrors = [
-            rpm.RpmMirror('http://mirror.centos.org/centos/', 'os/' + arch + '/',  v7_only),
-            rpm.RpmMirror('http://mirror.centos.org/centos/', 'updates/' + arch + '/', v7_only),
-            # CentOS 8 reached end-of-life at the end of 2021, so no point looking for it
-            # rpm.RpmMirror('http://mirror.centos.org/centos/', 'BaseOS/' + arch + '/os/', v8_only),
+            # CentOS 6 + 7
             rpm.RpmMirror('http://vault.centos.org/centos/', 'os/' + arch + '/', v6_or_v7),
             rpm.RpmMirror('http://vault.centos.org/centos/', 'updates/' + arch + '/', v6_or_v7),
-            rpm.RpmMirror('http://vault.centos.org/centos/', 'BaseOS/' + arch + '/os/', v8_only),
             rpm.RpmMirror('http://archive.kernel.org/centos/', 'os/' + arch + '/', v6_or_v7),
             rpm.RpmMirror('http://archive.kernel.org/centos/', 'updates/' + arch + '/', v6_or_v7),
+            # CentOS 7
+            rpm.RpmMirror('http://mirror.centos.org/centos/', 'os/' + arch + '/',  v7_only),
+            rpm.RpmMirror('http://mirror.centos.org/centos/', 'updates/' + arch + '/', v7_only),
+            # CentOS 8
+            rpm.RpmMirror('http://mirror.centos.org/centos/', 'BaseOS/' + arch + '/os/', v8_only),
+            rpm.RpmMirror('http://vault.centos.org/centos/', 'BaseOS/' + arch + '/os/', v8_only),
             rpm.RpmMirror('http://archive.kernel.org/centos/', 'BaseOS/' + arch + '/os/', v8_only),
-            # It seems like centos stream uses /AppStream for kernel-devel, instead of BaseOS
+            # CentOS 9
             rpm.RpmMirror('http://mirror.stream.centos.org/', 'BaseOS/' + arch + '/os/', v9_only),
+
+            # It seems like stream variants uses /AppStream as well
+            rpm.RpmMirror('http://archive.kernel.org/centos/', 'AppStream/' + arch + '/os/', v8_only),
             rpm.RpmMirror('http://mirror.stream.centos.org/', 'AppStream/' + arch + '/os/', v9_only),
+
             # These are some advanced mirrors for CentOS that enable newer kernels for ML
             rpm.RpmMirror('http://elrepo.org/linux/kernel/', f'{arch}/'),
             rpm.RpmMirror('http://mirrors.coreix.net/elrepo/kernel/', f'{arch}/'),
