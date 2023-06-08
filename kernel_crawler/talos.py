@@ -68,11 +68,11 @@ class TalosMirror(GitMirror):
             # built with a different defconfig file. So having the talos version in the kernelversion
             # makes easier to get the right falco drivers from within a talos instance.
             # same meaning as "uname -v"
-            kernel_version = "1_" + v
+            kernel_version = "1_v" + v
             defconfig_base64 = self.encode_base64_defconfig("config-" + self.arch)
             kernel_configs[v] = {
                 self.KERNEL_VERSION: kernel_version, 
-                self.KERNEL_RELEASE: kernel_release,
+                self.KERNEL_RELEASE: kernel_release + "-talos",
                 self.DISTRO_TARGET: "talos",
                 self.BASE_64_CONFIG_DATA: defconfig_base64,
                 }
