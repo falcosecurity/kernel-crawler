@@ -33,6 +33,11 @@ on:
   schedule:
     - cron: '30 6 * * 1'
 
+# Checks if any concurrent jobs is running for kernels CI and eventually cancel it.
+concurrency:
+  group: kernels-ci
+  cancel-in-progress: true
+
 jobs:
   update-kernels:
     runs-on: ubuntu-latest
@@ -48,32 +53,32 @@ jobs:
         with:
           ref: kernels
 
+      - name: Fetch distro
+        run: |
+          INPUT_DISTRO=${{ inputs.distro }}
+          DISTRO=${INPUT_DISTRO:-'*'}
+          echo "distro=$DISTRO" >> $GITHUB_ENV
+
       - name: Setup jq
         run: apt-get update && apt-get install jq -y
 
       - name: Prepare commit body
         id: prep_commit_msg
         run: |
-          INPUT_DISTRO=${{ inputs.distro }}
-          DISTRO=${INPUT_DISTRO:-'*'}
           COMMIT_MSG="This PR updates the list of kernels from the latest crawling \
-          $(if [ "$DISTRO" != '*' ]; then echo " for distro $DISTRO"; fi). \
+          $(if [ "${{ env.distro }}" != '*' ]; then echo " for distro ${{ env.distro }}"; fi). \
           Do not edit this PR."
           echo "commit_msg=$COMMIT_MSG" >> $GITHUB_OUTPUT
 
       - name: Run crawler for x86_64
         run: |
-          INPUT_DISTRO=${{ inputs.distro }}
-          DISTRO=${INPUT_DISTRO:-'*'}
           mkdir $RUNNER_TEMP/x86_64
-          kernel-crawler crawl --distro=$DISTRO > $RUNNER_TEMP/x86_64/list.json
+          kernel-crawler crawl --distro=${{ env.distro }} > $RUNNER_TEMP/x86_64/list.json
 
       - name: Run crawler for aarch64
         run: |
-          INPUT_DISTRO=${{ inputs.distro }}
-          DISTRO=${INPUT_DISTRO:-'*'}
           mkdir $RUNNER_TEMP/aarch64
-          kernel-crawler crawl --distro=$DISTRO --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
+          kernel-crawler crawl --distro=${{ env.distro }} --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
 
       - name: Single distro update
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.distro != '*' }}
@@ -93,6 +98,10 @@ jobs:
         run: |
           mv $RUNNER_TEMP/x86_64/list.json x86_64/list.json
           mv $RUNNER_TEMP/aarch64/list.json aarch64/list.json
+
+      - name: Update last run distro
+        run: |
+          echo ${{ env.distro }} > last_run_distro.txt
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5-rc
