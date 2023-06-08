@@ -43,9 +43,40 @@ class DebianMirror(repo.Distro):
 
     def to_driverkit_config(self, release, deps):
         headers = []
+        headers_rt = []
+        headers_cloud = []
+        # Magic to obtain `rt`, `cloud` and normal headers:
+        # List is like this one:
+        # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-common_4.19.269-1_all.deb",
+        # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-rt-amd64_4.19.269-1_amd64.deb",
+        # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-common-rt_4.19.269-1_all.deb",
+        # "http://security.debian.org/pool/updates/main/l/linux/linux-kbuild-4.19_4.19.282-1_amd64.deb",
+        # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-cloud-amd64_4.19.269-1_amd64.deb",
+        # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-amd64_4.19.269-1_amd64.deb"
+        # So:
+        # * common is split in `common-rt` and `common` (for cloud and normal)
+        # * kbuild is the same across all flavors
+        # * headers are split between `rt`, `cloud` and normal
         for dep in deps:
             if dep.find("headers") != -1:
-                headers.append(dep)
+                if dep.find("common") != -1:
+                    if dep.find("-rt") != -1:
+                        headers_rt.append(dep)
+                    else:
+                        headers.append(dep)
+                        headers_cloud.append(dep)
+                else:
+                    if dep.find("-rt") != -1:
+                        headers_rt.append(dep)
+                    elif dep.find("-cloud") != -1:
+                        headers_cloud.append(dep)
+                    else:
+                        headers.append(dep)
             if dep.find("kbuild") != -1:
                 headers.append(dep)
-        return repo.DriverKitConfig(release + "-" + self.arch, "debian", headers)
+                headers_rt.append(dep)
+                headers_cloud.append(dep)
+
+        return [repo.DriverKitConfig(release + "-" + self.arch, "debian", headers),
+                      repo.DriverKitConfig(release + "-rt-" + self.arch, "debian", headers_rt),
+                      repo.DriverKitConfig(release + "-cloud-" + self.arch, "debian", headers_cloud)]
