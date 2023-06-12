@@ -28,6 +28,10 @@ class UbuntuMirror(repo.Distro):
                 # if capture was successful, set the flavor
                 if flavor_capture is not None:
                     flavor = flavor_capture.group(1)  # set flavor to the first capture group
+                    # in the case that the flavor results in aws-<version> we remove the version,
+                    # e.g.: aws-5.19 -> aws
+                    if '-' in flavor:
+                        flavor = flavor.split('-')[0]
 
                 target = f'ubuntu-{flavor}'    # expose the correct ubuntu flavor
                 release = f'{krel}-{flavor}'  # add flavor to release
