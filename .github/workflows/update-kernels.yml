@@ -101,7 +101,7 @@ jobs:
 
       - name: Update last run distro
         run: |
-          echo ${{ env.distro }} > last_run_distro.txt
+          echo "${{ env.distro }}" > last_run_distro.txt
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5-rc
