@@ -1,1 +1,1 @@
-Debian
+LICENSE OWNERS README.md aarch64 index.html last_run_distro.txt x86_64
