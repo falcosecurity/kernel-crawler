@@ -12,7 +12,7 @@ class Repository(object):
         raise NotImplementedError
 
 class DriverKitConfig(object):
-    def __init__(self, kernelrelease, target, headers=None, kernelversion=1, kernelconfigdata=None):
+    def __init__(self, kernelrelease, target, headers=None, kernelversion="1", kernelconfigdata=None):
         self.kernelversion = kernelversion
         self.kernelrelease = kernelrelease
         self.target = target
