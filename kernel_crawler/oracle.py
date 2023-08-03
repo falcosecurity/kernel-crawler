@@ -59,6 +59,6 @@ class OracleMirror(repo.Distro):
                     # example:
                     #  # uname -a
                     #  Linux vm-ol8 5.15.0-100.96.32.el8uek.x86_64 #2 SMP Tue ...
-                    return repo.DriverKitConfig(release, "ol", dep, kernelversion=2)
+                    return repo.DriverKitConfig(release, "ol", dep, kernelversion="2")
                 else:  # else return default with kernelversion=1
                     return repo.DriverKitConfig(release, "ol", dep)
