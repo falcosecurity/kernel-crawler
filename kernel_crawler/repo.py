@@ -13,6 +13,8 @@ class Repository(object):
 
 class DriverKitConfig(object):
     def __init__(self, kernelrelease, target, headers=None, kernelversion="1", kernelconfigdata=None):
+        if not isinstance(kernelversion, str):
+            raise TypeError('kernelversion should be a string')
         self.kernelversion = kernelversion
         self.kernelrelease = kernelrelease
         self.target = target
