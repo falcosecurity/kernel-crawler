@@ -31,7 +31,7 @@ on:
           - Talos
           - Ubuntu
   schedule:
-    - cron: '30 6 * * 1'
+    - cron: '30 6 * * *'
 
 # Checks if any concurrent jobs is running for kernels CI and eventually cancel it.
 concurrency:
