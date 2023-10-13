@@ -17,16 +17,22 @@ from . import repo
 class PhotonOsRepository(rpm.RpmRepository):
     @classmethod
     def kernel_package_query(cls):
+        # We exclude `esx` kernels because they don't support CONFIG_TRACEPOINTS,
+        # see https://github.com/vmware/photon/issues/1223.
         return '''((name = 'linux' OR name LIKE 'linux-%devel%') AND name NOT LIKE '%esx%')'''
 
 
 class PhotonOsMirror(repo.Distro):
     PHOTON_OS_VERSIONS = [
+        ('3.0', ''),
         ('3.0', '_release'),
         ('3.0', '_updates'),
         ('4.0', ''),
         ('4.0', '_release'),
         ('4.0', '_updates'),
+        ('5.0', ''),
+        ('5.0', '_release'),
+        ('5.0', '_updates'),
     ]
 
     def __init__(self, arch):
