@@ -35,6 +35,16 @@ jobs:
           mkdir $RUNNER_TEMP/aarch64
           kernel-crawler crawl --distro="*" --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
 
+      - name: Install deps
+        run: |
+          apt update
+          apt install -y jq
+
+      - name: Validate jsons
+        run: |
+          cat $RUNNER_TEMP/x86_64/list.json | jq empty
+          cat $RUNNER_TEMP/aarch64/list.json | jq empty
+
       - name: Move everything under site folder
         run: |
           mkdir site/
