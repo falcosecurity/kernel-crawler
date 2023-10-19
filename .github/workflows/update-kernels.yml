@@ -59,4 +59,4 @@ jobs:
           path: 'site'
 
       - id: deployment
-        uses: actions/deploy-pages@v1g
+        uses: actions/deploy-pages@v1
