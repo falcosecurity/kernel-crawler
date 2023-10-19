@@ -9,9 +9,24 @@ on:
       - main
 
 jobs:
+  paths-filter:
+    runs-on: ubuntu-latest
+    outputs:
+      crawler_changed: ${{ steps.filter.outputs.crawler }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            crawler:
+              - 'kernel_crawler/**'
+
   test:
     name: test kernel-crawler
     runs-on: ubuntu-latest
+    needs: paths-filter
+    if: needs.paths-filter.outputs.crawler_changed == 'true'
     steps:
       - name: Checkout repo ⤵️
         uses: actions/checkout@v3
