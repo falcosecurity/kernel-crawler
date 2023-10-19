@@ -27,13 +27,13 @@ jobs:
 
       - name: Run crawler for x86_64
         run: |
-          mkdir $RUNNER_TEMP/x86_64
-          kernel-crawler crawl --distro="*" > $RUNNER_TEMP/x86_64/list.json
+          mkdir site/x86_64
+          kernel-crawler crawl --distro="*" > site/x86_64/list.json
 
       - name: Run crawler for aarch64
         run: |
-          mkdir $RUNNER_TEMP/aarch64
-          kernel-crawler crawl --distro="*" --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
+          mkdir site/aarch64
+          kernel-crawler crawl --distro="*" --arch=aarch64 > site/aarch64/list.json
 
       - name: Install deps
         run: |
@@ -42,17 +42,8 @@ jobs:
 
       - name: Validate jsons
         run: |
-          cat $RUNNER_TEMP/x86_64/list.json | jq empty
-          cat $RUNNER_TEMP/aarch64/list.json | jq empty
-
-      - name: Move everything under site folder
-        run: |
-          mkdir site/
-          mv index.html site/
-          mkdir site/aarch64/
-          $RUNNER_TEMP/aarch64/list.json site/aarch64
-          mkdir site/x86_64/
-          mv $RUNNER_TEMP/x86_64/list.json site/x86_64/
+          cat site/x86_64/list.json | jq empty
+          cat site/aarch64/list.json | jq empty
 
       - uses: actions/upload-pages-artifact@v1
         with:
