@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>Kernel Crawler</title>
+    <meta name="author" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <style>
+        .dataTables_filter {
+            padding-right: 10px;
+        }
+        .btn {
+            padding-bottom: 15px;
+        }
+    </style>
+    </head>
+    <body>
+    <div>
+        <img src="https://sysdig.com/wp-content/uploads/2018/10/Falco-horizontal-logo-teal_2x.png" height="55" alt="falco logo">
+    </div>
+    <div id="archs" style="padding-left: 10px;">
+        Architecture:
+    </div>
+    <div id="targets" style="padding-left: 10px;">
+        Target:
+    </div>
+    <table id="kernels" class="table table-striped table-condensed" style="padding-left: 10px;">
+        <thead>
+            <tr>
+                <th>Target</th>
+                <th>Kernel Release</th> 
+                <th>Kernel Version</th>
+                <th>Headers</th>
+                <th>Config</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+    </table>
+    </body>
+    <script>
+        var url = new URL(window.location);
+        var arch = url.searchParams.get('arch');
+        if (arch == null) {
+            arch = "x86_64";
+            url.searchParams.set('arch', arch);
+        };
+        var target = url.searchParams.get('target')
+        if (target == null) {
+            if (arch == "x86_64") {
+                target = "AmazonLinux";
+            }
+            if (arch == "aarch64") {
+                target = "AmazonLinux2";
+            }
+            url.searchParams.set('target', target);
+        };
+        var search = url.searchParams.get('search')
+        if (search == null) {
+            search = "";
+        };
+        window.history.pushState({}, '', url);
+
+        const archs = ['x86_64', 'aarch64']
+        archs.forEach ((item) => {
+            var searchPrms = new URLSearchParams(window.location.search);
+            searchPrms.delete('search');
+            var selected = searchPrms.get('arch');
+            searchPrms.set('arch', item);
+            var element = document.createElement('a');
+            element.className = "btn btn-outline-primary btn-sm";
+            if (selected == item) {
+                element.className = "btn btn-primary btn-sm";
+            }
+            element.style = "margin: 5px; padding-top: 8px; padding-bottom: 10px;"
+            element.text = item;
+            element.href = "?"+searchPrms.toString();
+            document.getElementById('archs').appendChild(element);
+        });
+
+        $.getJSON(arch+'/list.json', function(data) {
+            Object.keys(data).forEach ((key) => {
+                var searchPrms = new URLSearchParams(window.location.search);
+                searchPrms.delete('search');
+                var selected = searchPrms.get('target');
+                searchPrms.set('target', key);
+                var element = document.createElement('a');
+                element.className = "btn btn-outline-primary btn-sm";
+                if (selected == key) {
+                    element.className = "btn btn-primary btn-sm";
+                }
+                element.style = "margin: 5px; padding-top: 8px; padding-bottom: 10px;"
+                element.text = key;
+                element.href = "?"+searchPrms.toString();
+                document.getElementById('targets').appendChild(element);
+            });
+        });
+
+        $(document).ready(function() {
+            $('#kernels').DataTable({
+                "search": {"search": search },
+                "paging": false,
+                // "data" : data,
+                "order": [[ 1, "desc" ]],
+                ajax: {
+                    url: arch+'/list.json',
+                    dataSrc: target,
+                },
+                columns : [
+                    { "data" : "target"},
+                    { "data" : "kernelrelease"},
+                    { "data" : "kernelversion"},
+                    {
+                        "data": 'headers',
+                        render: function (data, type) {
+                            if (data === undefined) {
+                                return '';
+                            }
+                            let s = '';
+                            for (const value of Object.values(data)) {
+                                s += '<a href="'+value+'" download="'+value+'"><i class="bi bi-download" style="margin-right: 8px;"></i></a>'
+                            }
+                            return s;
+                        },
+                    },
+                    {
+                        "data": 'kernelconfigdata',
+                        render: function (data, type) {
+                            if (data === undefined) {
+                                return '';
+                            }
+                            return '<a href="data:application/octet-stream;charset=utf-8;base64,'+data+'" download="config.txt"><i class="bi bi-download"></a>'
+                        },
+                    },
+                    { 
+                        "data" : "kernelrelease",
+                        render: function (data, type, row) {
+                            return '<a href="?arch='+arch+'&target='+target+'&search='+data+'"><i class="bi bi-link"></i></a>';
+                        }
+                    },
+                ]
+            });
+        });
+    </script>
+</html>

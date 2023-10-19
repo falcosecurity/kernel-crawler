@@ -3,33 +3,6 @@ name: Update Kernels
 
 on:
   workflow_dispatch:
-    inputs:
-      distro:
-        description: distro of which to perform the update
-        type: choice
-        required: true
-        options:
-          - '*'
-          - AliyunLinux
-          - AlmaLinux
-          - AmazonLinux
-          - AmazonLinux2
-          - AmazonLinux2022
-          - AmazonLinux2023
-          - ArchLinux
-          - BottleRocket
-          - CentOS
-          - Debian
-          - Fedora
-          - Flatcar
-          - Minikube
-          - OpenSUSE
-          - OracleLinux
-          - PhotonOS
-          - Redhat
-          - RockyLinux
-          - Talos
-          - Ubuntu
   schedule:
     - cron: '30 6 * * *'
 
@@ -45,71 +18,35 @@ jobs:
       image: falcosecurity/kernel-crawler:latest
       options: -u root
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
+      pages: write
+      id-token: write
     steps:
       - name: Checkout crawler
         uses: actions/checkout@v3
-        with:
-          ref: kernels
-
-      - name: Fetch distro
-        run: |
-          INPUT_DISTRO=${{ inputs.distro }}
-          DISTRO=${INPUT_DISTRO:-'*'}
-          echo "distro=$DISTRO" >> $GITHUB_ENV
-
-      - name: Setup jq
-        run: apt-get update && apt-get install jq -y
-
-      - name: Prepare commit body
-        id: prep_commit_msg
-        run: |
-          COMMIT_MSG="This PR updates the list of kernels from the latest crawling \
-          $(if [ "${{ env.distro }}" != '*' ]; then echo " for distro ${{ env.distro }}"; fi). \
-          Do not edit this PR."
-          echo "commit_msg=$COMMIT_MSG" >> $GITHUB_OUTPUT
 
       - name: Run crawler for x86_64
         run: |
           mkdir $RUNNER_TEMP/x86_64
-          kernel-crawler crawl --distro=${{ env.distro }} > $RUNNER_TEMP/x86_64/list.json
+          kernel-crawler crawl --distro="*" > $RUNNER_TEMP/x86_64/list.json
 
       - name: Run crawler for aarch64
         run: |
           mkdir $RUNNER_TEMP/aarch64
-          kernel-crawler crawl --distro=${{ env.distro }} --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
+          kernel-crawler crawl --distro="*" --arch=aarch64 > $RUNNER_TEMP/aarch64/list.json
 
-      - name: Single distro update
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.distro != '*' }}
+      - name: Move everything under site folder
         run: |
-          jq --arg distroKey "${{ inputs.distro }}" \
-          --slurpfile newValues $RUNNER_TEMP/x86_64/list.json \
-          'if .[$distroKey] then .[$distroKey] = $newValues[][] else . end' \
-          x86_64/list.json > $RUNNER_TEMP/x86_64/output.json
-          jq --arg distroKey "${{ inputs.distro }}" \
-          --slurpfile newValues $RUNNER_TEMP/aarch64/list.json \
-          'if .[$distroKey] then .[$distroKey] = $newValues[][] else . end' \
-          aarch64/list.json > $RUNNER_TEMP/aarch64/output.json
-          mv $RUNNER_TEMP/x86_64/output.json $RUNNER_TEMP/x86_64/list.json
-          mv $RUNNER_TEMP/aarch64/output.json $RUNNER_TEMP/aarch64/list.json
+          mkdir site/
+          mv index.html site/
+          mkdir site/aarch64/
+          $RUNNER_TEMP/aarch64/list.json site/aarch64
+          mkdir site/x86_64/
+          mv $RUNNER_TEMP/x86_64/list.json site/x86_64/
 
-      - name: Update json lists
-        run: |
-          mv $RUNNER_TEMP/x86_64/list.json x86_64/list.json
-          mv $RUNNER_TEMP/aarch64/list.json aarch64/list.json
-
-      - name: Update last run distro
-        run: |
-          echo "${{ env.distro }}" > last_run_distro.txt
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5-rc
+      - uses: actions/upload-pages-artifact@v1
         with:
-          signoff: true
-          branch: update/kernels
-          base: kernels
-          title: 'update(kernels): update kernel json lists.'
-          body: ${{ steps.prep_commit_msg.outputs.commit_msg }}
-          commit-message: 'update(kernels): update kernel json lists.'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: 'site'
+
+      - id: deployment
+        uses: actions/deploy-pages@v1g
