@@ -6,7 +6,9 @@
 ![Architectures](https://img.shields.io/badge/ARCHS-x86__64%7Caarch64-blueviolet?style=for-the-badge)
  
 It is a tool used to crawl supported kernels by multiple distros, and generate a [driverkit](https://github.com/falcosecurity/driverkit)-like config json.  
-Output json can be found, for each supported architecture, under [kernels](https://github.com/falcosecurity/kernel-crawler/tree/kernels) branch and on gh pages: https://falcosecurity.github.io/kernel-crawler/.  
+Output json can be found, for each supported architecture, on gh pages: https://falcosecurity.github.io/kernel-crawler/:  
+* [aarch64](https://falcosecurity.github.io/kernel-crawler/aarch64/list.json)
+* [x86_64](https://falcosecurity.github.io/kernel-crawler/x86_64/list.json)
 
 A weekly [github action workflow](https://github.com/falcosecurity/kernel-crawler/actions/workflows/update-kernels.yml) will open a PR on this repo to update the json.  
 As soon as the PR is merged and the json updated, a [prow job](https://github.com/falcosecurity/test-infra/blob/master/config/jobs/update-dbg/update-dbg.yaml) will create a PR on [test-infra](https://github.com/falcosecurity/test-infra) to generate the new Driverkit configs from the updated json.
