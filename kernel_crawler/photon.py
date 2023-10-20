@@ -19,7 +19,7 @@ class PhotonOsRepository(rpm.RpmRepository):
     def kernel_package_query(cls):
         # We exclude `esx` kernels because they don't support CONFIG_TRACEPOINTS,
         # see https://github.com/vmware/photon/issues/1223.
-        return '''((name = 'linux' OR name LIKE 'linux-%devel%') AND name NOT LIKE '%esx%')'''
+        return '''((name = 'linux' OR name LIKE 'linux-%devel%') AND name NOT LIKE '%esx%' AND name NOT LIKE '%PAM%')'''
 
 
 class PhotonOsMirror(repo.Distro):
