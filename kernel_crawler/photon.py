@@ -46,5 +46,5 @@ class PhotonOsMirror(repo.Distro):
 
     def to_driverkit_config(self, release, deps):
         for dep in deps:
-            if dep.find("linux-devel") != -1:
+            if dep.find("-devel") != -1:
                 return repo.DriverKitConfig(release, "photon", dep)
