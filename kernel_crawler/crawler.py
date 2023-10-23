@@ -37,35 +37,29 @@ from .bottlerocket import BottleRocketMirror
 
 from .talos import TalosMirror
 
+# Keys are taken from /etc/os-release where available.
+# Must be the same used by driverkit builders (https://github.com/falcosecurity/driverkit).
 DISTROS = {
-    'AliyunLinux': AliyunLinuxMirror,
-    'AlmaLinux': AlmaLinuxMirror,
-    'AmazonLinux': AmazonLinux1Mirror,
-    'AmazonLinux2': AmazonLinux2Mirror,
-    'AmazonLinux2022': AmazonLinux2022Mirror,
-    'AmazonLinux2023': AmazonLinux2023Mirror,
-    'CentOS': CentosMirror,
-    'Fedora': FedoraMirror,
-    'OracleLinux': OracleMirror,
-    'PhotonOS': PhotonOsMirror,
-    'RockyLinux': RockyLinuxMirror,
-
-    'OpenSUSE': OpenSUSEMirror,
-
-    'Debian': DebianMirror,
-    'Ubuntu': UbuntuMirror,
-
-    'Flatcar': FlatcarMirror,
-    
-    'Minikube': MinikubeMirror,
-
-    'Redhat': RedhatContainer,
-
-    'ArchLinux': ArchLinuxMirror,
-
-    'BottleRocket': BottleRocketMirror,
-    
-    'Talos': TalosMirror,
+    'alinux': AliyunLinuxMirror,
+    'almalinux': AlmaLinuxMirror,
+    'amazonlinux': AmazonLinux1Mirror,
+    'amazonlinux2': AmazonLinux2Mirror,
+    'amazonlinux2022': AmazonLinux2022Mirror,
+    'amazonlinux2023': AmazonLinux2023Mirror,
+    'centos': CentosMirror,
+    'fedora': FedoraMirror,
+    'ol': OracleMirror,
+    'photon': PhotonOsMirror,
+    'rocky': RockyLinuxMirror,
+    'opensuse': OpenSUSEMirror,
+    'debian': DebianMirror,
+    'ubuntu': UbuntuMirror,
+    'flatcar': FlatcarMirror,
+    'minikube': MinikubeMirror,
+    'redhat': RedhatContainer,
+    'arch': ArchLinuxMirror,
+    'bottlerocket': BottleRocketMirror,
+    'talos': TalosMirror,
 }
 
 def to_driverkit_config(d, res):
