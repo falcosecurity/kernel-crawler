@@ -2,6 +2,7 @@
 name: Update Kernels
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '30 6 * * *'
 
