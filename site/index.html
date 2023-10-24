@@ -54,10 +54,10 @@
         var target = url.searchParams.get('target')
         if (target == null) {
             if (arch == "x86_64") {
-                target = "AmazonLinux";
+                target = "amazonlinux";
             }
             if (arch == "aarch64") {
-                target = "AmazonLinux2";
+                target = "amazonlinux2";
             }
             url.searchParams.set('target', target);
         };
