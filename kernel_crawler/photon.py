@@ -45,6 +45,12 @@ class PhotonOsMirror(repo.Distro):
             for version, repo_tag in self.PHOTON_OS_VERSIONS]
 
     def to_driverkit_config(self, release, deps):
+        # PhotonOS kernel packages have a ".$arch" suffix, 
+        # thus our kernelrelease is different from `uname -r` output.
+        # Fix this by manually removing the suffix.
+        suffix = "."+self.arch
+        if release.endswith(suffix):
+            release = release[:-len(suffix)]
         for dep in deps:
             if dep.find("-devel") != -1:
                 return repo.DriverKitConfig(release, "photon", dep)
