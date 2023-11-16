@@ -36,6 +36,7 @@ setup(name='kernel-crawler',
           'semantic-version',
           'pygit2',
           'beautifulsoup4',
-          'rpmfile'
+          'rpmfile',
+          'zstandard'
       ],
 )
