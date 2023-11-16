@@ -30,8 +30,9 @@ class OpenSUSEMirror(repo.Distro):
             # the rest
             rpm.SUSERpmMirror('https://mirrors.edge.kernel.org/opensuse/distribution/', 'repo/oss/', arch),
             rpm.SUSERpmMirror('https://mirrors.edge.kernel.org/opensuse/distribution/', 'repo/oss/suse/', arch),
-            # opensuse site: tumbleweed
-            rpm.SUSERpmMirror('http://download.opensuse.org/', 'repo/oss/', arch, tumbleweed_filter),
+            # opensuse site: tumbleweed -> enforce zstd for repo:
+            # https://lists.opensuse.org/archives/list/factory@lists.opensuse.org/thread/LJNSBPCMIOJMP37PFPV7C7EJVIOW26BN/
+            rpm.SUSERpmMirror('http://download.opensuse.org/', 'repo/oss/', arch, tumbleweed_filter, True),
             # opensuse site: leaps
             rpm.SUSERpmMirror('http://download.opensuse.org/distribution/leap/', 'repo/oss/', arch),
             # opensuse Kernel repo - common
