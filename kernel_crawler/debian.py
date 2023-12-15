@@ -31,6 +31,7 @@ class DebianMirror(repo.Distro):
         mirrors = [
             deb.DebMirror('http://mirrors.edge.kernel.org/debian/', arch, repo_filter),
             deb.DebMirror('http://security.debian.org/', arch, repo_filter),
+            deb.DebMirror('http://archive.raspberrypi.com/debian/', arch, repo_filter),
         ]
         super(DebianMirror, self).__init__(mirrors, arch)
 
@@ -58,7 +59,8 @@ class DebianMirror(repo.Distro):
         headers = []
         headers_rt = []
         headers_cloud = []
-        # Magic to obtain `rt`, `cloud` and normal headers:
+        headers_rpi = []
+        # Magic to obtain `rt`, `cloud`, `rpi` and normal headers:
         # List is like this one:
         # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-common_4.19.269-1_all.deb",
         # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-rt-amd64_4.19.269-1_amd64.deb",
@@ -67,7 +69,7 @@ class DebianMirror(repo.Distro):
         # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-cloud-amd64_4.19.269-1_amd64.deb",
         # "http://security.debian.org/pool/updates/main/l/linux/linux-headers-4.19.0-23-amd64_4.19.269-1_amd64.deb"
         # So:
-        # * common is split in `common-rt` and `common` (for cloud and normal)
+        # * common is split in `common-rt`, `common-rpi` and `common` (for cloud and normal)
         # * kbuild is the same across all flavors
         # * headers are split between `rt`, `cloud` and normal
         for dep in deps:
@@ -75,6 +77,8 @@ class DebianMirror(repo.Distro):
                 if dep.find("common") != -1:
                     if dep.find("-rt") != -1:
                         headers_rt.append(dep)
+                    elif dep.find("-rpi") != -1:
+                        headers_rpi.append(dep)
                     else:
                         headers.append(dep)
                         headers_cloud.append(dep)
@@ -83,13 +87,23 @@ class DebianMirror(repo.Distro):
                         headers_rt.append(dep)
                     elif dep.find("-cloud") != -1:
                         headers_cloud.append(dep)
+                    elif dep.find("-rpi") != -1:
+                        headers_rpi.append(dep)
                     else:
                         headers.append(dep)
             if dep.find("kbuild") != -1:
                 headers.append(dep)
                 headers_rt.append(dep)
                 headers_cloud.append(dep)
+                headers_rpi.append(dep)
 
-        return [repo.DriverKitConfig(release + "-" + self.arch, "debian", headers),
-                      repo.DriverKitConfig(release + "-rt-" + self.arch, "debian", headers_rt),
-                      repo.DriverKitConfig(release + "-cloud-" + self.arch, "debian", headers_cloud)]
+        final = []
+        if len(headers) >= 3:
+            final.append(repo.DriverKitConfig(release + "-" + self.arch, "debian", headers))
+        if len(headers_rt) >= 3:
+            final.append(repo.DriverKitConfig(release + "-rt-" + self.arch, "debian", headers_rt))
+        if len(headers_cloud) >= 3:
+            final.append(repo.DriverKitConfig(release + "-cloud-" + self.arch, "debian", headers_cloud))
+        if len(headers_rpi) >= 3:
+            final.append(repo.DriverKitConfig(release + "-rpi-" + self.arch, "debian", headers_rpi))
+        return final

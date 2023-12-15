@@ -74,8 +74,8 @@ class DebRepository(repo.Repository):
                 if key in ('Provides', 'Depends'):
                     value = value.split(', ')
             except ValueError:
-                print(line)
-                raise
+                # Just skip the line if it is malformed
+                continue
             current_package[key] = value
 
         if current_package:
