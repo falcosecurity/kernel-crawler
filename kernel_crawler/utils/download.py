@@ -34,9 +34,13 @@ def get_url(url):
 
 def get_first_of(urls):
     last_exc = Exception('Empty url list')
-    for url in urls:
+    for idx, url in enumerate(urls):
         try:
-            return get_url(url)
+            content = get_url(url)
+            # If content is None and we got elements after this one,
+            # try the next ones.
+            if content is not None or idx == len(urls) - 1:
+                return content
         except Exception as exc:
             last_exc = exc
     raise last_exc
