@@ -214,6 +214,8 @@ class DebRepository(repo.Repository):
                                item_show_func=repo.to_s) as pkgs:
             for pkg in pkgs:
                 pv = packages[pkg]['Version']
+                if ":" in pv:
+                    pv = pv.split(":")[1]
                 m = cls.KERNEL_RELEASE_UPDATE.match(pv)
                 if m:
                     pv = '{}/{}'.format(m.group(1), m.group(2))
