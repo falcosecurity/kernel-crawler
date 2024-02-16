@@ -1,0 +1,50 @@
+name: 'kernel-crawler'
+description: 'A tool to crawl existing Linux kernel versions from multiple distros'
+
+inputs:
+  arch:
+    description: 'Architecture to run against. x86_64 or aarch64.'
+    required: false
+    default: 'x86_64'
+  distro:
+    description: 'Distro to run against. Defaults to all.'
+    required: false
+    default: '*'
+    
+outputs:
+  json:
+    description: "Generated json"
+    value: ${{ steps.store-outputs.outputs.json }} 
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install deps
+      shell: bash
+      run: |
+        sudo apt update -y
+        sudo apt install -y --no-install-recommends python3 python3-pip python3-pygit2 jq
+
+    - name: Install crawler
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        pip3 install .
+
+    - name: Run crawler
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        kernel-crawler crawl --distro=${{ inputs.distro }} --arch=${{ inputs.arch }} > kernels_${{ inputs.arch }}.json
+
+    - name: Validate json
+      shell: bash
+      working-directory: ${{ github.action_path }}
+      run: |
+        cat kernels_${{ inputs.arch }}.json | jq empty
+          
+    - name: Set output
+      id: store-outputs
+      shell: bash
+      run: |
+        echo "json=${{ github.action_path }}/kernels_${{ inputs.arch }}.json" >> $GITHUB_OUTPUT  

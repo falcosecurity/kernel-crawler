@@ -14,36 +14,29 @@ concurrency:
 jobs:
   update-kernels:
     runs-on: ubuntu-latest
-    container:
-      image: falcosecurity/kernel-crawler:latest
-      options: -u root
     permissions:
       contents: read
       pages: write
       id-token: write
     steps:
-      - name: Checkout crawler
-        uses: actions/checkout@v3
-
       - name: Run crawler for x86_64
-        run: |
-          mkdir site/x86_64
-          kernel-crawler crawl --distro="*" > site/x86_64/list.json
+        id: crawler_x86_64
+        uses: falcosecurity/kernel-crawler@main
+        with:
+          arch: 'x86_64'
 
       - name: Run crawler for aarch64
+        id: crawler_aarch64
+        uses: falcosecurity/kernel-crawler@main
+        with:
+          arch: 'aarch64'
+
+      - name: Move generated files to site folder
         run: |
+          mkdir site/x86_64
+          mv ${{ steps.crawler_x86_64.outputs.json }} site/x86_64/list.json
           mkdir site/aarch64
-          kernel-crawler crawl --distro="*" --arch=aarch64 > site/aarch64/list.json
-
-      - name: Install deps
-        run: |
-          apt update
-          apt install -y jq
-
-      - name: Validate jsons
-        run: |
-          cat site/x86_64/list.json | jq empty
-          cat site/aarch64/list.json | jq empty
+          mv ${{ steps.crawler_aarch64.outputs.json }} site/aarch64/list.json
 
       - uses: actions/upload-pages-artifact@v1
         with:

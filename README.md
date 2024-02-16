@@ -13,6 +13,8 @@ Output json can be found, for each supported architecture, on gh pages: https://
 A weekly [github action workflow](https://github.com/falcosecurity/kernel-crawler/actions/workflows/update-kernels.yml) will open a PR on this repo to update the json.  
 As soon as the PR is merged and the json updated, a [prow job](https://github.com/falcosecurity/test-infra/blob/master/config/jobs/update-dbg/update-dbg.yaml) will create a PR on [test-infra](https://github.com/falcosecurity/test-infra) to generate the new Driverkit configs from the updated json.
 
+## Usage
+
 Helper text and options:
 
 Main:
@@ -32,12 +34,32 @@ Crawl command:
 Usage: kernel-crawler crawl [OPTIONS]
 
 Options:
-    --distro [AmazonLinux|AmazonLinux2|AmazonLinux2022|AmazonLinux2023|BottleRocket|CentOS|Debian|Fedora|Flatcar|Minikube|OracleLinux|PhotonOS|Redhat|Talos|Ubuntu|*]
+    --distro [alinux|almalinux|amazonlinux|amazonlinux2|amazonlinux2022|amazonlinux2023|arch|bottlerocket|centos|debian|fedora|flatcar|minikube|ol|opensuse|photon|redhat|rocky|talos|ubuntu|*]
     --version TEXT
     --arch [x86_64|aarch64]
     --image TEXT                    Option is required when distro is Redhat.
     --help                          Show this message and exit.
 ```
+
+## CI Usage
+
+To better suit the CI usage, a [Github composite action](https://docs.github.com/en/actions/creating-actions/creating-a-composite-action) has been developed.  
+Therefore, running kernel-crawler in your Github workflow is as easy as adding this step:
+```
+- name: Crawl kernels
+  uses: falcosecurity/kernel-crawler@main
+  with:
+    # Desired architecture. Either x86_64 or aarch64.
+    # Default: 'x86_64'.
+    arch: 'aarch64'
+    
+    # Desired distro.
+    # Refer to crawl command helper message (above) to check supported distros.
+    # Default: '*'.
+    distro: 'ubuntu'
+```
+
+> __NOTE:__ Since we don't use annotated tags, one cannot use eg: falcosecurity/kernel-crawler@v0, but only either exact tag name, branch name or commit hash.
 
 ## Docker image
 
