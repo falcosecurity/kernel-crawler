@@ -14,7 +14,7 @@ jobs:
     outputs:
       crawler_changed: ${{ steps.filter.outputs.crawler }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -29,25 +29,12 @@ jobs:
     if: needs.paths-filter.outputs.crawler_changed == 'true'
     steps:
       - name: Checkout repo ⤵️
-        uses: actions/checkout@v3
-
-      - name: Install deps
-        run: |
-          sudo apt update
-          sudo apt install python3 python3-pip python3-pygit2 jq
-
-      - name: Install crawler
-        run: |
-          pip3 install .
+        uses: actions/checkout@v4
 
       - name: Run crawler
-        run: |
-          kernel-crawler crawl --distro "*" > kernels.json
-
-      - name: Validate json
-        run: |
-          cat kernels.json | jq empty
+        id: crawler
+        uses: ./
 
       - uses: actions/upload-artifact@v3
         with:
-          path: kernels.json
+          path: ${{ steps.crawler.outputs.json }}
