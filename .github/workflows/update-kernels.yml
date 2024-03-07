@@ -31,6 +31,9 @@ jobs:
         with:
           arch: 'aarch64'
 
+      - name: Checkout crawler
+        uses: actions/checkout@v4
+
       - name: Move generated files to site folder
         run: |
           mkdir site/x86_64
