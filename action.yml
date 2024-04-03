@@ -35,11 +35,11 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        kernel-crawler crawl --distro=${{ inputs.distro }} --arch=${{ inputs.arch }} > kernels_${{ inputs.arch }}.json
+        kernel-crawler crawl --distro=${{ inputs.distro }} --arch=${{ inputs.arch }} > ${{ runner.temp }}/kernels_${{ inputs.arch }}.json
 
     - name: Validate json
       shell: bash
-      working-directory: ${{ github.action_path }}
+      working-directory: ${{ runner.temp }}
       run: |
         cat kernels_${{ inputs.arch }}.json | jq empty
           
@@ -47,4 +47,4 @@ runs:
       id: store-outputs
       shell: bash
       run: |
-        echo "json=${{ github.action_path }}/kernels_${{ inputs.arch }}.json" >> $GITHUB_OUTPUT  
+        echo "json=${{ runner.temp }}/kernels_${{ inputs.arch }}.json" >> $GITHUB_OUTPUT
