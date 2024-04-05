@@ -10,7 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+import requests
 from bs4 import BeautifulSoup
 import re
 
@@ -44,14 +44,17 @@ class ArchLinuxRepository(repo.Repository):
     def get_package_tree(self, filter=''):
         packages = {}
 
-        soup = BeautifulSoup(get_url(self.base_url), features='lxml')
-        for a in soup.find_all('a', href=True):
-            package = a['href']
-            # skip .sig and .. links
-            if not package.endswith('.sig') and package != '../':
-                parsed_kernel_release = self.parse_kernel_release(package)
+        try:
+            soup = BeautifulSoup(get_url(self.base_url), features='lxml')
+            for a in soup.find_all('a', href=True):
+                package = a['href']
+                # skip .sig and .. links
+                if not package.endswith('.sig') and package != '../':
+                    parsed_kernel_release = self.parse_kernel_release(package)
 
-                packages.setdefault(parsed_kernel_release, set()).add(self.base_url + package)
+                    packages.setdefault(parsed_kernel_release, set()).add(self.base_url + package)
+        except requests.HTTPError:
+            pass
 
         return packages
 
