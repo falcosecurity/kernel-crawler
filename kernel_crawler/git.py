@@ -67,7 +67,7 @@ class GitMirror(Distro):
         shutil.rmtree(self.repo.workdir, True)
 
     def getVersions(self, last_n=0):
-        re_tags = re.compile('^refs/tags/v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)$')
+        re_tags = re.compile(r'^refs/tags/v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)$')
 
         all_versions = [os.path.basename(v).strip('v') for v in self.repo.references if re_tags.match(v)]
         all_versions.sort(key=SemVersion)
@@ -97,16 +97,20 @@ class GitMirror(Distro):
             
         return self.checkout_version(commithash)
 
-    def search_file(self, file_name):
-        for dirpath, dirnames, files in os.walk(self.repo.workdir):
+    def search_file(self, file_name, wd=''):
+        if wd == '':
+            wd = self.repo.workdir
+        for dirpath, dirnames, files in os.walk(wd):
             for name in files:
                 if name == file_name:
                     return os.path.join(dirpath, name)
         return None
 
-    def match_file(self, pattern, fullpath=True):
+    def match_file(self, pattern, fullpath=True, wd=''):
         matches = []
-        for dirpath, dirnames, files in os.walk(self.repo.workdir):
+        if wd == '':
+            wd = self.repo.workdir
+        for dirpath, dirnames, files in os.walk(wd):
             for name in files:
                 if re.search(r'^'+pattern, name):
                     if fullpath:
@@ -116,8 +120,10 @@ class GitMirror(Distro):
         return matches
 
     def extract_value(self, file_name, key, sep):
-        # here kernel release is the same as the one given by "uname -r"
-        full_path = self.search_file(file_name)
+        if os.path.isabs(file_name):
+            full_path = file_name
+        else:
+            full_path = self.search_file(file_name)
         for line in open(full_path):
             stripped_line = line.lstrip()
             if re.search(r'^'+key + sep, stripped_line):
