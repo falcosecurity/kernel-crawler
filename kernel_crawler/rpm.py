@@ -168,7 +168,7 @@ class RpmMirror(repo.Mirror):
 
 class SUSERpmMirror(RpmMirror):
 
-    def __init__(self, base_url, variant, arch, repo_filter=None, isZstd=False):
+    def __init__(self, base_url, variant, arch, repo_filter=None):
         '''
         SUSERpmMirror looks like a regular RpmMirror, except that it requires
         the arch in the constructor. The arch is used for passing through to SUSERpmRepository,
@@ -181,7 +181,6 @@ class SUSERpmMirror(RpmMirror):
             repo_filter = lambda _: True
         self.repo_filter = repo_filter
         self.url = base_url
-        self.isZstd = isZstd
 
     def list_repos(self):
         '''
@@ -197,7 +196,7 @@ class SUSERpmMirror(RpmMirror):
         dists = dists.content
         doc = html.fromstring(dists, self.base_url)
         dists = doc.xpath('/html/body//a[not(@href="../")]/@href')
-        ret = [SUSERpmRepository(self.dist_url(dist), self.arch, self.isZstd) for dist in dists
+        ret = [SUSERpmRepository(self.dist_url(dist), self.arch) for dist in dists
                 if dist.endswith('/')
                 and not dist.startswith('/')
                 and not dist.startswith('?')
@@ -213,14 +212,13 @@ class SUSERpmRepository(RpmRepository):
     # the kernel headers package name pattern to search for in the package listing XML
     _kernel_devel_pattern = 'kernel-default-devel-'
 
-    def __init__(self, base_url, arch, isZstd):
+    def __init__(self, base_url, arch):
         '''
         Constructor, which sets the base URL and the arch.
         The arch is used for finding the correct package in the repomd.
         '''
         self.base_url = base_url
         self.arch = arch
-        self.isZstd = isZstd
 
     def get_repodb_url(self):
         '''
@@ -258,6 +256,26 @@ class SUSERpmRepository(RpmRepository):
         '''
         return f'{self.base_url}noarch/kernel-devel-{kernel_release}.rpm'.replace(self.arch, 'noarch')
 
+    def open_repo(self, repo_path, isZstd):
+        package_match = f'{self.arch}/{self._kernel_devel_pattern}'
+        # regex searching through a file is more memory efficient
+        # than parsing the xml into an object structure with lxml etree
+        open_mode = 'r'
+        if isZstd:
+            open_mode = 'rb'
+        with open(repo_path, mode=open_mode) as f:
+            if isZstd:
+                dctx = zstd.ZstdDecompressor(max_window_size=2147483648)
+                stream_reader = dctx.stream_reader(f)
+                text = io.TextIOWrapper(stream_reader, encoding='utf-8').read()
+            else:
+                text = str(f.read())
+
+            search = re.search(f'.*href="({package_match}.*rpm)', text)
+            if search:
+                return search.group(1)
+            return None
+
     def get_package_tree(self, filter=''):
         '''
         Build the package tree for SUSE, which finds the repomd, parses it for the primary package listing,
@@ -276,29 +294,14 @@ class SUSERpmRepository(RpmRepository):
             # traceback.print_exc()  # extremely verbose, uncomment if debugging
             return {}
 
-        package_match = f'{self.arch}/{self._kernel_devel_pattern}'
-        kernel_default_devel_pkg_url = None
-
         # write the repodb xml to a tempfile for parsing
         with tempfile.NamedTemporaryFile() as tf:
             tf.write(repodb)
             tf.flush()
-            open_mode = 'r'
-            if self.isZstd:
-                open_mode = 'rb'
-
-            # regex searching through a file is more memory efficient
-            # than parsing the xml into an object structure with lxml etree
-            with open(tf.name, mode=open_mode) as f:
-                if self.isZstd:
-                    dctx = zstd.ZstdDecompressor(max_window_size=2147483648)
-                    stream_reader = dctx.stream_reader(f)
-                    text = io.TextIOWrapper(stream_reader, encoding='utf-8').read()
-                else:
-                    text = str(f.read())
-                search = re.search(f'.*href="({package_match}.*rpm)', text)
-                if search:
-                    kernel_default_devel_pkg_url = search.group(1)
+            try:
+                kernel_default_devel_pkg_url = self.open_repo(tf.name, False)
+            except UnicodeDecodeError:
+                kernel_default_devel_pkg_url = self.open_repo(tf.name, True)
             tf.close()  # delete the tempfile to free up memory
 
         # check to ensure a kernel_devel_pkg was found
