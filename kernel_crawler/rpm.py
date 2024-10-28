@@ -93,6 +93,8 @@ class RpmRepository(repo.Repository):
         if not repomd:
             return None
         pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary_db"]/repo:location/@href')
+        if not pkglist_url:
+            return None
         return self.base_url + pkglist_url
 
     def get_package_tree(self, filter=''):
