@@ -20,7 +20,7 @@ jobs:
           ignore: DL3008
 
       - name: Lint kernel-crawler
-        uses: cclauss/GitHub-Action-for-pylint@8ef4d22e119fb1cdc0f58f2e95cb1f8d8b0d55e6 # 0.7.0
+        uses: cclauss/GitHub-Action-for-pylint@45e14ae074fb20b6b176a5d803ec05eb4e25b3f0 # 06.0
         with:
           args: "pip install -r requirements.txt ; pylint kernel_crawler"
         continue-on-error: true  # allow failure for now
