@@ -26,7 +26,7 @@ jobs:
         continue-on-error: true  # allow failure for now
 
       - name: Lint YAML
-        uses: karancode/yamllint-github-action@fdef6bc189425ecc84cc4543b2674566c0827053 # v2.1.1
+        uses: karancode/yamllint-github-action@4052d365f09b8d34eb552c363d1141fd60e2aeb2 # v3.0.0
         with:
           yamllint_file_or_dir: '.github/workflows/'
           yamllint_strict: false
