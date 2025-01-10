@@ -23,6 +23,7 @@ class UbuntuMirror(repo.Distro):
             deb.DebMirror('http://mirrors.edge.kernel.org/ubuntu/', arch),
             deb.DebMirror('http://security.ubuntu.com/ubuntu/', arch),
             deb.DebMirror('http://ports.ubuntu.com/ubuntu-ports/', arch),
+            deb.DebMirror('http://archive.ubuntu.com/ubuntu/', arch),
         ]
         super(UbuntuMirror, self).__init__(mirrors, arch)
 
