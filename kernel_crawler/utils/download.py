@@ -1,6 +1,8 @@
 import bz2
 import zlib
+import zstandard
 import requests
+import io
 
 try:
     import lzma
@@ -21,13 +23,16 @@ def get_url(url):
     else:  # if any other error, raise the error - might be a bug in crawler
         resp.raise_for_status()
 
-    # if no error, return the contents
+    # if no error, return the (eventually decompressed) contents
     if url.endswith('.gz'):
         return zlib.decompress(resp.content, 47)
     elif url.endswith('.xz'):
         return lzma.decompress(resp.content)
     elif url.endswith('.bz2'):
         return bz2.decompress(resp.content)
+    elif url.endswith('.zst'):
+        with zstandard.ZstdDecompressor().stream_reader(io.BytesIO(resp.content)) as rr:
+            return rr.read()
     else:
         return resp.content
 

@@ -20,17 +20,10 @@ from lxml import etree, html
 import sqlite3
 import tempfile
 import re
-import zstandard as zstd
 import io
 
 from . import repo
 from kernel_crawler.utils.download import get_url
-
-try:
-    import lzma
-except ImportError:
-    from backports import lzma
-
 
 class RpmRepository(repo.Repository):
     def __init__(self, base_url):
@@ -258,25 +251,17 @@ class SUSERpmRepository(RpmRepository):
         '''
         return f'{self.base_url}noarch/kernel-devel-{kernel_release}.rpm'.replace(self.arch, 'noarch')
 
-    def open_repo(self, repo_path, isZstd):
+    def open_repo(self, repo_path):
         package_match = f'{self.arch}/{self._kernel_devel_pattern}'
         # regex searching through a file is more memory efficient
         # than parsing the xml into an object structure with lxml etree
-        open_mode = 'r'
-        if isZstd:
-            open_mode = 'rb'
-        with open(repo_path, mode=open_mode) as f:
-            if isZstd:
-                dctx = zstd.ZstdDecompressor(max_window_size=2147483648)
-                stream_reader = dctx.stream_reader(f)
-                text = io.TextIOWrapper(stream_reader, encoding='utf-8').read()
-            else:
-                text = str(f.read())
-
+        with open(repo_path, mode='r') as f:
+            text = str(f.read())
             search = re.search(f'.*href="({package_match}.*rpm)', text)
             if search:
                 return search.group(1)
             return None
+        return None
 
     def get_package_tree(self, filter=''):
         '''
@@ -300,10 +285,7 @@ class SUSERpmRepository(RpmRepository):
         with tempfile.NamedTemporaryFile() as tf:
             tf.write(repodb)
             tf.flush()
-            try:
-                kernel_default_devel_pkg_url = self.open_repo(tf.name, False)
-            except UnicodeDecodeError:
-                kernel_default_devel_pkg_url = self.open_repo(tf.name, True)
+            kernel_default_devel_pkg_url = self.open_repo(tf.name)
             tf.close()  # delete the tempfile to free up memory
 
         # check to ensure a kernel_devel_pkg was found
