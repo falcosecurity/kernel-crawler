@@ -34,7 +34,7 @@ Crawl command:
 Usage: kernel-crawler crawl [OPTIONS]
 
 Options:
-    --distro [alinux|almalinux|amazonlinux|amazonlinux2|amazonlinux2022|amazonlinux2023|arch|bottlerocket|centos|debian|fedora|flatcar|minikube|ol|opensuse|photon|redhat|rocky|talos|ubuntu|*]
+    --distro [alinux|almalinux|amazonlinux2|amazonlinux2022|amazonlinux2023|arch|bottlerocket|centos|debian|fedora|flatcar|minikube|ol|opensuse|photon|redhat|rocky|talos|ubuntu|*]
     --version TEXT
     --arch [x86_64|aarch64]
     --image TEXT                    Option is required when distro is Redhat.

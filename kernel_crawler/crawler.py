@@ -15,7 +15,7 @@ from . import repo
 from .minikube import MinikubeMirror
 from .aliyunlinux import AliyunLinuxMirror
 from .almalinux import AlmaLinuxMirror
-from .amazonlinux import AmazonLinux1Mirror, AmazonLinux2Mirror, AmazonLinux2022Mirror, AmazonLinux2023Mirror
+from .amazonlinux import AmazonLinux2Mirror, AmazonLinux2022Mirror, AmazonLinux2023Mirror
 from .centos import CentosMirror
 from .fedora import FedoraMirror
 from .oracle import OracleMirror
@@ -42,7 +42,6 @@ from .talos import TalosMirror
 DISTROS = {
     'alinux': AliyunLinuxMirror,
     'almalinux': AlmaLinuxMirror,
-    'amazonlinux': AmazonLinux1Mirror,
     'amazonlinux2': AmazonLinux2Mirror,
     'amazonlinux2022': AmazonLinux2022Mirror,
     'amazonlinux2023': AmazonLinux2023Mirror,
