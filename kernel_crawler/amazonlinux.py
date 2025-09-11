@@ -29,35 +29,6 @@ def get_al_repo(repo_root, repo_release, repo_arch = ''):
     return make_string(resp.splitlines()[0]).replace('$basearch', repo_arch).rstrip('/') + '/'
 
 
-class AmazonLinux1Mirror(repo.Distro):
-    AL1_REPOS = [
-        'latest/updates',
-        'latest/main',
-        '2017.03/updates',
-        '2017.03/main',
-        '2017.09/updates',
-        '2017.09/main',
-        '2018.03/updates',
-        '2018.03/main',
-    ]
-
-    def __init__(self, arch):
-        super(AmazonLinux1Mirror, self).__init__([], arch)
-
-    def list_repos(self):
-        repo_urls = set()
-        with click.progressbar(
-                self.AL1_REPOS, label='Checking repositories', file=sys.stderr, item_show_func=repo.to_s) as repos:
-            for r in repos:
-                repo_urls.add(get_al_repo("http://repo.us-east-1.amazonaws.com/", r, self.arch))
-        return [rpm.RpmRepository(url) for url in sorted(repo_urls)]
-
-    def to_driverkit_config(self, release, deps):
-        for dep in deps:
-            if dep.find("devel") != -1:
-                return repo.DriverKitConfig(release, "amazonlinux", dep)
-
-
 class AmazonLinux2Mirror(repo.Distro):
     AL2_REPOS = [
         'core/2.0',
