@@ -70,13 +70,6 @@ class ArchLinuxMirror(repo.Distro):
             self._base_urls.append('https://archive.archlinux.org/packages/l/linux-hardened-headers/')        # hardened
             self._base_urls.append('https://archive.archlinux.org/packages/l/linux-lts-headers/')             # lts
             self._base_urls.append('https://archive.archlinux.org/packages/l/linux-zen-headers/')             # zen
-        elif arch == 'aarch64':
-            self._base_urls.append('https://alaa.ad24.cz/packages/l/linux-aarch64-headers/')       # arm 64-bit
-        else:  # can be implemented later
-            self._base_urls.append('https://alaa.ad24.cz/packages/l/linux-armv5-headers/')         # arm v5
-            self._base_urls.append('https://alaa.ad24.cz/packages/l/linux-armv7-headers/')         # arm v7
-            self._base_urls.append('https://alaa.ad24.cz/packages/l/linux-raspberrypi4-headers/')  # rpi4
-            self._base_urls.append('https://alaa.ad24.cz/packages/l/linux-raspberrypi-headers/')   # other rpi
 
         super(ArchLinuxMirror, self).__init__(self._base_urls, arch)
 
