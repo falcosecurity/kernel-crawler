@@ -276,7 +276,7 @@ class DebMirror(repo.Mirror):
 
     def list_repos(self):
         dists_url = self.base_url + 'dists/'
-        dists = requests.get(dists_url)
+        dists = requests.get(dists_url, timeout = 15)
         dists.raise_for_status()
         dists = dists.content
         doc = html.fromstring(dists, dists_url)

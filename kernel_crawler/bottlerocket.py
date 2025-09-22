@@ -32,7 +32,7 @@ class BottleRocketMirror(GitMirror):
         if source is None:
             return None
 
-        alkernel = requests.get(source)
+        alkernel = requests.get(source, timeout = 15)
         alkernel.raise_for_status()
         with open('/tmp/alkernel.rpm', 'wb') as f:
             f.write(alkernel.content)

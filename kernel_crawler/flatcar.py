@@ -47,7 +47,7 @@ class FlatcarMirror(Distro):
 
     def scan_repo(self, base_url):
         try:
-            dists = requests.get(base_url)
+            dists = requests.get(base_url, timeout = 15)
             dists.raise_for_status()
         except requests.exceptions.RequestException:
             return {}
