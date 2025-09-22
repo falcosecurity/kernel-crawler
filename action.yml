@@ -35,7 +35,7 @@ runs:
       shell: bash
       working-directory: ${{ github.action_path }}
       run: |
-        kernel-crawler crawl --distro=${{ inputs.distro }} --arch=${{ inputs.arch }} > ${{ runner.temp }}/kernels_${{ inputs.arch }}.json
+        kernel-crawler crawl --distro=${{ inputs.distro }} --arch=${{ inputs.arch }} --output ${{ runner.temp }}/kernels_${{ inputs.arch }}.json
 
     - name: Validate json
       shell: bash

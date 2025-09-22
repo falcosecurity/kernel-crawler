@@ -11,6 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from requests.exceptions import ConnectTimeout, ReadTimeout, Timeout, RequestException, ConnectionError
 from . import repo
 from .minikube import MinikubeMirror
 from .aliyunlinux import AliyunLinuxMirror
@@ -84,25 +85,37 @@ def crawl_kernels(distro, version, arch, images):
 
     for distname, dist in DISTROS.items():
         if distname == distro or distro == "*":
-            # If the distro requires an image (Redhat only so far), we need to amalgamate
-            # the kernel versions from the supplied images before choosing the output.
-            if issubclass(dist, repo.ContainerDistro):
-                if images:
-                    kv = {}
-                    for image in images:
-                        d = dist(image)
-                        if len(kv) == 0:
-                            kv = d.get_kernel_versions()
-                        else:
-                            kv.update(d.get_kernel_versions())
-                    # We should now have a list of all kernel versions for the supplied images
-                    res = kv
+            try:
+                # If the distro requires an image (Redhat only so far), we need to amalgamate
+                # the kernel versions from the supplied images before choosing the output.
+                if issubclass(dist, repo.ContainerDistro):
+                    if images:
+                        kv = {}
+                        for image in images:
+                            d = dist(image)
+                            if len(kv) == 0:
+                                kv = d.get_kernel_versions()
+                            else:
+                                kv.update(d.get_kernel_versions())
+                        # We should now have a list of all kernel versions for the supplied images
+                        res = kv
+                    else:
+                        d = None
                 else:
-                    d = None
-            else:
-                d = dist(arch)
-                res = d.get_package_tree(version)
+                    d = dist(arch)
+                    res = d.get_package_tree(version)
 
-            if d and res:
-                ret[distname] = to_driverkit_config(d, res)
+                if d and res:
+                    ret[distname] = to_driverkit_config(d, res)
+
+            except (ConnectTimeout, ReadTimeout, Timeout):
+                print(f"[ERROR] Timeout while fetching data for distro '{distname}'")
+            except ConnectionError:
+                print(f"[ERROR] Network unreachable or host down for distro '{distname}'")
+            except RequestException as e:
+                print(f"[ERROR] Request failed for distro '{distname}': {e}")
+            except Exception as e:
+                # Catch-all for unexpected issues
+                print(f"[ERROR] Unexpected error in distro '{distname}': {e}")
+
     return ret

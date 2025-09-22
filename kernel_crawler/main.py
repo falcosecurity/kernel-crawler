@@ -54,14 +54,20 @@ class DistroImageValidation(click.Option):
         return super(DistroImageValidation, self).handle_parse_result(ctx, opts, args)
 
 @click.command()
-@click.option('--distro', type=click.Choice(sorted(list(DISTROS.keys())) + ['*'], case_sensitive=True))
+@click.option('--distro', type=click.Choice(sorted(list(DISTROS.keys())) + ['*'], case_sensitive=True), required=True)
 @click.option('--version', required=False, default='')
 @click.option('--arch', required=False, type=click.Choice(['x86_64', 'aarch64'], case_sensitive=True), default='x86_64')
 @click.option('--image', cls=DistroImageValidation, required_if_distro=["Redhat"], multiple=True)
-def crawl(distro, version='', arch='', image=''):
+@click.option('--output', type=click.Path(dir_okay=False, writable=True), help="Optional file path to write JSON output")
+def crawl(distro, version='', arch='', image='', output=None):
     res = crawl_kernels(distro, version, arch, image)
     json_object = json.dumps(res, indent=2, default=vars)
-    print(json_object)
+    if output:
+        with open(output, 'w', encoding='utf-8') as f:
+            f.write(json_object)
+        click.echo(f"[INFO] JSON output written to {output}")
+    else:
+        click.echo(json_object)
 
 cli.add_command(crawl, 'crawl')
 

@@ -133,7 +133,8 @@ class RpmMirror(repo.Mirror):
                 self.dist_url(dist),
                 headers={  # some URLs require a user-agent, otherwise they return HTTP 406 - this one is fabricated
                     'user-agent': 'dummy'
-                }
+                },
+                timeout = 15
             )
             r.raise_for_status()
         except requests.exceptions.RequestException:
@@ -145,7 +146,8 @@ class RpmMirror(repo.Mirror):
             self.base_url, 
             headers={  # some URLs require a user-agent, otherwise they return HTTP 406 - this one is fabricated
                 'user-agent': 'dummy'
-            }
+            },
+            timeout = 15
         )
         dists.raise_for_status()
         dists = dists.content
@@ -185,7 +187,8 @@ class SUSERpmMirror(RpmMirror):
             self.base_url,
             headers={  # some URLs require a user-agent, otherwise they return HTTP 406 - this one is fabricated
                 'user-agent': 'dummy'
-            }
+            },
+            timeout = 15
         )
         dists.raise_for_status()
         dists = dists.content
