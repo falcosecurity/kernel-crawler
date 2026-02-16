@@ -33,6 +33,9 @@ class DebianMirror(repo.Distro):
             deb.DebMirror('http://security.debian.org/', arch, repo_filter),
             deb.DebMirror('http://archive.raspberrypi.com/debian/', arch, repo_filter),
             deb.DebMirror('http://security.debian.org/debian-security/', arch, repo_filter),
+            deb.DebMirror('http://archive.debian.org/debian/', arch, repo_filter),
+           
+        
         ]
         super(DebianMirror, self).__init__(mirrors, arch)
 
