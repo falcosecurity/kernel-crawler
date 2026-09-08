@@ -20,6 +20,11 @@ class OracleRepository(rpm.RpmRepository):
     def kernel_package_query(cls):
         return '''(name IN ('kernel', 'kernel-devel', 'kernel-uek', 'kernel-uek-devel'))'''
 
+    @classmethod
+    def kernel_package_match(cls, name):
+        # Python equivalent of kernel_package_query() above.
+        return name in ('kernel', 'kernel-devel', 'kernel-uek', 'kernel-uek-devel')
+
 
 class OracleMirror(repo.Distro):
 

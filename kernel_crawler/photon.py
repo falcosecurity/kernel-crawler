@@ -21,6 +21,14 @@ class PhotonOsRepository(rpm.RpmRepository):
         # see https://github.com/vmware/photon/issues/1223.
         return '''((name = 'linux' OR name LIKE 'linux-%devel%') AND name NOT LIKE '%esx%' AND name NOT LIKE '%PAM%')'''
 
+    @classmethod
+    def kernel_package_match(cls, name):
+        # Python equivalent of kernel_package_query() above.
+        # N.B. SQLite LIKE is case-insensitive for ASCII, hence the lowercase comparisons.
+        lname = name.lower()
+        return (name == 'linux' or (lname.startswith('linux-') and 'devel' in lname)) \
+            and 'esx' not in lname and 'pam' not in lname
+
 
 class PhotonOsMirror(repo.Distro):
     PHOTON_OS_VERSIONS = [

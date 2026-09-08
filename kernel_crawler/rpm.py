@@ -53,6 +53,15 @@ class RpmRepository(repo.Repository):
         return '''name IN ('kernel', 'kernel-devel', 'kernel-ml', 'kernel-ml-devel')'''
 
     @classmethod
+    def kernel_package_match(cls, name):
+        '''
+        Python equivalent of kernel_package_query(), used to select the kernel packages
+        when a repository ships only the primary XML metadata (see parse_primary_xml()).
+        Subclasses overriding kernel_package_query() must override this method too.
+        '''
+        return name in ('kernel', 'kernel-devel', 'kernel-ml', 'kernel-ml-devel')
+
+    @classmethod
     def build_base_query(cls, filter=''):
         base_query = '''SELECT version || '-' || release || '.' || arch, pkgkey FROM packages WHERE {}'''.format(
             cls.kernel_package_query())
@@ -81,33 +90,87 @@ class RpmRepository(repo.Repository):
         cursor.execute(query, args)
         return cursor.fetchall()
 
+    @classmethod
+    def parse_primary_xml(cls, primary_xml, filter=''):
+        '''
+        Parse the primary XML metadata and return (version-release.arch, location_href) tuples
+        for the kernel packages, like parse_repo_db() does with the sqlite database.
+
+        Unlike parse_repo_db(), this does not resolve the transitive dependencies of the kernel
+        packages (the XML metadata would require a manual requires/provides resolution): only
+        the kernel packages themselves are returned. This is enough for the distros whose
+        to_driverkit_config() just picks the *-devel package (e.g. Photon OS).
+        '''
+        ns = '{http://linux.duke.edu/metadata/common}'
+        packages = []
+        for _, pkg in etree.iterparse(io.BytesIO(primary_xml), tag=ns + 'package'):
+            if cls.kernel_package_match(pkg.findtext(ns + 'name', default='')):
+                ver = pkg.find(ns + 'version')
+                version, release = ver.get('ver'), ver.get('rel')
+                # same filter semantics as build_base_query(): match either the version
+                # (e.g. 5.10.103) or the version-release (e.g. 5.10.103-1.ph4)
+                if not filter or filter in (version, version + '-' + release):
+                    packages.append((
+                        version + '-' + release + '.' + pkg.findtext(ns + 'arch'),
+                        pkg.find(ns + 'location').get('href')))
+            # the XML of a large repository lists tens of thousands of packages:
+            # free each element once processed to keep the memory usage low
+            pkg.clear()
+            while pkg.getprevious() is not None:
+                del pkg.getparent()[0]
+        return packages
+
+    def get_repodata_url(self, repomd, data_type):
+        '''
+        Given the content of repomd.xml, return the URL of the metadata of the given type
+        (e.g. 'primary_db' for the sqlite database, 'primary' for the XML), or None if the
+        repository does not ship it.
+        '''
+        href = self.get_loc_by_xpath(
+            repomd, f'//repo:repomd/repo:data[@type="{data_type}"]/repo:location/@href')
+        if not href:
+            return None
+        return self.base_url + href
+
     def get_repodb_url(self):
         repomd = get_url(self.base_url + 'repodata/repomd.xml')
         if not repomd:
             return None
-        pkglist_url = self.get_loc_by_xpath(repomd, '//repo:repomd/repo:data[@type="primary_db"]/repo:location/@href')
-        if not pkglist_url:
-            return None
-        return self.base_url + pkglist_url
+        return self.get_repodata_url(repomd, 'primary_db')
 
     def get_package_tree(self, filter=''):
         packages = {}
         try:
-            repodb_url = self.get_repodb_url()
-            if not repodb_url:
+            repomd = get_url(self.base_url + 'repodata/repomd.xml')
+            if not repomd:
                 return {}
-            repodb = get_url(repodb_url)
-            if not repodb:
-                return {}
+            # prefer the sqlite database, which also resolves the transitive dependencies of
+            # the kernel packages; fall back to the primary XML metadata when a repository
+            # does not ship the sqlite database at all (e.g. some Photon OS repositories)
+            repodb_url = self.get_repodata_url(repomd, 'primary_db')
+            if repodb_url:
+                repodb = get_url(repodb_url)
+                if not repodb:
+                    return {}
+                with tempfile.NamedTemporaryFile() as tf:
+                    tf.write(repodb)
+                    tf.flush()
+                    pkgs = self.parse_repo_db(tf.name, filter)
+            else:
+                primary_url = self.get_repodata_url(repomd, 'primary')
+                if not primary_url:
+                    print(f"[ERROR] No primary_db nor primary metadata in "
+                          f"{self.base_url}repodata/repomd.xml")
+                    return {}
+                primary = get_url(primary_url)
+                if not primary:
+                    return {}
+                pkgs = self.parse_primary_xml(primary, filter)
         except requests.exceptions.RequestException:
             traceback.print_exc()
             return {}
-        with tempfile.NamedTemporaryFile() as tf:
-            tf.write(repodb)
-            tf.flush()
-            for pkg in self.parse_repo_db(tf.name, filter):
-                version, url = pkg
-                packages.setdefault(version, set()).add(self.base_url + url)
+        for version, url in pkgs:
+            packages.setdefault(version, set()).add(self.base_url + url)
         return packages
 
 
