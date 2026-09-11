@@ -5,8 +5,8 @@ def make_bytes(s):
         return s
 
 
-def make_string(s):
+def make_string(s, errors='strict'):
     try:
-        return s.decode('utf-8')
+        return s.decode('utf-8', errors=errors)
     except AttributeError:
         return s

@@ -54,7 +54,11 @@ class DebRepository(repo.Repository):
         current_package = {}
         packages = {}
         for line in stream:
-            line = make_string(line)
+            # Packages indexes are not guaranteed to be valid UTF-8: the etch
+            # index on archive.debian.org carries Latin-1 bytes in a Maintainer
+            # field. Only Package, Version, Filename and Depends are read here,
+            # so decoding leniently cannot corrupt what this parser uses.
+            line = make_string(line, errors='replace')
             line = line.rstrip()
             if line == '':
                 name = current_package['Package']

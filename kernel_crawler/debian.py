@@ -50,7 +50,12 @@ class DebianMirror(repo.Distro):
         repos = self.list_repos()
         with click.progressbar(repos, label='Listing packages', file=sys.stderr, item_show_func=repo.to_s) as repos:
             for repository in repos:
-                repo_packages = repository.get_raw_package_db()
+                try:
+                    repo_packages = repository.get_raw_package_db()
+                except Exception as e:
+                    # One broken repository must not take the whole distro down
+                    print(f"[ERROR] Failed to load package index from '{repository}': {e}")
+                    continue
                 all_packages.update(repo_packages)
                 kernel_packages = repository.get_package_list(repo_packages, version)
                 all_kernel_packages.extend(kernel_packages)
